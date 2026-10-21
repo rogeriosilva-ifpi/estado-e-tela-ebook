@@ -1,0 +1,9 @@
+Chromium 141.0.7390.37 · modo dev
+
+== cap05-antes
+clique em Prioridade: 0 render(s), ★ na tela: não
+tecla na busca:       4 render(s), ★ na tela: sim
+
+== cap05
+clique em Prioridade: 6 render(s), ★ na tela: sim
+tecla na busca:       4 render(s), ★ na tela: sim

@@ -1,0 +1,135 @@
+<!-- ==================== CAP 5 ==================== -->
+<section class="chapter" id="cap05">
+  <div class="opener">{{ARTE:abertura_05}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte II · Os fundamentos</div>
+    <div class="num">05</div>
+    <h1>Props, eventos e fluxo de dados</h1>
+    <div class="deck">Dados descem como props, eventos sobem como chamadas. Nenhum componente altera o que recebeu.</div>
+  </div>
+
+  <p class="lead">Sexta, 8h. A enfermeira seleciona João Lima e clica em "Prioridade". Nada acontece. Ela digita uma letra na busca, e a estrela de prioridade aparece em João, sem que ninguém tenha clicado de novo.</p>
+
+  <p>Uma mudança que só aparece quando outra coisa acontece é a assinatura de um erro específico. Antes de chegar nele, o capítulo monta a seleção de pacientes e o painel de detalhe, e com eles o fluxo de dados do React.</p>
+
+  <h2><span class="sn">5.1</span>Props: o contrato do componente</h2>
+  <p>As props de um componente são o seu contrato com quem o usa. Em TypeScript, o contrato fica explícito numa <code>interface</code>:</p>
+
+  {{BLOCO:cap05:src/features/pacientes/CartaoPaciente.tsx|linhas=4-17|rotulo=CartaoPaciente.tsx · contrato}}
+
+  <ul>
+    <li><strong>Obrigatória</strong> é a prop sem <code>?</code>: esquecê-la é erro de tipo, não bug em produção.</li>
+    <li><strong>Opcional</strong> leva <code>?</code> e pode chegar <code>undefined</code>, como <code>selecionadoId?: string</code> na lista. Valor padrão vai na desestruturação: <code>{ risco = "baixo" }</code>.</li>
+    <li>Funções também são props. Por convenção, a prop se chama <code>onAlgo</code> e a função de quem a passa tem um nome de ação, como <code>darAlta</code>.</li>
+  </ul>
+
+  <p>Props são <strong>somente leitura</strong>. O componente que recebe <code>paciente</code> não altera <code>paciente.prioridade</code>: ele avisa quem é dono do dado, chamando <code>onPrioridade(id)</code>.</p>
+
+  <h2><span class="sn">5.2</span>Levantar o estado</h2>
+  <p>A lista precisa saber qual paciente está selecionado, para destacá-lo, e o painel de detalhe precisa mostrá-lo. Quando dois componentes dependem do mesmo dado, o estado sobe para o ancestral comum mais próximo, aqui a <code>Ala</code>:</p>
+
+  {{BLOCO:cap05:src/features/pacientes/Ala.tsx|linhas=14-25|rotulo=Ala.tsx · estado e derivados}}
+
+  <p>O estado guarda o <strong>id</strong> do selecionado, não uma cópia do objeto. O paciente selecionado é calculado a cada render a partir da lista. Se a <code>Ala</code> guardasse uma cópia, a prioridade mudaria na lista e a cópia no painel continuaria velha: dois estados para a mesma verdade.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:fluxo}}</div>
+    <figcaption><b>Fig. 5.1</b> — O fluxo de mão única. A <code>Ala</code> é dona do estado; lista e detalhe recebem props. O cartão não altera nada: chama <code>onSelecionar</code> ou <code>onPrioridade</code>, e a <code>Ala</code> decide. Embaixo, o que o React compara quando você chama <code>set</code>.</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A prescrição e a campainha</h4>
+      <p>A prescrição desce do médico para a enfermagem, e quem a recebe não a reescreve. Quando o paciente precisa de algo, ele não vai ao posto mudar a prescrição: toca a campainha, e quem é responsável decide. Props descem; eventos sobem.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>A campainha só avisa que algo aconteceu. O callback do React leva dados (<code>onPrioridade(id)</code>) e roda na hora, dentro do componente dono do estado.</p>
+  </div>
+
+  <p>A lista não usa os eventos; ela só os repassa ao cartão. O espalhamento de props (<code>...acoes</code>) evita repetir as três linhas:</p>
+
+  {{BLOCO:cap05:src/features/pacientes/ListaPacientes.tsx|linhas=15-32}}
+
+  <p>Repassar uma prop por um componente que não a usa é normal em um ou dois níveis. Quando são cinco, o nome disso é <em>prop drilling</em>, e o capítulo 11 trata das saídas.</p>
+
+  <h2><span class="sn">5.3</span>Renderização condicional</h2>
+  <p>O painel de detalhe tem dois estados visuais, e o jeito mais legível de expressá-los é um retorno antecipado:</p>
+
+  {{BLOCO:cap05:src/features/pacientes/PainelDetalhe.tsx|linhas=8-13|reticencias=sim}}
+
+  <div class="dd">
+    <div class="no"><span class="lb">Armadilha do &amp;&amp; com número</span><p><code>{visiveis.length &amp;&amp; &lt;ListaPacientes … /&gt;}</code> mostra <strong>0</strong> na tela quando a lista está vazia: o React renderiza números, e <code>0 &amp;&amp; x</code> vale <code>0</code>.</p></div>
+    <div class="yes"><span class="lb">Condição booleana</span><p><code>{visiveis.length &gt; 0 &amp;&amp; …}</code>, ou o ternário com o estado vazio, como a <code>Ala</code> faz.</p></div>
+  </div>
+
+  <h2><span class="sn">5.4</span>O erro clássico: mudar o objeto no lugar</h2>
+  <p>Na tag <code>cap05-antes</code>, a prioridade era alterada assim, e a correção de <code>cap05</code> cria um array novo:</p>
+
+  {{DIFF:cap05-antes:cap05:src/features/pacientes/Ala.tsx}}
+
+  <p>A versão antiga altera o objeto que já está no estado e chama <code>setPacientes</code> com <strong>o mesmo array</strong>. O React compara o valor novo com o anterior por referência, com <code>Object.is</code>. É o mesmo array, então nada mudou, e nenhum render acontece. O objeto, porém, foi alterado de verdade, e aparece no próximo render que qualquer outra coisa provocar:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap05.py · Medido</span></div>
+<pre>{{SAIDA:c5-mutacao.txt|linhas=3-9|destaque=0 render(s), ★ na tela: não}}</pre>
+  </div>
+
+  <p>Zero renders no clique; a estrela só aparece quando a busca provoca um render por outro motivo. A versão corrigida cria um array novo e um objeto novo só para o paciente alterado (<code>{ ...p, prioridade }</code>). Os outros cinco objetos continuam os mesmos, o que importa no capítulo 16, quando a memoização entrar.</p>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap05-antes</span><p><code>× prioridade no cartão e no detalhe</code></p></div>
+    <div class="yes"><span class="lb">cap05</span><p><code>✓ os seis testes</code></p></div>
+  </div>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-03</span>
+    <p>Estado nunca é alterado no lugar: toda atualização cria objeto ou array novo. Verificação: o teste "prioridade no cartão e no detalhe".</p>
+  </div>
+
+  <h2><span class="sn">5.5</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Mutação escondida em métodos que parecem leitura é o caso mais comum em código gerado: <code>pacientes.sort(...)</code> e <code>reverse()</code> alteram o array original, e <code>push</code> e <code>splice</code> também. Para ordenar sem mutar, use <code>toSorted()</code>, do ES2023, ou ordene uma cópia.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 5</span><button class="copy" type="button" data-copy="p5-agente">Copiar</button></div>
+<pre id="p5-agente"><span class="k">Goal</span>
+Ordenar a lista da Ala por risco (alto
+primeiro), com um botão que liga e
+desliga a ordenação.
+
+<span class="k">Context</span>
+@src/features/pacientes/ @INVARIANTES.md
+@docs/UI.md
+
+<span class="k">Constraints</span>
+- a ordem é derivada no render, nunca
+  guardada como outra lista em estado
+- nada de sort, reverse, push ou splice
+  sobre estado (UI-03)
+- o botão usa aria-pressed
+
+<span class="k">Done when</span>
+- npm run gate verde
+- teste novo: ligar, desligar e conferir
+  a ordem original de volta
+- os seis testes atuais passam sem mudar</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Em <code>cap05-antes</code>, troque <code>setPacientes(pacientes)</code> por <code>setPacientes([...pacientes])</code> e rode os testes. Passa? Explique por que essa correção resolve o sintoma e mesmo assim viola a UI-03.</span></li>
+    <li><b>Intermediário</b><span>Faça o painel de detalhe guardar uma cópia do paciente em <code>useState</code>. Marque a prioridade e descreva o que fica dessincronizado.</span></li>
+    <li><b>Desafio</b><span>Implemente a ordenação por risco do prompt sem usar agente. Depois rode o prompt num agente e compare as duas versões com o V.E.R.M.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 06; prepara 08. <b>Invariantes:</b> UI-03. <b>Tags:</b> <code>cap05-antes</code>, <code>cap05</code>. <b>Prompts:</b> <code>prompts/cap05.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Passing Props to a Component</em>, <em>Responding to Events</em>, <em>Sharing State Between Components</em>, <em>Conditional Rendering</em>, <em>Updating Arrays in State</em>, <em>useState</em> (comparação com <code>Object.is</code>). MDN: <em>Array.prototype.toSorted</em>. Saídas em <code>saidas/c5-*.txt</code>, Chromium 141.</p>
+  </div>
+</section>

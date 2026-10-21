@@ -1,0 +1,15 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/pacientes/Ala.test.tsx > anotação acompanha o paciente 167ms
+ ✓ src/features/pacientes/Ala.test.tsx > alto risco cai na alta 25ms
+ ✓ src/features/pacientes/Ala.test.tsx > anotação sobrevive à busca 49ms
+ ✓ src/features/pacientes/Ala.test.tsx > busca vazia avisa 25ms
+ ✓ src/features/pacientes/Ala.test.tsx > selecionar mostra o detalhe 31ms
+ ✓ src/features/pacientes/Ala.test.tsx > prioridade no cartão e no detalhe 41ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  12:52:11
+   Duration  1.12s (environment 52%, tests 35%, import 10%, transform 2%)
+

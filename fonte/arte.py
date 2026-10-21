@@ -151,3 +151,57 @@ def abertura_03():
     c.append(f'<rect x="114" y="96" width="30" height="6" rx="3" fill="{GR}" transform="rotate(-18 114 99)"/>')
     c.append(prancheta(140, 80))
     return svg("".join(c), rotulo="Monitor de beira-leito atualizando só uma faixa da tela, ao lado de um leito e de uma enfermeira")
+
+
+def bandeja(x, y, w, h, cor, itens=2):
+    s = [f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="3" fill="{DGREY}"/>',
+         f'<rect x="{x+3}" y="{y+3}" width="{w-6}" height="{h-6}" rx="2" fill="{DOOR}"/>']
+    passo = (w - 6) / itens
+    for i in range(itens):
+        cx = x + 3 + passo * i + passo / 2
+        s.append(f'<rect x="{cx-passo*0.32}" y="{y+h/2-4}" width="{passo*0.64}" height="8" rx="3" fill="{cor}" opacity=".85"/>')
+    return "".join(s)
+
+
+def abertura_04():
+    """Bandejas modulares, as mesmas peças em combinações diferentes."""
+    c = [painel(glow_x=230, glow_y=70)]
+    c.append(cruz(24, 20))
+    # carrinho com três prateleiras de bandejas encaixadas
+    c.append(f'<rect x="150" y="40" width="6" height="112" fill="{GREY}"/>')
+    c.append(f'<rect x="300" y="40" width="6" height="112" fill="{GREY}"/>')
+    for i, (y, combo) in enumerate(((46, (GR2, OR2)), (82, (BLUE, GR2, AMB)), (118, (OR2,)))):
+        c.append(f'<rect x="150" y="{y+28}" width="156" height="4" rx="1" fill="{GREY}"/>')
+        larg = 150 / len(combo)
+        for k, cor in enumerate(combo):
+            c.append(bandeja(153 + k * larg, y, larg - 4, 28, cor, 1 if len(combo) == 3 else 2))
+    for wx in (160, 296):
+        c.append(f'<circle cx="{wx}" cy="153" r="7" fill="{LINE}"/><circle cx="{wx}" cy="153" r="2.5" fill="{GREY}"/>')
+    # bandejas soltas sobre a bancada, esperando para encaixar
+    c.append(f'<rect x="326" y="118" width="64" height="6" rx="2" fill="{GREY}"/>')
+    c.append(f'<rect x="334" y="124" width="6" height="36" fill="{DGREY}"/><rect x="376" y="124" width="6" height="36" fill="{DGREY}"/>')
+    c.append(bandeja(330, 94, 56, 22, BLUE, 2))
+    c.append(pessoa(96, 160, GR, 0.95, jaleco=True))
+    c.append(bandeja(108, 100, 40, 20, AMB, 1))
+    return svg("".join(c), rotulo="Carrinho com bandejas modulares encaixadas em combinações diferentes")
+
+
+def abertura_05():
+    """A prescrição desce; a campainha do leito sobe."""
+    c = [painel(glow_x=120, glow_y=50)]
+    c.append(cruz(24, 20))
+    # mezanino com o médico
+    c.append(f'<rect x="0" y="86" width="190" height="6" fill="{LINE}"/>')
+    c.append(pessoa(88, 86, GREY, 0.8))
+    c.append(prancheta(104, 40, rot=-6))
+    # escada/rampa da prescrição descendo
+    c.append(f'<path d="M190 92 L300 150" stroke="{LINE}" stroke-width="3"/>')
+    for i, (px, py) in enumerate(((206, 92), (238, 110), (270, 128))):
+        c.append(f'<g opacity="{.35 + i*.3}">{prancheta(px, py, rot=28, cor=GR2)}</g>')
+    # enfermeira e leito embaixo
+    c.append(pessoa(318, 160, GR, 0.9, jaleco=True))
+    c.append(leito(220, 70))
+    # fio da campainha subindo até a luz do posto
+    c.append(f'<path d="M226 128 C 210 100, 175 120, 150 70 L150 40" fill="none" stroke="{AMB}" stroke-width="2" stroke-dasharray="4 3"/>')
+    c.append(luz(150, 34, AMB, 4))
+    return svg("".join(c), rotulo="A prescrição desce do médico para a enfermagem; o fio da campainha do leito sobe até a luz do posto")

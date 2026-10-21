@@ -1,0 +1,95 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/pacientes/Ala.test.tsx > anotação acompanha o paciente 192ms
+ ✓ src/features/pacientes/Ala.test.tsx > alto risco cai na alta 25ms
+ ✓ src/features/pacientes/Ala.test.tsx > anotação sobrevive à busca 49ms
+ ✓ src/features/pacientes/Ala.test.tsx > busca vazia avisa 28ms
+ ✓ src/features/pacientes/Ala.test.tsx > selecionar mostra o detalhe 29ms
+ × src/features/pacientes/Ala.test.tsx > prioridade no cartão e no detalhe 37ms
+   → Unable to find a label with the text of: prioridade
+
+Ignored nodes: comments, script, style
+<li
+  aria-current="true"
+>
+  <button>
+    João Lima
+  </button>
+   
+  102
+   
+  <span
+    class="selo"
+    data-risco="baixo"
+  >
+    baixo
+  </span>
+  <input
+    aria-label="Anotação de João Lima"
+    placeholder="anotação"
+  />
+  <button
+    aria-pressed="false"
+  >
+    Prioridade
+  </button>
+  <button>
+    Alta
+  </button>
+</li>
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/pacientes/Ala.test.tsx > prioridade no cartão e no detalhe
+TestingLibraryElementError: Unable to find a label with the text of: prioridade
+
+Ignored nodes: comments, script, style
+<li
+  aria-current="true"
+>
+  <button>
+    João Lima
+  </button>
+   
+  102
+   
+  <span
+    class="selo"
+    data-risco="baixo"
+  >
+    baixo
+  </span>
+  <input
+    aria-label="Anotação de João Lima"
+    placeholder="anotação"
+  />
+  <button
+    aria-pressed="false"
+  >
+    Prioridade
+  </button>
+  <button>
+    Alta
+  </button>
+</li>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ getAllByLabelText node_modules/@testing-library/dom/dist/queries/label-text.js:111:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/pacientes/Ala.test.tsx:88:17
+     86|     await userEvent.click(joao.getByRole(
+     87|       "button", { name: "Prioridade" }));
+     88|     expect(joao.getByLabelText("prioridade"))
+       |                 ^
+     89|       .toBeTruthy();
+     90|     expect(detalhe().getByText("sim"))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 5 passed (6)
+   Start at  12:51:45
+   Duration  1.10s (environment 46%, tests 37%, import 9%, transform 7%)
+

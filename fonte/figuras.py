@@ -96,7 +96,84 @@ def fig_chaves():
     return f'<svg viewBox="0 0 400 {y0+176}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Key por índice versus key por id na alta de um paciente">{"".join(s)}</svg>'
 
 
+PAPEL = {"coordena": ("f-accs s-accl", "f-acc"),
+         "moldura": ("f-infos s-infol", "f-info"),
+         "apresenta": ("f-goods s-goodl", "f-good")}
+
+
+def fig_arvore():
+    s = []
+    nos = [  # (nível, nome, papel, o que sabe)
+        (0, "Ala", "coordena", "busca, pacientes, derivados"),
+        (1, "Painel · Resumo", "moldura", "só o título"),
+        (2, "ResumoAla", "apresenta", "recebe pacientes"),
+        (1, "Painel · Pacientes", "moldura", "só o título"),
+        (2, "BarraBusca", "apresenta", "valor e onMudar"),
+        (2, "ListaPacientes", "apresenta", "pacientes e onAlta"),
+        (3, "CartaoPaciente ×6", "apresenta", "um paciente"),
+        (4, "SeloRisco", "apresenta", "um risco"),
+    ]
+    y = 6
+    pos = []
+    for nivel, nome, papel, sabe in nos:
+        x = nivel * 22
+        cls, txt = PAPEL[papel]
+        w = 196 - nivel * 22 + 22 * 0
+        s.append(r(x, y, 200 - nivel * 22, 28, cls, 6, ' stroke-width="1.1"'))
+        s.append(t(x + 10, y + 18, nome, 11, "f-ink", 700, mono=True))
+        s.append(t(212, y + 12, papel.upper(), 8.5, txt, 800))
+        s.append(t(212, y + 24, sabe, 10, "f-soft"))
+        pos.append((nivel, x, y))
+        y += 36
+    # conectores da árvore
+    for i, (nivel, x, yy) in enumerate(pos):
+        if nivel == 0:
+            continue
+        pai = max(j for j in range(i) if pos[j][0] == nivel - 1)
+        px = pos[pai][1] + 10
+        s.append(f'<path d="M{px} {pos[pai][2]+28} V{yy+14} H{x}" fill="none" stroke-width="1.2" class="s-mut"/>')
+    s.append(t(0, y + 14, "Quem coordena guarda estado. Quem apresenta recebe", 10.5, "f-soft"))
+    s.append(t(0, y + 30, "props. A moldura não sabe o que carrega.", 10.5, "f-soft"))
+    h = y + 38
+    return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Árvore de componentes da Ala com o papel de cada um">{"".join(s)}</svg>'
+
+
+def fig_fluxo():
+    s = []
+    s.append(r(0, 0, 400, 64, "f-accs s-accl", 8, ' stroke-width="1.2"'))
+    s.append(t(14, 20, "ALA · COORDENA", 9.5, "f-acc", 800))
+    s.append(t(14, 39, "estado: pacientes, selecionadoId", 11, "f-ink", 700, mono=True))
+    s.append(t(14, 55, "derivado: visiveis, selecionado", 11, "f-soft", mono=True))
+    # setas de props descendo
+    s.append(seta(90, 64, 90, 104, "s-good"))
+    s.append(seta(310, 64, 310, 104, "s-good"))
+    s.append(t(98, 88, "props", 10, "f-good", 700))
+    s.append(t(318, 88, "props", 10, "f-good", 700))
+    s.append(r(0, 104, 196, 50, "f-goods s-goodl", 8, ' stroke-width="1.1"'))
+    s.append(t(12, 124, "ListaPacientes", 11, "f-ink", 700, mono=True))
+    s.append(t(12, 142, "→ CartaoPaciente ×6", 10.5, "f-soft", mono=True))
+    s.append(r(212, 104, 188, 50, "f-goods s-goodl", 8, ' stroke-width="1.1"'))
+    s.append(t(224, 124, "PainelDetalhe", 11, "f-ink", 700, mono=True))
+    s.append(t(224, 142, "paciente={selecionado}", 10, "f-soft", mono=True))
+    # evento subindo (tracejado) do cartão até Ala
+    s.append(f'<path d="M40 104 V76" fill="none" stroke-width="1.6" stroke-dasharray="4 3" class="s-acc"/>')
+    s.append(f'<path d="M36 82 L40 76 L44 82" fill="none" stroke-width="1.6" class="s-acc"/>')
+    s.append(t(0, 172, "Dados descem como props. Eventos sobem como", 10.5, "f-soft"))
+    s.append(t(0, 188, "chamadas: onSelecionar(id), onPrioridade(id).", 10.5, "f-soft"))
+    s.append(f'<line x1="0" y1="204" x2="400" y2="204" stroke-dasharray="2 4" stroke-width="1" class="s-bord"/>')
+    # Object.is
+    s.append(t(0, 226, "O QUE O REACT COMPARA NO set", 9.5, "f-mut", 800))
+    s.append(r(0, 236, 400, 46, "f-bads s-badl", 6, ' stroke-width="1"'))
+    s.append(t(12, 254, "p.prioridade = …; setPacientes(pacientes)", 10.5, "f-ink", 700, mono=True))
+    s.append(t(12, 272, "mesmo array → Object.is igual → sem render", 10.5, "f-bad", 700))
+    s.append(r(0, 290, 400, 46, "f-goods s-goodl", 6, ' stroke-width="1"'))
+    s.append(t(12, 308, "setPacientes(pacientes.map(…))", 10.5, "f-ink", 700, mono=True))
+    s.append(t(12, 326, "array novo → diferente → render", 10.5, "f-good", 700))
+    return f'<svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fluxo de dados de mão única e a comparação que o React faz no set">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
-    for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves)):
+    for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
+                    ("arvore", fig_arvore), ("fluxo", fig_fluxo)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

@@ -1,0 +1,9 @@
+$ npx oxlint            # regras do template
+(nenhuma saída) · exit 0
+
+$ npx oxlint -D react/no-unstable-nested-components
+src/features/pacientes/Ala.tsx:25:3
+  error react(no-unstable-nested-components)
+  Do not define components during render.
+  help: Move this component definition out of the parent component `Ala` and pass data as props.
+exit 1

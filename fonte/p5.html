@@ -1,0 +1,155 @@
+<!-- ==================== CAP 4 ==================== -->
+<section class="chapter" id="cap04">
+  <div class="opener">{{ARTE:abertura_04}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte II · Os fundamentos</div>
+    <div class="num">04</div>
+    <h1>Componentes, JSX e composição</h1>
+    <div class="deck">Peças pequenas que se encaixam. Nem toda repetição pede um componente, e nenhum componente nasce dentro de outro.</div>
+  </div>
+
+  <p class="lead">Quinta, 15h. A tela da Ala B ganhou resumo por risco, um selo colorido em cada paciente e um aviso para busca sem resultado. Tudo foi parar dentro de <code>Ala</code>. Desde então, a cada letra digitada na busca, as anotações somem.</p>
+
+  <p>O código novo não tem erro de lógica. Tem um erro de <em>forma</em>: um componente foi definido no lugar errado. Este capítulo trata de como dividir uma tela em componentes, e dos dois jeitos de errar nisso.</p>
+
+  <h2><span class="sn">4.1</span>Um componente é uma função</h2>
+  <p>Um componente é uma função que recebe um objeto, as <strong>props</strong>, e devolve JSX. Poucas regras sustentam tudo:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Regra</th><th>Exemplo</th></tr>
+    <tr><td><b>Nome com maiúscula</b>; minúscula é tag HTML</td><td><code>&lt;CartaoPaciente /&gt;</code> × <code>&lt;li&gt;</code></td></tr>
+    <tr><td><b>Uma raiz</b>, ou um fragmento</td><td><code>&lt;&gt;…&lt;/&gt;</code> agrupa sem criar nó</td></tr>
+    <tr><td><b>Atributos em camelCase</b></td><td><code>className</code>, <code>onClick</code>, <code>aria-label</code> fica igual</td></tr>
+    <tr><td><b>Chaves para expressões</b></td><td><code>{pacientes.length}</code>; <code>if</code> não cabe, ternário cabe</td></tr>
+    <tr><td><b>Toda tag fecha</b></td><td><code>&lt;input /&gt;</code>, <code>&lt;br /&gt;</code></td></tr>
+  </table></div>
+
+  <h2><span class="sn">4.2</span>O componente que cresceu demais</h2>
+  <p>Na tag <code>cap04-antes</code>, a <code>Ala</code> tem 74 linhas e faz tudo. No meio dela, para "organizar", alguém extraiu a linha da lista para um componente <code>Linha</code>, escrito <em>dentro</em> de <code>Ala</code>:</p>
+
+  {{BLOCO:cap04-antes:src/features/pacientes/Ala.tsx|linhas=25-41|rotulo=Ala.tsx · Linha, dentro de Ala}}
+
+  <p>Parece inofensivo, e o código usa <code>key={p.id}</code> corretamente. O problema é a regra do capítulo 3: <strong>tipo diferente na mesma posição, o React desmonta e monta de novo</strong>. A cada render de <code>Ala</code>, a função <code>Linha</code> é criada outra vez. É uma função nova, logo um tipo novo. O React não tem como saber que é "a mesma <code>Linha</code>": desmonta todas as linhas, com o que havia nelas, e monta outras.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap04.py · Medido</span></div>
+<pre>{{SAIDA:c4-renderometro.txt|linhas=3-21|destaque=+20 −30;''}}</pre>
+  </div>
+
+  <p>Na mesma tecla, <code>cap04-antes</code> recriou 20 elementos e removeu 30: as quatro linhas que ficaram foram reconstruídas e a anotação de João foi junto. Em <code>cap04</code> saíram só os 10 elementos das duas linhas filtradas. Repare que o <code>Renderometro</code> diz <code>update</code> nos dois casos: o <code>Profiler</code> está do lado de fora de <code>Linha</code>, na mesma posição, e não vê a troca de tipo lá dentro. Quem mostra a verdade é o DOM.</p>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap04-antes · Linha dentro de Ala</span><p><code>× anotação acompanha o paciente</code><br><code>× anotação sobrevive à busca</code></p></div>
+    <div class="yes"><span class="lb">cap04 · componentes no módulo</span><p><code>✓ os quatro testes</code>, inclusive os dois acima, sem mudar uma linha do teste</p></div>
+  </div>
+
+  <p>O lint do template não percebe o problema. O oxlint tem a regra, mas ela não vem ligada:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c4-lint-antes.txt|destaque=exit 1}}</pre>
+  </div>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-02</span>
+    <p>Componente nunca é definido dentro de outro. Verificação: <code>react/no-unstable-nested-components</code> ligada no <code>.oxlintrc.json</code>, que o <code>npm run gate</code> roda.</p>
+  </div>
+
+  <h2><span class="sn">4.3</span>Composição</h2>
+  <p>A correção, na tag <code>cap04</code>, não é só tirar <code>Linha</code> de dentro de <code>Ala</code>. É dividir a tela pelo que cada pedaço <em>é</em> para quem usa: o resumo, a busca, a lista, o cartão, o selo.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:arvore}}</div>
+    <figcaption><b>Fig. 4.1</b> — A árvore da Ala na tag <code>cap04</code>. Três papéis: quem <strong>coordena</strong> guarda estado e compõe; quem <strong>apresenta</strong> recebe props e mostra; a <strong>moldura</strong> recebe conteúdo pronto.</figcaption>
+  </figure>
+
+  <p>Agora a <code>Ala</code> só coordena. O que ela devolve se lê como a própria tela:</p>
+
+  {{BLOCO:cap04:src/features/pacientes/Ala.tsx|linhas=26-46|rotulo=Ala.tsx · composição}}
+
+  <p>O <code>Painel</code> é a moldura. Ele recebe o conteúdo pela prop especial <strong><code>children</code></strong>, tudo o que vem entre a tag de abertura e a de fechamento, e não sabe o que está mostrando:</p>
+
+  {{BLOCO:cap04:src/compartilhado/Painel.tsx|linhas=8-19}}
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>As bandejas do carrinho</h4>
+      <p>O carrinho de procedimentos não tem um compartimento para cada combinação de material. Tem bandejas padronizadas que se encaixam de jeitos diferentes. O <code>Painel</code> é o encaixe; o que vai dentro muda a cada uso.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>Bandeja física tem tamanho fixo. A composição do React aninha sem limite: um <code>Painel</code> dentro de outro, uma lista dentro de um painel. O custo de aninhar é só de leitura, não de desempenho.</p>
+  </div>
+
+  <h2><span class="sn">4.4</span>Composição, duplicação e abstração prematura</h2>
+  <p>Dividir demais também é erro. O sintoma é o componente genérico que tenta servir a todos os casos:</p>
+
+  <div class="dd">
+    <div class="no"><span class="lb">Abstração prematura</span><p><code>&lt;Cartao tipo="paciente" mostrarSelo mostrarBotaoAlta titulo={…} subtitulo={…} … /&gt;</code>: dez props booleanas, um <code>if</code> para cada combinação, e ninguém sabe qual combinação a tela usa.</p></div>
+    <div class="yes"><span class="lb">Composição</span><p>Componentes de domínio pequenos (<code>CartaoPaciente</code>, <code>SeloRisco</code>) e uma moldura que recebe <code>children</code>. Cada um tem um motivo para mudar.</p></div>
+  </div>
+
+  <p>O projeto adota três critérios, escritos em <code>docs/UI.md</code> para que o agente os siga também:</p>
+
+  <div class="box quote">
+    <span class="bt">docs/UI.md · quando extrair um componente</span>
+    <ul>
+      <li>Um trecho com nome próprio na conversa do usuário ("o resumo").</li>
+      <li>Um trecho repetido pela terceira vez. Na segunda, copie e espere.</li>
+      <li>Nunca para "deixar genérico" antes de existir o segundo uso real.</li>
+    </ul>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, cap. 6</span>
+    <p>O <code>docs/UI.md</code> também fixa um componente por arquivo, nomes em PascalCase e props numa <code>interface Props</code>. O Dev de IA explica por que esse arquivo reduz retrabalho e como mantê-lo curto.</p>
+  </div>
+
+  <h2><span class="sn">4.5</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Os agentes erram para os dois lados. Pedidos de "mais uma funcionalidade" sem contexto tendem a crescer o componente que já existe até virar um componente-deus, muitas vezes com um componente auxiliar definido lá dentro, exatamente o defeito deste capítulo. Pedidos de "deixe reutilizável" tendem a produzir o cartão genérico com dez props. O <code>docs/UI.md</code> e a UI-02 cortam os dois.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 4</span><button class="copy" type="button" data-copy="p4-agente">Copiar</button></div>
+<pre id="p4-agente"><span class="k">Goal</span>
+Dividir a Ala em componentes de domínio,
+sem mudar o comportamento.
+
+<span class="k">Context</span>
+@src/features/pacientes/ @docs/UI.md
+@INVARIANTES.md
+
+<span class="k">Constraints</span>
+- um componente por arquivo, nomes de
+  domínio, Props tipadas
+- Ala só guarda estado, deriva e compõe
+- nenhum componente dentro de outro
+- moldura genérica só em compartilhado/
+- não altere Ala.test.tsx
+
+<span class="k">Done when</span>
+- npm run gate verde, com a regra
+  no-unstable-nested-components ligada
+- Ala.test.tsx passa sem nenhuma mudança
+- git diff não toca Ala.test.tsx</pre>
+  </div>
+
+  <p>O último critério é o que transforma "refatorar" em algo verificável: se o teste precisou mudar, o comportamento mudou. A revisão e as variantes estão em <code>prompts/cap04.md</code>.</p>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Em <code>cap04-antes</code>, mova <code>Linha</code> para fora de <code>Ala</code> sem mais nenhuma mudança. Quais props ela passa a precisar? Rode os testes.</span></li>
+    <li><b>Intermediário</b><span>Use o <code>Painel</code> para criar um terceiro quadro, "Avisos", com uma lista fixa de dois avisos. Não mude o <code>Painel</code>.</span></li>
+    <li><b>Desafio</b><span>Peça a um agente um "cartão reutilizável para pacientes e profissionais". Avalie a resposta pelos critérios do <code>docs/UI.md</code> e registre no <code>IA.md</code> o que você recusou.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 05. <b>Invariantes:</b> UI-02. <b>Tags:</b> <code>cap04-antes</code>, <code>cap04</code>. <b>Prompts:</b> <code>prompts/cap04.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Your First Component</em>, <em>Writing Markup with JSX</em>, <em>Passing Props to a Component</em> (children), <em>Preserving and Resetting State</em> (não aninhar definições). oxlint: <em>react/no-unstable-nested-components</em>. Saídas em <code>saidas/c4-*.txt</code>, Chromium 141.</p>
+  </div>
+</section>

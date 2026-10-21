@@ -1,0 +1,21 @@
+Chromium 141.0.7390.37 · modo dev
+
+== cap04-antes
+
+digitar "o" na busca
+  Maria Souza     update
+  João Lima       update
+  Pedro Alves     update
+  Raimundo Nonato update
+  DOM: +20 −30 ~1
+  anotação de João: ''
+
+== cap04
+
+digitar "o" na busca
+  Maria Souza     update
+  João Lima       update
+  Pedro Alves     update
+  Raimundo Nonato update
+  DOM: +0 −10 ~1
+  anotação de João: 'ver febre'
