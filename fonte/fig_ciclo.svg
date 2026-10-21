@@ -1,0 +1,28 @@
+<svg viewBox="0 0 400 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ciclo gatilho, render, commit e efeitos">
+  <line x1="15" y1="20" x2="15" y2="262" stroke-width="2.5" class="s-accl"/>
+  <circle cx="15" cy="20" r="12" class="f-acc"/><circle cx="15" cy="80" r="12" class="f-acc"/><circle cx="15" cy="140" r="12" class="f-acc"/><circle cx="15" cy="200" r="12" class="f-good"/><circle cx="15" cy="260" r="12" class="f-info"/>
+  <g font-size="12" font-weight="800" text-anchor="middle" class="f-bg"><text x="15" y="24">1</text><text x="15" y="84">2</text><text x="15" y="144">3</text><text x="15" y="204">4</text><text x="15" y="264">5</text></g>
+  <g font-size="13" font-weight="800" class="f-ink">
+    <text x="38" y="18">Gatilho</text><text x="38" y="78">Render</text><text x="38" y="138">Commit</text><text x="38" y="198">Pintura</text><text x="38" y="258">Efeitos</text>
+  </g>
+  <g font-size="10.5" class="f-mut">
+    <text x="38" y="36">montagem inicial ou um set de estado</text>
+    <text x="38" y="96">React chama o componente; nada toca o DOM</text>
+    <text x="38" y="156">aplica no DOM só a diferença calculada</text>
+    <text x="38" y="216">o navegador desenha a tela</text>
+    <text x="38" y="276">sincroniza com o que está fora do React</text>
+  </g>
+  <g class="mono" font-size="9.5" font-weight="700">
+    <rect x="292" y="6" width="108" height="20" rx="4" class="f-accs"/><text x="300" y="20" class="f-acc">setBusca("ana")</text>
+    <rect x="292" y="66" width="108" height="20" rx="4" class="f-accs"/><text x="300" y="80" class="f-acc">Lista() → JSX</text>
+    <rect x="292" y="126" width="108" height="20" rx="4" class="f-accs"/><text x="300" y="140" class="f-acc">3 &lt;li&gt; removidos</text>
+    <rect x="292" y="186" width="108" height="20" rx="4" class="f-goods"/><text x="300" y="200" class="f-good">frame novo</text>
+    <rect x="292" y="246" width="108" height="20" rx="4" class="f-infos"/><text x="300" y="260" class="f-info">document.title</text>
+  </g>
+  <rect x="0" y="292" width="400" height="78" rx="6" class="f-accs"/>
+  <text x="14" y="316" font-size="12" font-weight="800" class="f-acc">O que o aluno precisa levar</text>
+  <g font-size="11" class="f-soft">
+    <text x="14" y="338">Renderizar não é mexer no DOM. Um render pode terminar</text>
+    <text x="14" y="355">sem nenhuma mudança na tela, e isso é normal.</text>
+  </g>
+</svg>

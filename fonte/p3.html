@@ -1,0 +1,143 @@
+<!-- ==================== CAP 2 ==================== -->
+<section class="chapter" id="cap02">
+  <div class="opener">{{ARTE:abertura_02}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte I · A mudança de paradigma</div>
+    <div class="num">02</div>
+    <h1>O primeiro projeto em vinte minutos</h1>
+    <div class="deck">Do terminal vazio a um projeto versionado, ligado à API e pronto para um agente trabalhar nele.</div>
+  </div>
+
+  <p class="lead">A página do capítulo 1 funcionou sem build, mas não escala: sem JSX, sem TypeScript, sem pacotes, sem build de produção. Este capítulo monta o projeto de verdade.</p>
+
+  <p>Você precisa do <strong>Node 24</strong> (ou 22.22+), Git, um editor e a extensão <strong>React Developer Tools</strong>. O Vite 8 aceita Node 20.19+, mas o React Router 8, que entra no capítulo 13, exige 22.22+; começar no 24 evita trocar de versão no meio do livro.</p>
+
+  <h2><span class="sn">2.1</span>Gerando o projeto</h2>
+  <div class="term">
+    <div class="term-bar"><span>terminal</span></div>
+<pre>npm create vite@latest mini-prontuario-web \
+  -- --template react-ts
+cd mini-prontuario-web &amp;&amp; npm install
+npm run dev     <span class="c"># http://localhost:5173</span></pre>
+  </div>
+
+  <p>O <code>index.html</code> é a única página: um <code>&lt;div id="root"&gt;</code> e o script de <code>src/main.tsx</code>, que cria a raiz do React. O <code>vite.config.ts</code> configura o Vite, os <code>tsconfig*.json</code> os tipos, e o <code>.oxlintrc.json</code> o linter, já com as regras dos Hooks.</p>
+
+  <div class="box data">
+    <span class="bt">Dado · o template de outubro de 2026</span>
+    <p>Com <code>create-vite</code> 9.3.1, o template usa <strong>oxlint</strong> em vez de ESLint e fixa o <strong>TypeScript 6.0</strong>: o 7.0, com compilador nativo, ainda não tem a API que parte das ferramentas usa. Não há <code>"strict": true</code> porque o modo estrito virou o padrão:</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c2-strict.txt|destaque=error TS7006}}</pre>
+  </div>
+
+  <h2><span class="sn">2.2</span>Scripts e o portão</h2>
+  <p><code>dev</code> serve a tela e a atualiza quando você salva; <code>build</code> confere os tipos e gera <code>dist/</code>; <code>preview</code> serve o build; <code>lint</code> roda o oxlint. O projeto acrescenta <code>gate</code>, que roda tudo o que precisa passar antes de qualquer entrega:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c2-gate-curto.txt}}</pre>
+  </div>
+
+  <p>O <code>tsc -b</code> não gera arquivos (o <code>tsconfig</code> tem <code>noEmit</code>): quem transforma TypeScript em JavaScript é o Vite, e ele não confere tipos. Por isso o <code>dev</code> mostra a tela mesmo com erro de tipo, e o <code>gate</code> não deixa esse erro passar.</p>
+
+  <h2><span class="sn">2.3</span>O ponto de entrada</h2>
+  {{BLOCO:cap02:src/main.tsx}}
+
+  <p><code>createRoot</code> liga o React a um nó do DOM, e <code>render</code> faz o primeiro desenho. <strong><code>StrictMode</code></strong> só age em desenvolvimento: chama cada componente duas vezes por render e monta e desmonta cada efeito uma vez a mais, para revelar código que depende de rodar uma vez só. Os capítulos 3 e 7 mostram o que ele pega.</p>
+
+  <h2><span class="sn">2.4</span>A tela e a API na mesma origem</h2>
+  <p>A tela roda em <code>:5173</code> e a API em <code>:3000</code>. Portas diferentes são <strong>origens</strong> diferentes para o navegador, o que traria CORS e regras de cookie entre sites. O <strong>proxy</strong> do Vite evita isso:</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:proxy}}</div>
+    <figcaption><b>Fig. 2.1</b> — O navegador só conhece <code>localhost:5173</code>. O Vite serve o código da tela e repassa para a API o que começa com <code>/api</code> ou <code>/health</code>.</figcaption>
+  </figure>
+
+  {{BLOCO:cap02:vite.config.ts}}
+
+
+  <p>Em produção não há Vite: o build vira arquivos estáticos e o servidor que os publica faz o papel do proxy. O código não muda, porque nunca usa endereço de servidor:</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-00</span>
+    <p>O front chama a API por caminho relativo (<code>/api/...</code>). Verificação: <code>grep -rn "localhost:3000" src</code> não encontra nada.</p>
+  </div>
+
+  <p>O <code>App</code> do template virou um verificador: um botão cujo <strong>handler de evento</strong> chama <code>fetch("/health")</code> e guarda o resultado em estado. Buscar dados ao abrir a tela pede <code>useEffect</code>, e há bons motivos para esperar até o capítulo 7. A sessão também passa pelo proxy: este roteiro entra como Ana pela tela e consulta quem está logado.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap02_cookie.py · Medido</span></div>
+<pre>{{SAIDA:c2-cookie-chromium.txt|destaque=document.cookie       -&gt; ''}}</pre>
+  </div>
+
+  <p>O cookie chegou <code>HttpOnly</code>, <code>Secure</code> e <code>SameSite=Lax</code>, o JavaScript da página não o lê, e mesmo assim o pedido seguinte saiu autenticado: o navegador anexa o cookie sozinho. O capítulo 15 constrói a sessão da tela sobre isso; o porquê de cada atributo está no <em>Crachá &amp; Porta</em>, capítulo 5.</p>
+
+  <p>Para inspecionar, a extensão React Developer Tools acrescenta as abas <strong>Components</strong> (árvore, props e estado) e <strong>Profiler</strong> (quem renderizou e quanto levou). O Vite entrega <em>source maps</em>: os <em>breakpoints</em> param no <code>.tsx</code> original.</p>
+
+  <h2><span class="sn">2.5</span>Git e o contexto do agente</h2>
+  <p>O primeiro commit vem antes da primeira feature, com quatro arquivos que o agente lê antes de qualquer tarefa:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Arquivo</th><th>O que guarda</th></tr>
+    <tr><td><b><code>AGENTS.md</code></b></td><td>Comandos, como o projeto funciona e regras; formato que Codex e agy leem</td></tr>
+    <tr><td><b><code>CLAUDE.md</code></b></td><td>Uma linha, <code>@AGENTS.md</code>: o Claude Code importa o mesmo conteúdo</td></tr>
+    <tr><td><b><code>INVARIANTES.md</code></b></td><td>Regras com verificação; começa com a UI-00</td></tr>
+    <tr><td><b><code>IA.md</code></b></td><td>Cada tarefa feita com agente: pedido, verificação, o que foi recusado</td></tr>
+  </table></div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, caps. 3 a 5</span>
+    <p>Por que o contexto deve ser curto e como um invariante ganha verificação executável: o mapa dos cinco arquivos (cap. 3), <code>CLAUDE.md</code> e <code>AGENTS.md</code> (cap. 4) e <code>INVARIANTES.md</code> (cap. 5).</p>
+  </div>
+
+  <h2><span class="sn">2.6</span>Com agentes de IA</h2>
+  <p>A primeira tarefa num projeto novo é conferir se o agente entendeu o projeto, em modo de plano, sem editar nada. O conteúdo do prompt é o mesmo nas três ferramentas; muda como você planeja, revisa e roda sem interação:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Passo</th><th>Claude Code</th><th>Codex · agy</th></tr>
+    <tr><td><b>Planejar</b></td><td>Shift+Tab (Plan Mode)</td><td><code>/plan</code> · modo de plano</td></tr>
+    <tr><td><b>Revisar</b></td><td><code>/code-review</code></td><td><code>/review</code> · subagente</td></tr>
+    <tr><td><b>Sem interação</b></td><td><code>claude -p</code></td><td><code>codex exec</code> · <code>agy -p</code></td></tr>
+  </table></div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE (MODO DE PLANO) · CAP 2</span><button class="copy" type="button" data-copy="p2-agente">Copiar</button></div>
+<pre id="p2-agente"><span class="k">Goal</span>
+Explicar o caminho de um clique em
+"Verificar API" até a resposta da API.
+
+<span class="k">Context</span>
+@AGENTS.md @vite.config.ts @src/
+A API roda em :3000 (outro repositório).
+
+<span class="k">Constraints</span>
+- só leitura: não edite nada
+- cite arquivo e linha de cada passo
+- diga o que muda em produção
+
+<span class="k">Done when</span>
+- cita main.tsx, App.tsx, vite.config.ts
+- explica por que não há CORS no caminho
+- git status continua limpo</pre>
+  </div>
+
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Diante de um erro de CORS, o agente costuma propor <code>fetch("http://localhost:3000/...")</code> e liberar <code>origin: "*"</code> na API. As duas mudanças funcionam e estão erradas: a primeira quebra a UI-00 e a produção, a segunda abre a API para qualquer site. O <code>AGENTS.md</code> já proíbe mexer na API e no Vite. Comandos de agente mudam rápido; confira na versão instalada.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Gere o projeto, configure o proxy e faça o botão mostrar <strong>ok</strong>. Pare a API e clique de novo: o que aparece, e por quê?</span></li>
+    <li><b>Intermediário</b><span>Introduza um erro de tipo no <code>App.tsx</code>. Rode <code>npm run dev</code> e depois <code>npm run gate</code> e explique a diferença.</span></li>
+    <li><b>Desafio</b><span>Rode <code>npm run build</code> e <code>npm run preview</code>: o botão funciona. Descubra na documentação do Vite por quê, e escreva a configuração que um servidor de produção (nginx, por exemplo) precisaria para a UI-00 continuar valendo.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> prepara 34 e 35. <b>Invariantes:</b> UI-00. <b>Tag:</b> <code>cap02</code>. <b>Prompts:</b> <code>prompts/cap02.md</code>.</p>
+    <p><b>Fontes.</b> Vite 8 (mar. 2026), <em>server.proxy</em>, <em>preview.proxy</em>; react.dev: <em>createRoot</em>, <em>StrictMode</em>; React Router v8; TypeScript 7 (InfoQ). Template de 21 out. 2026. Saídas em <code>saidas/c2-*.txt</code>.</p>
+  </div>
+</section>

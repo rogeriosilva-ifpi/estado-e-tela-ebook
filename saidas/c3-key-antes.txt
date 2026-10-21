@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ × src/features/pacientes/Ala.test.tsx > anotação acompanha o paciente 160ms
+   → expected '' to be 'ver febre' // Object.is equality
+ ✓ src/features/pacientes/Ala.test.tsx > alto risco cai na alta 18ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/pacientes/Ala.test.tsx > anotação acompanha o paciente
+AssertionError: expected '' to be 'ver febre' // Object.is equality
+
+- Expected
++ Received
+
+- ver febre
+
+ ❯ src/features/pacientes/Ala.test.tsx:32:8
+     30|     await darAlta("Maria Souza");
+     31|     expect(nota("João Lima").value)
+     32|       .toBe("ver febre");
+       |        ^
+     33|   });
+     34|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+   Start at  12:33:57
+   Duration  862ms (environment 56%, tests 24%, import 13%, transform 7%)
+

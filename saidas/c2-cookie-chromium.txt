@@ -1,0 +1,6 @@
+chromium 141.0.7390.37 · http://localhost:5173/
+tela: API ok (via proxy /health)
+POST /api/auth/login  -> 200
+cookie __Host-sessao: httpOnly=True secure=True sameSite=Lax
+document.cookie       -> ''
+GET  /api/auth/me     -> 200 ana@hospital.dev

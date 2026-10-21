@@ -1,0 +1,9 @@
+Chromium 141.0.7390.37
+
+versão     busca o     alta Maria  nota    alto
+imperativo +0 −0 ~2    +0 −4 ~1    fica    2
+render()   +18 −26 ~0  +22 −26 ~0  some    1
+React      +0 −8 ~1    +0 −4 ~1    fica    1
+
++ elementos que entram  − que saem
+~ textos ou atributos trocados

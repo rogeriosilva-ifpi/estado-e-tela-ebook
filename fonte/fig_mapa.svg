@@ -1,0 +1,36 @@
+<svg viewBox="0 0 400 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os quatro lugares onde o estado mora">
+  <text x="200" y="14" text-anchor="middle" font-size="10" font-weight="800" letter-spacing="1.2" class="f-mut">ONDE ESTE ESTADO MORA?</text>
+  <!-- local -->
+  <rect x="0" y="28" width="194" height="140" rx="8" class="f-goods s-goodl" stroke-width="1.2"/>
+  <text x="12" y="48" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-good">LOCAL · CAP 6</text>
+  <text x="12" y="72" font-size="15" font-weight="800" class="f-ink">Só esta tela usa</text>
+  <text x="12" y="94" font-size="11" class="mono f-soft">useState</text>
+  <text x="12" y="110" font-size="11" class="mono f-soft">useReducer</text>
+  <text x="12" y="138" font-size="10.5" class="f-mut">modal aberto, campo</text>
+  <text x="12" y="153" font-size="10.5" class="f-mut">digitado, aba ativa</text>
+  <!-- compartilhado -->
+  <rect x="206" y="28" width="194" height="140" rx="8" class="f-accs s-accl" stroke-width="1.2"/>
+  <text x="218" y="48" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-acc">COMPARTILHADO · 11-12</text>
+  <text x="218" y="72" font-size="15" font-weight="800" class="f-ink">Muitas telas leem</text>
+  <text x="218" y="94" font-size="11" class="mono f-soft">Context</text>
+  <text x="218" y="110" font-size="11" class="mono f-soft">Context + reducer</text>
+  <text x="218" y="138" font-size="10.5" class="f-mut">tema, usuário logado,</text>
+  <text x="218" y="153" font-size="10.5" class="f-mut">preferências da sessão</text>
+  <!-- remoto -->
+  <rect x="0" y="180" width="194" height="140" rx="8" class="f-infos s-infol" stroke-width="1.2"/>
+  <text x="12" y="200" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-info">REMOTO · CAP 14</text>
+  <text x="12" y="224" font-size="15" font-weight="800" class="f-ink">O servidor é o dono</text>
+  <text x="12" y="246" font-size="11" class="mono f-soft">useQuery</text>
+  <text x="12" y="262" font-size="11" class="mono f-soft">useMutation</text>
+  <text x="12" y="290" font-size="10.5" class="f-mut">pacientes, atendimentos,</text>
+  <text x="12" y="305" font-size="10.5" class="f-mut">prescrições</text>
+  <!-- URL -->
+  <rect x="206" y="180" width="194" height="140" rx="8" class="f-warns s-warnl" stroke-width="1.2"/>
+  <text x="218" y="200" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-warn">URL · CAP 13</text>
+  <text x="218" y="224" font-size="15" font-weight="800" class="f-ink">Cabe num link</text>
+  <text x="218" y="246" font-size="11" class="mono f-soft">useParams</text>
+  <text x="218" y="262" font-size="11" class="mono f-soft">useSearchParams</text>
+  <text x="218" y="290" font-size="10.5" class="f-mut">paciente aberto, página,</text>
+  <text x="218" y="305" font-size="10.5" class="f-mut">busca, filtros</text>
+  <text x="200" y="344" text-anchor="middle" font-size="11" font-weight="700" class="f-acc">E se dá para calcular, não é estado: é derivado.</text>
+</svg>

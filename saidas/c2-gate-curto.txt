@@ -1,0 +1,8 @@
+$ npm run gate
+> tsc -b && oxlint && vite build
+
+vite v8.3.5 building client environment for production...
+✓ 16 modules transformed.
+…
+index-DeCkmCJv.js   219.85 kB │ gzip: 68.76 kB
+✓ built in 108ms

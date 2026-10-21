@@ -1,0 +1,97 @@
+<!-- ==================== CAPA ==================== -->
+<section class="cover" aria-label="Capa">
+  <div class="kicker">Manual de campo · lote 1 · prévia</div>
+  <div class="cover-art">{{ARTE:capa}}</div>
+  <h1>Estado<span>&amp; Tela</span></h1>
+  <p class="sub">Aplicações web reativas com React, do DOM manipulado à mão até uma aplicação completa, autenticada e testada, construída com agentes de IA sem perder o controle do código.</p>
+  <div>
+    <div class="credits"><span class="by">Organizado por</span>Prof. Rogério Silva e Claude Opus 5.5<br><span style="color:var(--cover-mut)">2026 · TEC.1052 · ADS · IFPI</span></div>
+    <div class="foot"><b>React 19.3 · Vite 8 · TypeScript</b><br>React Router 8 · TanStack Query 5 · Vitest 5 · Playwright</div>
+  </div>
+</section>
+
+<!-- ==================== SUMÁRIO ==================== -->
+<section class="toc">
+  <h1>Sumário</h1>
+  <div class="row on"><span class="n">0</span><span class="t">Introdução</span><span class="st">{{PAG:00}}</span></div>
+  <div class="part">Parte I · A mudança de paradigma</div>
+  <div class="row on"><span class="n">1</span><span class="t">Do DOM à mão às interfaces reativas</span><span class="st">{{PAG:01}}</span></div>
+  <div class="row on"><span class="n">2</span><span class="t">O primeiro projeto em vinte minutos</span><span class="st">{{PAG:02}}</span></div>
+  <div class="row on"><span class="n">3</span><span class="t">Como o React funciona por dentro</span><span class="st">{{PAG:03}}</span></div>
+  <div class="part">Parte II · Os fundamentos</div>
+  <div class="row off"><span class="n">4</span><span class="t">Componentes, JSX e composição</span><span class="st">lote 2</span></div>
+  <div class="row off"><span class="n">5</span><span class="t">Props, eventos e fluxo de dados</span><span class="st">lote 2</span></div>
+  <div class="row off"><span class="n">6</span><span class="t">Estado, formulários e interações</span><span class="st">lote 3</span></div>
+  <div class="row off"><span class="n">7</span><span class="t">Efeitos: sincronizar com o mundo lá fora</span><span class="st">lote 3</span></div>
+  <div class="part">Parte III · Arquitetura</div>
+  <div class="row off"><span class="n">8</span><span class="t">Estrutura de projeto por funcionalidade</span><span class="st">lote 4</span></div>
+  <div class="row off"><span class="n">9</span><span class="t">Estilo, tokens e acessibilidade</span><span class="st">lote 4</span></div>
+  <div class="row off"><span class="n">10</span><span class="t">Componentes reutilizáveis e design system</span><span class="st">lote 4</span></div>
+  <div class="row off"><span class="n">11</span><span class="t">Prop drilling e Context</span><span class="st">lote 5</span></div>
+  <div class="row off"><span class="n">12</span><span class="t">Reducer e transições de estado</span><span class="st">lote 5</span></div>
+  <div class="part">Parte IV · A aplicação completa</div>
+  <div class="row off"><span class="n">13</span><span class="t">Rotas e navegação</span><span class="st">lote 6</span></div>
+  <div class="row off"><span class="n">14</span><span class="t">Backend, HTTP e estado remoto</span><span class="st">lote 6</span></div>
+  <div class="row off"><span class="n">15</span><span class="t">Autenticação, sessão e autorização na interface</span><span class="st">lote 7</span></div>
+  <div class="row off"><span class="n">16</span><span class="t">Testes, depuração e desempenho</span><span class="st">lote 7</span></div>
+  <div class="part">Parte V · Renderização moderna</div>
+  <div class="row off"><span class="n">17</span><span class="t">Servidor, cliente e a fronteira entre eles</span><span class="st">lote 8</span></div>
+  <div class="row off"><span class="n">18</span><span class="t">Next.js: visão geral e próximo livro</span><span class="st">lote 8</span></div>
+  <div class="part">Parte VI · Entrega e referência</div>
+  <div class="row off"><span class="n">19</span><span class="t">A entrega com agentes, do plano ao PR</span><span class="st">lote 9</span></div>
+  <div class="row off"><span class="n">20</span><span class="t">Guia de consulta, régua e glossário</span><span class="st">lote 9</span></div>
+</section>
+
+<!-- ==================== INTRODUÇÃO ==================== -->
+<section class="chapter" id="cap00">
+  <div class="chapter-open">
+    <div class="part-tag">Antes de começar</div>
+    <div class="num">00</div>
+    <h1>Introdução</h1>
+    <div class="deck">Para quem é este livro, a ideia que ele defende e como cada capítulo funciona.</div>
+  </div>
+
+  <p class="lead">Você já sabe fazer uma página reagir a um clique. Este livro trata do passo seguinte: fazer uma aplicação inteira continuar certa quando ela tiver trinta telas, várias pessoas no código e um agente de IA escrevendo boa parte dele.</p>
+
+  <p>É para quem já constrói páginas com HTML, CSS e JavaScript, manipula o DOM, consome uma API com <code>fetch</code> e já escreveu um backend REST com Express e TypeScript. Nada disso é ensinado de novo. Se você cursa TEC.1052, guarde por perto o front-end do Mini-Prontuário que escreveu em JavaScript puro: ele é o ponto de partida do capítulo 1.</p>
+
+  <div class="pull">A tela é uma função do estado. Quase todo bug de front-end é um estado guardado no lugar errado, duplicado ou sincronizado à mão.</div>
+
+  <p>Por isso o livro não é uma lista de APIs do React. Cada capítulo responde, de um ângulo diferente, a uma pergunta: <strong>onde este estado mora?</strong></p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:mapa}}</div>
+    <figcaption><b>Fig. 0.1</b> — Os quatro lugares onde um estado pode morar. Hooks, contexto, reducer, rotas e bibliotecas aparecem no livro como respostas a esta pergunta.</figcaption>
+  </figure>
+
+  <h2>O laboratório</h2>
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O livro inteiro acontece num hospital</h4>
+      <p>Ao lado de cada leito há um monitor. Ninguém redesenha a tela dele à mão: os sensores mudam um número e o monitor atualiza só a faixa que mudou. É o modelo mental do React, e o mundo de todas as analogias do livro.</p>
+    </div>
+  </div>
+
+  <p>O projeto é o cliente React do <strong>Mini-Prontuário</strong>, que conversa com a API do ebook <em>Crachá &amp; Porta</em>: sessão em cookie, permissões por papel e uma suíte de ataques. A interface é nova; o servidor é real desde o primeiro dia. São três repositórios, <code>estado-e-tela-api</code>, <code>estado-e-tela-web</code> (uma tag git por capítulo) e <code>estado-e-tela-ebook</code>, com este livro, os roteiros de medição e as saídas. Todos os pacientes são fictícios.</p>
+
+  <h2>Como cada capítulo funciona</h2>
+  <p>A ordem é sempre a mesma: o <strong>problema</strong> num sintoma do Mini-Prontuário; o <strong>modelo mental</strong>, com a caixa <em>Onde a analogia para</em>; o mecanismo <strong>por dentro</strong> e <strong>na prática</strong>; o <strong>erro clássico</strong> e a <strong>prova</strong>, um teste que falha sem a correção; o trabalho <strong>com agentes de IA</strong>; e o <strong>fechamento</strong>, com exercícios em três níveis.</p>
+
+  <p>Este livro faz parte de uma série. O <em>Desenvolvimento Dirigido por IA</em>, o Dev de IA, ensina o método de trabalhar com agentes; aqui ele é aplicado ao React, sem repetição. Quando um procedimento está detalhado lá, uma caixa <strong>Ponte · Dev de IA</strong> resume e aponta o capítulo. Os prompts seguem os formatos da disciplina:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Formato</th><th>Quando</th><th>Partes</th></tr>
+    <tr><td><b>Agente</b></td><td>a IA edita o projeto</td><td>Goal · Context · Constraints · Done when</td></tr>
+    <tr><td><b>C-P-T-R-F-A</b></td><td>conversa no chat</td><td>Contexto · Papel · Tarefa · Restrições · Formato · Aceitação</td></tr>
+    <tr><td><b>V.E.R.M.</b></td><td>antes de aceitar a resposta</td><td>Verifica · Explica · Reduz · Marca</td></tr>
+  </table></div>
+  <p>O livro traz o prompt de agente; as variantes de cada capítulo ficam em <code>prompts/capNN.md</code>, no repositório da tela.</p>
+
+  <h2>A régua e as convenções</h2>
+  <p>O capítulo 20 lista <strong>36 competências</strong> de um desenvolvedor sênior de front-end, cada uma com a evidência exigida. Marcar 27 com evidência é chegar a <strong>75%</strong>. Cada capítulo diz quais itens entrega.</p>
+  <ul>
+    <li><strong>Dado</strong> é fato externo, com fonte. <strong>Medido</strong> é saída real de código que rodamos, guardada em <code>saidas/</code>; nenhuma foi escrita à mão.</li>
+    <li>Todo código impresso sai do git, na tag indicada na barra do bloco, em linhas de até 46 caracteres.</li>
+  </ul>
+</section>

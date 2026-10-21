@@ -1,0 +1,141 @@
+<!-- ==================== CAP 1 ==================== -->
+<section class="chapter" id="cap01">
+  <div class="opener">{{ARTE:abertura_01}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte I · A mudança de paradigma</div>
+    <div class="num">01</div>
+    <h1>Do DOM à mão às interfaces reativas</h1>
+    <div class="deck">O trabalho de manter a tela em dia com os dados não some quando você adota React. Ele muda de dono.</div>
+  </div>
+
+  <p class="lead">Terça, 14h. A enfermeira dá alta para Maria Souza, paciente de alto risco da Ala B. A linha some, o total cai de 6 para 5, e o painel continua dizendo: <em>alto risco: 2</em>.</p>
+
+  <p>Ninguém escreveu um erro; escreveram uma atualização a menos. A tela tinha três lugares que dependiam da mesma lista, e o código da alta lembrou de dois.</p>
+
+  <h2><span class="sn">1.1</span>Como chegamos aqui</h2>
+  <p>Em 2005, o AJAX deixou a página pedir dados sem recarregar. Em 2006, o jQuery tornou a manipulação do DOM o jeito padrão de programar a tela. Em 2010, Backbone e AngularJS popularizaram as aplicações de página única. Em 2013 veio o React, com uma ideia diferente: a pergunta deixou de ser <em>como alterar a tela</em> quando um dado muda e passou a ser <em>como a tela deve ficar</em> para um estado qualquer. Vue e Svelte seguiram a mesma ideia com outra mecânica, e em 2026 o React passou a ser mantido pela React Foundation, na Linux Foundation.</p>
+
+  <h2><span class="sn">1.2</span>A Ala B em três versões</h2>
+  <p>O laboratório está em <code>laboratorio/cap01</code>, na tag <code>cap01</code>: três páginas com a mesma tela, sem build. Seis pacientes fictícios, uma busca, um campo de anotação e um botão de alta por paciente, e um resumo com o total e quantos são de alto risco. Sirva a pasta com <code>npx serve laboratorio/cap01</code> e abra cada página.</p>
+  <p>Cada uma traz no topo um <strong>medidor</strong>, um <code>MutationObserver</code> que conta os elementos que entram e saem do DOM e os textos ou atributos trocados. É ele que transforma "o React é eficiente" em número.</p>
+
+  <h2><span class="sn">1.3</span>Versão 1: você diz como mudar</h2>
+  <p>A primeira versão é <strong>imperativa</strong>: o código dá ordens ao DOM, passo a passo. Na montagem ele preenche o total e o alto risco; na alta, remove a linha e corrige o total:</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:responsabilidade}}</div>
+    <figcaption><b>Fig. 1.1</b> — Quem atualiza a tela. No imperativo, cada evento precisa encontrar e alterar cada nó afetado. No declarativo, você descreve a tela para qualquer estado, e o React calcula o que mudar.</figcaption>
+  </figure>
+
+  {{BLOCO:cap01:laboratorio/cap01/1-imperativo.html|linhas=57-65|rotulo=1-imperativo.html · alta}}
+
+  <p>O código precisa saber quais nós existem, quais dependem de <code>pacientes</code> e em que ordem atualizá-los. Com três dependências já houve esquecimento; uma tela real tem dezenas.</p>
+
+
+  <h2><span class="sn">1.4</span>Versão 2: estado e <code>render()</code></h2>
+  <p>A segunda versão é a que a disciplina ensinou: um objeto <code>estado</code> e uma função que redesenha a tela inteira a partir dele.</p>
+
+  {{BLOCO:cap01:laboratorio/cap01/2-render.html|linhas=25-42|rotulo=2-render.html · render()}}
+
+  <p>Ela já pensa do jeito certo: o alto risco é <strong>calculado</strong> a cada render e nunca fica errado. O problema é o <code>innerHTML</code>, que joga fora todos os nós e cria outros. Cada tecla na busca reconstrói a lista, e o que estava dentro dos nós antigos vai junto: o texto das anotações, o foco.</p>
+
+  <h2><span class="sn">1.5</span>Versão 3: React</h2>
+  <p>A terceira mantém a ideia da segunda e troca o mecanismo. O React vem do <code>esm.sh</code> por um <code>importmap</code>:</p>
+
+  {{BLOCO:cap01:laboratorio/cap01/3-react.html|linhas=26-57|rotulo=3-react.html · Ala}}
+
+  <ul>
+    <li><strong><code>useState</code></strong> guarda um valor entre renders e devolve a função que o troca. <code>setPacientes</code> não mexe no DOM: avisa o React de que o estado mudou.</li>
+    <li><strong><code>h</code></strong> é o <code>createElement</code> do React. Ele devolve uma <em>descrição</em> do que deveria existir, não um nó. O JSX vira exatamente estas chamadas (capítulo 3).</li>
+    <li><strong><code>key: p.id</code></strong> diz qual paciente cada linha representa.</li>
+  </ul>
+  <p>A função <code>Ala</code> não sabe se roda pela primeira ou pela centésima vez: recebe o estado e devolve a tela. Quem compara a descrição nova com a anterior e aplica a diferença é o React.</p>
+
+  <h2><span class="sn">1.6</span>O que o medidor mostra</h2>
+  <p>As três páginas passaram pelo mesmo roteiro num Chromium: anotar "ver febre" em João Lima, digitar <code>o</code> na busca, limpar a busca e dar alta a Maria Souza.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap01.py · Medido</span></div>
+<pre>{{SAIDA:c1-ala.txt|destaque=some;    2}}</pre>
+  </div>
+
+  <ul>
+    <li><strong>Busca.</strong> O imperativo esconde duas linhas (dois atributos <code>hidden</code>). O <code>render()</code> destrói 26 elementos e cria 18. O React remove só as duas linhas que saíram e troca um atributo, o <code>value</code> da busca.</li>
+    <li><strong>Alta.</strong> Imperativo e React fazem o mesmo trabalho no DOM, e o imperativo deixa o alto risco em 2.</li>
+    <li><strong>Nota.</strong> Só o <code>render()</code> apagou a anotação.</li>
+  </ul>
+
+  <div class="pull">O imperativo economiza e erra. O render() acerta e destrói. O React acerta e economiza.</div>
+
+  <p>Eficiente não quer dizer mais rápido: na alta, o React ainda executou <code>Ala</code> e comparou duas descrições da tela. O ganho é deixar de escrever, e de esquecer, cada atualização à mão. O capítulo 16 mede quando o tempo passa a importar.</p>
+
+  <h2><span class="sn">1.7</span>Declarativo, estado e reatividade</h2>
+  <p><strong>Declarativo</strong> é descrever o resultado para um estado e deixar o mecanismo decidir os passos. <strong>Estado da interface</strong> são os dados que, se mudarem, mudam o que aparece. <strong>Reatividade</strong> é a tela acompanhar o estado sem você escrever a atualização. No React ela é explícita: a tela só muda quando você chama o <code>set</code> do estado e o componente roda de novo. Vue, Svelte e Solid rastreiam sozinhos o que cada trecho da tela lê; são escolhas diferentes para o mesmo objetivo.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O monitor de beira-leito</h4>
+      <p>A enfermeira não redesenha a tela do monitor. Os sinais vitais mudam e o monitor atualiza a faixa que mudou. Os sinais vitais são o estado; a tela do monitor é a interface.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O monitor real lê os sensores o tempo todo. O React não observa nada: só calcula a tela de novo quando alguém chama o <code>set</code> de um estado. Mudar uma variável comum não muda a tela.</p>
+  </div>
+
+  <h2><span class="sn">1.8</span>Biblioteca, não framework</h2>
+  <p>O React transforma estado em interface. Rotas, busca de dados, build de produção e renderização no servidor vêm de outras ferramentas ou de um <strong>framework</strong> construído sobre ele.</p>
+
+  <div class="box data">
+    <span class="bt">Dado · react.dev, fev. 2025</span>
+    <p>O Create React App foi descontinuado. A documentação recomenda frameworks (Next.js, React Router, Expo) para produção e ferramentas como o Vite para montar a aplicação do zero e aprender o básico.</p>
+  </div>
+
+  <p>Este livro escolhe o caminho do zero com Vite de propósito: cada peça entra quando o problema dela aparece, e você vê o que um framework faz antes de delegar. O Next.js aparece nos capítulos 17 e 18 e terá um ebook próprio.</p>
+
+  <h2><span class="sn">1.9</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Dois vícios imperativos aparecem em código gerado: <code>document.querySelector</code> dentro de componente para "atualizar um contador", que briga com o React pelo mesmo DOM; e HTML montado em string com <code>dangerouslySetInnerHTML</code>, que reabre a porta para XSS que o React fecha ao escapar todo texto.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 1</span><button class="copy" type="button" data-copy="p1-agente">Copiar</button></div>
+<pre id="p1-agente"><span class="k">Goal</span>
+Reescrever a tela de pacientes do meu
+front-end vanilla como função do estado,
+com React por importmap, sem build.
+
+<span class="k">Context</span>
+@laboratorio/cap01/3-react.html (modelo)
+@&lt;sua tela vanilla&gt;.html
+
+<span class="k">Constraints</span>
+- sem document.querySelector em componente
+- sem innerHTML e sem
+  dangerouslySetInnerHTML
+- contagens calculadas no render
+- key de lista é o id do registro
+- fora de escopo: estilo, API, build
+
+<span class="k">Done when</span>
+- anotar e buscar: a anotação fica
+- após a alta, todas as contagens batem
+- no medidor, a alta só remove a linha
+  do paciente e troca textos</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Corrija a alta na versão imperativa. Depois liste o que precisaria mudar se a tela ganhasse um terceiro número, como pacientes em isolamento.</span></li>
+    <li><b>Intermediário</b><span>Na versão <code>render()</code>, mova a busca para dentro do <code>#app</code> e explique, com o medidor, por que o campo perde o foco a cada tecla.</span></li>
+    <li><b>Desafio</b><span>Na versão React, troque <code>key: p.id</code> por <code>key: i</code>. Anote em João Lima, dê alta a Maria Souza e descreva o que aconteceu. O capítulo 3 explica.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 01. <b>Tag:</b> <code>cap01</code>. <b>Prompts:</b> revisão e C-P-T-R-F-A em <code>prompts/cap01.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Sunsetting Create React App</em> (fev. 2025), <em>Creating a React App</em>, <em>Introducing the React Foundation</em> (out. 2025; fundação lançada em fev. 2026). MDN: <em>MutationObserver</em>. Medição em <code>saidas/c1-ala.txt</code>, Chromium 141, com React 19.3.1 servido localmente nas URLs do importmap.</p>
+  </div>
+</section>

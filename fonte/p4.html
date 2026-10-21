@@ -1,0 +1,160 @@
+<!-- ==================== CAP 3 ==================== -->
+<section class="chapter" id="cap03">
+  <div class="opener">{{ARTE:abertura_03}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte I · A mudança de paradigma</div>
+    <div class="num">03</div>
+    <h1>Como o React funciona por dentro</h1>
+    <div class="deck">Gatilho, render e commit, identidade e keys, provados com o motor ligado.</div>
+  </div>
+
+  <p class="lead">Quarta, 10h. A enfermeira anota "ver febre" no campo de João Lima e dá alta a Maria Souza. A anotação aparece na linha de Ana Clara Reis; João fica com o campo vazio.</p>
+
+  <p>O código da alta está certo. O problema está numa linha que parece irrelevante, e para achá-lo é preciso saber o que o React faz entre a sua função devolver a tela e o navegador mostrá-la.</p>
+
+  <h2><span class="sn">3.1</span>O projeto do capítulo</h2>
+  <p>Na tag <code>cap03</code>, a Ala B virou componentes com JSX e TypeScript, em <code>src/features/pacientes</code>. O cartão de cada paciente:</p>
+
+  {{BLOCO:cap03:src/features/pacientes/CartaoPaciente.tsx}}
+
+  <p>A <code>Ala</code> guarda <code>busca</code> e <code>pacientes</code> em estado e calcula o resto, exatamente como a versão 3 do capítulo 1, agora em JSX.</p>
+
+  <h2><span class="sn">3.2</span>JSX é açúcar</h2>
+  <p>O navegador não entende JSX. Antes de chegar a ele, cada tag vira uma chamada de função, como o <code>h</code> do capítulo 1. É isto que o Vite entrega quando o navegador pede o cartão:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>servidor do Vite · Medido</span></div>
+<pre>{{SAIDA:c3-jsx.txt}}</pre>
+  </div>
+
+  <p>Em desenvolvimento a função se chama <code>jsxDEV</code> e carrega arquivo e linha de cada tag para as mensagens de erro; em produção, <code>jsx</code>. As chaves do JSX viram expressões comuns, os filhos viram a prop <code>children</code>, e o resultado é um <strong>elemento</strong>: um objeto que <em>descreve</em> um <code>&lt;li&gt;</code>. Nenhum nó do DOM foi criado.</p>
+
+  <h2><span class="sn">3.3</span>Gatilho, render, commit</h2>
+  <figure>
+    <div class="fig-frame">{{FIG:ciclo}}</div>
+    <figcaption><b>Fig. 3.1</b> — As etapas de toda atualização. O <strong>gatilho</strong> é a montagem inicial ou um <code>set</code>. No <strong>render</strong>, o React chama os componentes e recebe a árvore nova. No <strong>commit</strong>, compara com a anterior e aplica no DOM só o que mudou. A pintura já é do navegador; os efeitos são o capítulo 7.</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A passagem de plantão</h4>
+      <p>Na troca de turno, a enfermeira compara o quadro de ontem com a situação de hoje e anota só o que mudou. Olhar a situação é o render; anotar a diferença é o commit.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O plantão tem hora marcada; o render só acontece com gatilho e pode terminar sem diferença nenhuma. O React pode até descartar um render pela metade para atender algo mais urgente. O commit, nunca: é aplicado inteiro, de uma vez.</p>
+  </div>
+
+  <h2><span class="sn">3.4</span>Renderizar não é mexer no DOM</h2>
+  <p>Para separar as duas coisas, o projeto tem o <strong><code>Renderometro</code></strong>, construído sobre o <code>&lt;Profiler&gt;</code> do React: a cada commit em que algo dentro dele renderizou, o React chama <code>onRender</code> com o nome, a fase e o tempo.</p>
+
+  {{BLOCO:cap03:src/lab/Renderometro.tsx|linhas=13-29}}
+
+  <p>A lista e cada cartão estão dentro de um <code>Renderometro</code>. Um roteiro no Chromium cruza o que ele anotou com o que um <code>MutationObserver</code> viu no DOM:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap03.py · Medido</span></div>
+<pre>{{SAIDA:c3-renderometro.txt|linhas=3-9}}
+<span class="c">…</span>
+{{SAIDA:c3-renderometro.txt|linhas=30-31}}</pre>
+  </div>
+
+  <p>Uma tecla na busca fez a lista e os quatro cartões visíveis renderizarem de novo. No DOM, porém, só saíram as duas linhas que deixaram de bater, oito elementos, e mudou o <code>value</code> da busca. Os cartões foram <em>calculados</em> de novo, deram o mesmo resultado, e o commit não os tocou.</p>
+
+  <p>Digitar na anotação de João não provocou render nenhum: aquele campo não tem estado no React, o texto vive no <code>&lt;input&gt;</code> do DOM. Guarde isso para a seção 3.6.</p>
+
+  <h2><span class="sn">3.5</span>O "Virtual DOM", com precisão</h2>
+  <p>"Virtual DOM" é o apelido da árvore de elementos que cada render devolve. Ele <strong>não é uma cópia do DOM mantida em sincronia</strong>: é a descrição produzida por um render, comparada com a do render anterior. E <strong>não é sempre mais rápido</strong> que mexer no DOM à mão: no capítulo 1, imperativo e React fizeram o mesmo trabalho no DOM, e o React ainda executou componentes. O que ele entrega é correção sem esforço manual.</p>
+
+  <p>A comparação, a <strong>reconciliação</strong>, segue regras simples:</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Na mesma posição</th><th>O que o React faz</th></tr>
+    <tr><td><b>Mesmo tipo</b></td><td>Mantém o nó e o estado; atualiza o que mudou nas props</td></tr>
+    <tr><td><b>Tipo diferente</b></td><td>Desmonta o que havia, com o estado, e monta do zero</td></tr>
+    <tr><td><b>Em listas, com <code>key</code></b></td><td>Casa os itens pela key, não pela posição</td></tr>
+  </table></div>
+
+  <h2><span class="sn">3.6</span>Identidade: o estado mora na posição</h2>
+  <p>A regra da documentação é curta: <strong>o React mantém o estado de um componente enquanto ele for renderizado na mesma posição da árvore</strong>. Ser "o mesmo", para o React, é estar no mesmo lugar, com o mesmo tipo e, em listas, a mesma key. Na tag <code>cap03-antes</code>, a lista usava o índice como key:</p>
+
+  {{DIFF:cap03-antes:cap03:src/features/pacientes/ListaPacientes.tsx}}
+
+  <figure>
+    <div class="fig-frame">{{FIG:chaves}}</div>
+    <figcaption><b>Fig. 3.2</b> — Com key por índice, o React vê que a última posição sumiu e que as outras só trocaram de props. O <code>&lt;input&gt;</code> da posição 1 fica no DOM, com o texto, mostrando agora Ana Clara.</figcaption>
+  </figure>
+
+  <p>O texto nunca esteve no React; estava no nó. Com key por índice, os nós são reaproveitados pela posição e o texto fica preso a eles. Com o <code>id</code>, o React sabe que <code>p1</code> saiu e que <code>p2</code> continua <code>p2</code>. O teste descreve o que a enfermeira faz, sem olhar para dentro do componente:</p>
+
+  {{BLOCO:cap03:src/features/pacientes/Ala.test.tsx|linhas=25-33}}
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap03-antes · key={i}</span><p><code>× anotação acompanha o paciente</code><br><code>→ expected '' to be 'ver febre'</code></p></div>
+    <div class="yes"><span class="lb">cap03 · key={p.id}</span><p><code>✓ anotação acompanha o paciente</code><br><code>✓ alto risco cai na alta</code></p></div>
+  </div>
+
+  <p>É a <strong>prova de revert</strong> da série: o teste falha sem a correção e passa com ela. As saídas completas estão em <code>saidas/c3-key-*.txt</code>. Trocar a key de propósito também serve para zerar um componente; o capítulo 6 usa isso.</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-01</span>
+    <p>Lista usa a key do domínio (o <code>id</code>), nunca o índice. Verificação: o teste "anotação acompanha o paciente".</p>
+  </div>
+
+  <h2><span class="sn">3.7</span>Montar, atualizar, desmontar</h2>
+  <p><strong>Montar</strong> é aparecer numa posição: nós criados, estado no valor inicial. <strong>Atualizar</strong> é renderizar de novo no mesmo lugar. <strong>Desmontar</strong> é sair da árvore, levando nós e estado. Na medição completa, Ana Clara e Luzia voltam como <code>mount</code> quando a busca é limpa: tinham sido desmontadas.</p>
+
+  <p>Para isso funcionar, o render precisa ser <strong>puro</strong>: as mesmas props e o mesmo estado produzem a mesma tela, e renderizar não altera nada fora do componente. O <code>StrictMode</code> testa a promessa chamando cada componente duas vezes em desenvolvimento, e é por isso que o <code>Renderometro</code> conta commits pelo <code>Profiler</code> em vez de somar uma variável no corpo do componente. Internamente, o render é dividido em unidades de trabalho, as <em>fibers</em>, o que permite pausá-lo; recursos como <code>startTransition</code> usam isso e aparecem quando forem úteis.</p>
+
+  <h2><span class="sn">3.8</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Agentes geram <code>key={index}</code> com frequência, porque é o exemplo mais curto, e às vezes <code>key={Math.random()}</code>, que é pior: cada render remonta tudo e apaga todo estado da lista. Nenhum dos dois quebra o build. A UI-01 e o teste pegam ambos.</p>
+  </div>
+
+  <p>Para um bug como o da abertura, o primeiro prompt pede diagnóstico com evidência, não correção:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 3 · DIAGNÓSTICO</span><button class="copy" type="button" data-copy="p3-agente">Copiar</button></div>
+<pre id="p3-agente"><span class="k">Goal</span>
+Descobrir por que a anotação de um
+paciente aparece em outro depois de
+uma alta, e provar a causa.
+
+<span class="k">Context</span>
+@src/features/pacientes/ @INVARIANTES.md
+Passos: anotar em João Lima, dar alta a
+Maria Souza; a nota vai para Ana Clara.
+
+<span class="k">Constraints</span>
+- antes, um teste que reproduz o defeito
+  pelo que o usuário vê, falhando
+- depois, a correção mínima
+- sem dependência nova
+
+<span class="k">Done when</span>
+- npm run gate verde com a correção
+- o teste novo FALHA se a correção
+  for revertida
+- a causa aponta arquivo e linha</pre>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, caps. 9 e 13</span>
+    <p>O "falha se revertido" vem do capítulo 9: agentes escrevem com facilidade testes que passam antes e depois da mudança. A revisão em contexto novo, de preferência com outra ferramenta, é o capítulo 13; o prompt dela está em <code>prompts/cap03.md</code>.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Rode <code>npm test</code> em <code>cap03-antes</code> e em <code>cap03</code>. Explique a diferença em três frases, usando "posição" e "key".</span></li>
+    <li><b>Intermediário</b><span>Preveja quais componentes renderizam ao dar alta ao último paciente. Rode com o <code>Renderometro</code> e compare. Por que a previsão para key por índice seria diferente?</span></li>
+    <li><b>Desafio</b><span>Troque a key por <code>Math.random()</code>, meça uma tecla na busca com <code>medicoes/cap03.py</code> e explique o número.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 02, 03, 04. <b>Invariantes:</b> UI-01. <b>Tags:</b> <code>cap03-antes</code>, <code>cap03</code>. <b>Prompts:</b> <code>prompts/cap03.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Render and Commit</em>, <em>Preserving and Resetting State</em>, <em>Rendering Lists</em>, <em>Keeping Components Pure</em>, <em>&lt;Profiler&gt;</em>, <em>&lt;StrictMode&gt;</em>. Saídas em <code>saidas/c3-*.txt</code>.</p>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+GET /src/features/pacientes/CartaoPaciente.tsx
+(trecho; metadados de depuração viraram …)
+
+export function CartaoPaciente({ paciente, onAlta }) {
+  const { id, nome, leito } = paciente;
+  return _jsxDEV("li", { children: [
+    _jsxDEV("b", { children: nome }, …),
+    " ",
+    leito,
+    _jsxDEV("input", {
+      "aria-label": `Anotação de ${nome}`,
+      placeholder: "anotação"
+    }, …),
+    _jsxDEV("button", {
+      onClick: () => onAlta(id),
+      children: "Alta"
+    }, …)
+  ] }, …);
+}

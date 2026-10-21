@@ -1,0 +1,1170 @@
+<title>Estado &amp; Tela</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Fontes locais (OFL), sem CDN: o PDF embute subconjuntos destes arquivos. */
+@font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/inter-400.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/inter-500.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:600;font-display:swap;src:url("fonts/inter-600.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:700;font-display:swap;src:url("fonts/inter-700.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:800;font-display:swap;src:url("fonts/inter-800.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:900;font-display:swap;src:url("fonts/inter-900.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:italic;font-weight:400;font-display:swap;src:url("fonts/inter-400-italic.woff2") format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:400;font-display:swap;src:url("fonts/jetbrains-mono-400.woff2") format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:500;font-display:swap;src:url("fonts/jetbrains-mono-500.woff2") format("woff2")}
+@font-face{font-family:"JetBrains Mono";font-style:normal;font-weight:700;font-display:swap;src:url("fonts/jetbrains-mono-700.woff2") format("woff2")}
+
+/* Layout: coluna única de leitura em celular (max 520px), identidade da série de ebooks do curso. */
+:root{
+  --bg:#FBFAF6; --bg-alt:#F2EEE5; --bg-card:#FFFFFF;
+  --ink:#17191C; --ink-soft:#3F444B; --muted:#7A7368;
+  --accent:#C2410C; --accent-ink:#8A4520; --accent-soft:#FDF3EC; --accent-line:#F0D4C2;
+  --good:#2F6B4F; --good-soft:#EDF4EF; --good-line:#B8D4C4;
+  --bad:#A93226; --bad-soft:#FBEEEC; --bad-line:#E7B9B2;
+  --warn:#8C5D12; --warn-soft:#FDF6E7; --warn-line:#E7D2A0;
+  --info:#2C5282; --info-soft:#EEF3FA; --info-line:#BFD0E8;
+  --border:#E3DCCC; --border-soft:#ECE6D8;
+  --code-bg:#15171C; --code-fg:#E8E3DA; --code-key:#F0A868; --code-str:#9FCBAE; --code-cmt:#8A8F99;
+  --shadow:0 1px 2px rgba(23,25,28,.04),0 8px 24px -12px rgba(23,25,28,.12);
+  --cover-bg:#15171C; --cover-ink:#F2EFE9; --cover-soft:#CFC9BC; --cover-mut:#8A8F99; --cover-acc:#FF8A4C; --cover-amb:#F0A868; --cover-line:#2E3238; --cover-dim:#6D727B;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171B; --bg-alt:#1B1E23; --bg-card:#1C1F24;
+    --ink:#F2EFE9; --ink-soft:#CFC9BC; --muted:#9C9C93;
+    --accent:#FF9257; --accent-ink:#FFD3AD; --accent-soft:#2B2019; --accent-line:#4A3324;
+    --good:#7FCBA2; --good-soft:#182420; --good-line:#2E4A3D;
+    --bad:#F0A29A; --bad-soft:#2A1917; --bad-line:#4A2A26;
+    --warn:#E5C27D; --warn-soft:#26200F; --warn-line:#4A3D1F;
+    --info:#9DBDE8; --info-soft:#172030; --info-line:#2C3D57;
+    --border:#33383F; --border-soft:#292E34;
+    --code-bg:#0B0C0E;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+    --cover-bg:#0B0C0E;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171B; --bg-alt:#1B1E23; --bg-card:#1C1F24;
+  --ink:#F2EFE9; --ink-soft:#CFC9BC; --muted:#9C9C93;
+  --accent:#FF9257; --accent-ink:#FFD3AD; --accent-soft:#2B2019; --accent-line:#4A3324;
+  --good:#7FCBA2; --good-soft:#182420; --good-line:#2E4A3D;
+  --bad:#F0A29A; --bad-soft:#2A1917; --bad-line:#4A2A26;
+  --warn:#E5C27D; --warn-soft:#26200F; --warn-line:#4A3D1F;
+  --info:#9DBDE8; --info-soft:#172030; --info-line:#2C3D57;
+  --border:#33383F; --border-soft:#292E34; --code-bg:#0B0C0E; --cover-bg:#0B0C0E;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -12px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+html{background:var(--bg)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased; font-size:16px}
+.page{max-width:520px; margin:0 auto; padding-left:max(20px, env(safe-area-inset-left, 0px)); padding-right:max(20px, env(safe-area-inset-right, 0px)); padding-block:0 60px}
+img,svg{max-width:100%}
+
+/* CAPA */
+.cover{background:var(--cover-bg); color:var(--cover-ink); display:flex; flex-direction:column; gap:26px;
+  padding:48px 26px 30px; margin:0 -20px; position:relative; overflow:hidden}
+.cover::before{content:""; position:absolute; right:-80px; top:-60px; width:300px; height:300px; border-radius:50%;
+  background:radial-gradient(circle, rgba(194,65,12,.55), transparent 65%)}
+.cover > *{position:relative}
+.cover .kicker{font-size:11px; font-weight:700; letter-spacing:1.8px; text-transform:uppercase; color:var(--cover-amb)}
+.cover h1{font-size:46px; line-height:1.0; font-weight:900; letter-spacing:-.02em; margin:0; color:var(--cover-ink); text-wrap:balance}
+.cover h1 span{display:block; color:var(--cover-acc)}
+.cover .sub{font-size:17px; line-height:1.5; color:var(--cover-soft); max-width:420px; margin:0}
+.cover .grid{font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--cover-dim); line-height:1.75}
+.cover .grid b{color:var(--cover-amb); font-weight:500}
+.cover .credits{font-size:13px; color:var(--cover-soft); line-height:1.6; border-top:1px solid var(--cover-line); padding-top:16px}
+.cover .credits .by{display:block; font-size:10.5px; letter-spacing:1.4px; text-transform:uppercase; color:var(--cover-mut); margin-bottom:4px}
+.cover .foot{font-size:11.5px; color:var(--cover-mut); margin-top:10px}
+.cover .foot b{color:var(--cover-soft); font-weight:600}
+.cover .stamp{display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:1.2px; text-transform:uppercase;
+  color:var(--cover-bg); background:var(--cover-amb); border-radius:4px; padding:4px 8px; align-self:flex-start}
+
+/* SUMÁRIO */
+.toc{padding:44px 0 10px}
+.toc h1{font-size:30px; font-weight:900; margin:0 0 22px; letter-spacing:-.01em}
+.toc .part{font-size:10.5px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; color:var(--accent); margin:22px 0 8px}
+.toc .row{display:flex; gap:14px; align-items:baseline; padding:9px 0; border-bottom:1px solid var(--border-soft); font-size:15.5px}
+.toc .row .n{font-family:"JetBrains Mono",monospace; color:var(--muted); font-size:13px; min-width:22px}
+.toc .row .t{color:var(--ink); font-weight:600; flex:1; min-width:0}
+.toc .row .st{font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); white-space:nowrap}
+
+/* CAPÍTULO (aqui: seções do plano) */
+.chapter{padding-top:10px}
+.chapter-open{padding:46px 0 26px; margin-bottom:26px; border-bottom:1px solid var(--border)}
+.part-tag{font-size:10.5px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase; color:var(--muted)}
+.chapter-open .num{font-size:80px; font-weight:900; line-height:1; color:var(--accent); letter-spacing:-.04em; margin:14px 0 6px}
+.chapter-open h1{font-size:29px; line-height:1.12; font-weight:900; letter-spacing:-.015em; margin:0 0 14px; text-wrap:balance}
+.chapter-open .deck{font-size:17px; line-height:1.5; color:var(--ink-soft)}
+
+h2{font-size:22px; line-height:1.22; font-weight:800; letter-spacing:-.01em; margin:44px 0 14px; text-wrap:balance}
+h2 .sn{font-family:"JetBrains Mono",monospace; font-size:13px; color:var(--accent); font-weight:700; display:block; margin-bottom:4px; letter-spacing:.5px}
+h3{font-size:17.5px; font-weight:800; margin:28px 0 8px; text-wrap:balance}
+p{font-size:16px; line-height:1.7; color:var(--ink-soft); margin:0 0 15px}
+p.lead{font-size:18.5px; line-height:1.55; color:var(--ink); font-weight:500; margin-bottom:22px}
+strong{color:var(--ink); font-weight:700}
+em{color:var(--ink)}
+ul,ol{font-size:16px; line-height:1.65; color:var(--ink-soft); padding-left:22px; margin:0 0 16px}
+li{margin-bottom:7px}
+code{font-family:"JetBrains Mono",monospace; font-size:.84em; background:var(--bg-alt); border:1px solid var(--border-soft);
+  padding:.5px 5px; border-radius:4px; color:var(--accent-ink); overflow-wrap:anywhere}
+a{color:var(--accent)}
+.pull{font-size:21px; line-height:1.38; font-weight:800; letter-spacing:-.01em; color:var(--ink);
+  border-left:4px solid var(--accent); padding:4px 0 4px 18px; margin:32px 0}
+
+/* CAIXAS */
+.box{border-radius:10px; padding:15px 16px; margin:22px 0; border:1px solid; font-size:15px; line-height:1.6}
+.box p,.box li{font-size:15px; color:inherit}
+.box p{margin:0 0 8px}
+.box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
+.box ul,.box ol{padding-left:18px; margin:6px 0 0}
+.box .bt{display:block; font-weight:800; font-size:10.5px; letter-spacing:1.1px; text-transform:uppercase; margin-bottom:8px}
+.box.quote{background:var(--bg-alt); border-color:var(--border); color:var(--ink-soft)} .box.quote .bt{color:var(--muted)}
+.box.rule{background:var(--accent-soft); border-color:var(--accent-line); color:var(--ink)} .box.rule .bt{color:var(--accent)}
+.box.tip{background:var(--good-soft); border-color:var(--good-line); color:var(--ink)} .box.tip .bt{color:var(--good)}
+.box.warn{background:var(--warn-soft); border-color:var(--warn-line); color:var(--ink)} .box.warn .bt{color:var(--warn)}
+.box.data{background:var(--info-soft); border-color:var(--info-line); color:var(--ink)} .box.data .bt{color:var(--info)}
+.box.attack{background:var(--bad-soft); border-color:var(--bad-line); color:var(--ink)} .box.attack .bt{color:var(--bad)}
+.box.model{background:var(--bg-card); border-color:var(--border); border-style:dashed; color:var(--ink)} .box.model .bt{color:var(--muted)}
+.box.ponte{background:var(--bg-card); border-color:var(--info-line); border-left:4px solid var(--info); color:var(--ink)} .box.ponte .bt{color:var(--info)}
+.box.ponte b.cap{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--info)}
+
+.analogy{display:grid; grid-template-columns:auto 1fr; gap:13px; align-items:start; background:var(--bg-alt);
+  border:1px solid var(--border); border-radius:12px; padding:16px; margin:24px 0}
+.analogy .ico{font-family:"JetBrains Mono",monospace; font-size:13px; font-weight:700; color:var(--accent); line-height:1.3}
+.analogy > div{min-width:0}
+.analogy h4{margin:0 0 6px; font-size:15px; font-weight:800; color:var(--accent-ink)}
+.analogy p{margin:0 0 6px; font-size:15px} .analogy p:last-child{margin:0}
+
+.dd{display:grid; grid-template-columns:1fr; gap:12px; margin:22px 0}
+.dd .no,.dd .yes{border-radius:10px; padding:13px 15px; border:1px solid; font-size:14.5px; line-height:1.55}
+.dd .no{background:var(--bad-soft); border-color:var(--bad-line); color:var(--ink-soft)}
+.dd .yes{background:var(--good-soft); border-color:var(--good-line); color:var(--ink-soft)}
+.dd .lb{display:block; font-weight:800; font-size:10.5px; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px}
+.dd .no .lb{color:var(--bad)} .dd .yes .lb{color:var(--good)}
+.dd p{margin:0; font-size:14.5px}
+
+/* CÓDIGO */
+.term{border-radius:10px; overflow:hidden; margin:20px 0; border:1px solid var(--border); background:var(--code-bg); box-shadow:var(--shadow)}
+.term-bar{font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:600; letter-spacing:.3px; color:#B9BEC7;
+  background:rgba(255,255,255,.05); padding:8px 13px; border-bottom:1px solid rgba(255,255,255,.08); overflow-wrap:anywhere;
+  display:flex; justify-content:space-between; align-items:center; gap:10px}
+.term pre{margin:0; padding:14px; overflow-x:auto; font-family:"JetBrains Mono",monospace; font-size:12.4px; line-height:1.6; color:var(--code-fg)}
+.term pre .k{color:var(--code-key); font-weight:600}
+.term pre .s{color:var(--code-str)}
+.term pre .c{color:var(--code-cmt); font-style:italic}
+.term pre .w{color:#FF8A4C; font-weight:700}
+
+/* TABELA */
+.tbl-wrap{overflow-x:auto; margin:20px 0; border:1px solid var(--border); border-radius:10px}
+table{width:100%; border-collapse:collapse; font-size:13.8px; background:var(--bg-card)}
+th{text-align:left; font-size:10.5px; letter-spacing:.8px; text-transform:uppercase; color:var(--muted); background:var(--bg-alt);
+  padding:10px 11px; border-bottom:1px solid var(--border); font-weight:800}
+td{padding:10px 11px; border-bottom:1px solid var(--border-soft); color:var(--ink-soft); vertical-align:top; line-height:1.45}
+tr:last-child td{border-bottom:none}
+td b{color:var(--ink)}
+td.mono{font-family:"JetBrains Mono",monospace; font-size:12.5px; white-space:nowrap; color:var(--accent-ink)}
+
+/* FIGURA */
+figure{margin:28px 0}
+.fig-frame{background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:14px 12px 10px; box-shadow:var(--shadow); overflow-x:auto}
+.fig-frame svg{display:block; width:100%; height:auto; min-width:300px}
+figcaption{font-size:13px; color:var(--muted); margin-top:9px; line-height:1.5}
+figcaption b{color:var(--ink-soft)}
+svg text{font-family:"Inter",sans-serif}
+svg .mono{font-family:"JetBrains Mono",monospace}
+.f-ink{fill:var(--ink)} .f-soft{fill:var(--ink-soft)} .f-mut{fill:var(--muted)} .f-acc{fill:var(--accent)}
+.f-accs{fill:var(--accent-soft)} .f-alt{fill:var(--bg-alt)} .f-card{fill:var(--bg-card)} .f-good{fill:var(--good)}
+.f-goods{fill:var(--good-soft)} .f-bad{fill:var(--bad)} .f-bads{fill:var(--bad-soft)} .f-warns{fill:var(--warn-soft)} .f-warn{fill:var(--warn)}
+.f-bord{fill:var(--border)} .f-info{fill:var(--info)} .f-infos{fill:var(--info-soft)} .f-bg{fill:var(--bg)}
+.s-bord{stroke:var(--border)} .s-acc{stroke:var(--accent)} .s-mut{stroke:var(--muted)} .s-good{stroke:var(--good)} .s-bad{stroke:var(--bad)}
+.s-accl{stroke:var(--accent-line)} .s-goodl{stroke:var(--good-line)} .s-badl{stroke:var(--bad-line)} .s-infol{stroke:var(--info-line)} .s-warnl{stroke:var(--warn-line)}
+
+/* PASSOS / CARDS / CHECKLIST */
+.steps{counter-reset:st; margin:22px 0}
+.step{position:relative; padding:2px 0 14px 42px; border-left:2px solid var(--border); margin-left:14px}
+.step:last-child{border-left-color:transparent}
+.step::before{counter-increment:st; content:counter(st); position:absolute; left:-15px; top:0; width:28px; height:28px; border-radius:50%;
+  background:var(--accent); color:var(--bg-card); font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center}
+.step .st-t{display:block; font-weight:800; color:var(--ink); font-size:15.5px; margin:3px 0 4px}
+.step p{font-size:15px; margin:0}
+
+.card{border:1px solid var(--border); border-radius:12px; background:var(--bg-card); padding:16px; margin:18px 0; box-shadow:var(--shadow)}
+.card .ct{display:flex; align-items:flex-start; gap:12px; margin-bottom:10px}
+.card .letter{font-size:34px; font-weight:900; color:var(--accent); line-height:1; min-width:44px; letter-spacing:-.03em; font-variant-numeric:tabular-nums}
+.card .ct > div{min-width:0}
+.card .ct h4{margin:0; font-size:16.5px; font-weight:800; line-height:1.25; text-wrap:balance}
+.card .ct small{display:block; font-size:13px; color:var(--muted); font-weight:500; margin-top:4px; line-height:1.45}
+.card p{font-size:14.8px; margin:0 0 9px}
+.card .row{font-size:14.5px; line-height:1.55; color:var(--ink-soft); margin:0 0 10px}
+.card .row:last-child{margin-bottom:0}
+.card .row > b{display:block; font-size:10.5px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:3px}
+.card .row ul{font-size:14.5px; margin:2px 0 0; padding-left:18px}
+.card .row li{margin-bottom:4px}
+.tags{display:flex; flex-wrap:wrap; gap:6px}
+.tag{font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; padding:3px 7px; border-radius:5px;
+  background:var(--bg-alt); border:1px solid var(--border); color:var(--ink-soft)}
+.tag.p{background:var(--accent-soft); border-color:var(--accent-line); color:var(--accent-ink)}
+.tag.l{background:var(--info-soft); border-color:var(--info-line); color:var(--info)}
+
+ul.checklist{list-style:none; padding-left:0; margin:18px 0}
+ul.checklist li{position:relative; padding-left:32px; margin-bottom:11px; font-size:15.5px; color:var(--ink-soft)}
+ul.checklist li::before{content:"✓"; position:absolute; left:0; top:1px; width:21px; height:21px; border-radius:6px; background:var(--good-soft);
+  color:var(--good); font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; border:1px solid var(--good-line)}
+
+.regua-grp{font-size:10.5px; font-weight:800; letter-spacing:1.3px; text-transform:uppercase; color:var(--accent); margin:22px 0 6px}
+ol.regua{list-style:none; padding:0; margin:0}
+ol.regua li{display:grid; grid-template-columns:30px 1fr auto; gap:10px; align-items:baseline; padding:8px 0; border-bottom:1px solid var(--border-soft); font-size:14.5px; line-height:1.45; margin:0}
+ol.regua .i{font-family:"JetBrains Mono",monospace; font-size:12px; color:var(--muted); font-variant-numeric:tabular-nums}
+ol.regua .t{color:var(--ink-soft); min-width:0}
+ol.regua .c{font-family:"JetBrains Mono",monospace; font-size:11px; color:var(--accent-ink); white-space:nowrap}
+
+/* PROMPTS DE ILUSTRAÇÃO */
+.dp{border:1px solid var(--border); border-radius:10px; background:var(--bg-card); padding:13px 14px; margin:14px 0}
+.dp-h{display:flex; justify-content:space-between; align-items:center; gap:10px}
+.dp-h b{font-size:13.5px; color:var(--ink); min-width:0}
+.dp-h b span{font-family:"JetBrains Mono",monospace; color:var(--accent); margin-right:6px}
+.dp p{font-size:14.3px; line-height:1.6; margin:9px 0 0; color:var(--ink-soft)}
+button.copy{font:600 12px/1 "Inter",sans-serif; padding:7px 10px; border-radius:7px; border:1px solid var(--accent-line);
+  background:var(--accent-soft); color:var(--accent-ink); cursor:pointer; white-space:nowrap; flex:none}
+button.copy:hover{border-color:var(--accent)}
+button.copy:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.term-bar button.copy{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.18); color:#E8E3DA}
+
+.regua{list-style:none; padding:0; margin:6px 0 18px}
+.regua li{display:grid; grid-template-columns:30px 1fr; padding:7px 0; border-bottom:1px solid var(--border); font-size:15px; line-height:1.45; margin:0}
+.regua .n{font-family:"JetBrains Mono",monospace; font-weight:700; color:var(--accent); font-size:13px; padding-top:2px}
+.regua .ev{grid-column:2; font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--muted); margin-top:3px; overflow-wrap:anywhere}
+.glossario p{margin:0 0 9px; font-size:15px; line-height:1.5}
+.glossario .cap{font-family:"JetBrains Mono",monospace; font-size:11.5px; color:var(--accent)}
+.fim{text-align:center; margin:44px 0 10px; color:var(--muted); font-size:14px}
+.endnote{margin:40px 0 0; padding:18px 0 0; border-top:1px solid var(--border); font-size:13.5px; color:var(--muted); line-height:1.6}
+.endnote a{overflow-wrap:anywhere}
+.hl-inline{background:var(--accent-soft); color:var(--accent-ink); padding:0 3px; border-radius:3px; font-weight:600}
+@media (prefers-reduced-motion: reduce){*{transition:none!important; animation:none!important}}
+
+/* EXTRAS DO LIVRO */
+/* código sem ligaduras: o aluno precisa ver => e != como digita */
+.term pre, code, svg .mono{font-variant-ligatures:none; font-feature-settings:"liga" 0, "calt" 0}
+.fecho-fontes{border-top:1px solid var(--border); margin:30px 0 0; padding-top:12px; font-size:13px; color:var(--muted); line-height:1.55}
+.fecho-fontes p{font-size:13px; color:var(--muted); margin:0 0 6px}
+.fecho-fontes b{color:var(--ink-soft)}
+.fecho-fontes a{overflow-wrap:anywhere}
+.term pre .dim{color:#6D727B}
+.term-bar .arq{color:#E8E3DA}
+.term-bar .tag-git{color:#F0A868; font-weight:700}
+.niveis{counter-reset:nv; list-style:none; padding:0; margin:14px 0}
+.niveis li{display:grid; grid-template-columns:auto 1fr; gap:10px; padding:9px 0; border-bottom:1px solid var(--border-soft); font-size:15px; margin:0}
+.niveis li > b{font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--accent); padding-top:3px; min-width:84px}
+.niveis li > span{min-width:0}
+.toc .row.on .st{color:var(--good)}
+.toc .row.off .t{color:var(--muted); font-weight:500}
+.opener{margin:22px 0 0}
+.opener svg{display:block; width:100%; height:auto}
+.cover-art{margin:0 -6px}
+.cover-art svg{display:block; width:100%; height:auto; max-height:240px}
+.nb{font-size:14.5px; color:var(--muted); line-height:1.6}
+.cap-fecho{border:1px solid var(--border); border-radius:12px; padding:16px; margin:30px 0 0; background:var(--bg-card)}
+.cap-fecho h4{margin:0 0 10px; font-size:10.5px; letter-spacing:1.2px; text-transform:uppercase; color:var(--accent)}
+.cap-fecho p{font-size:14.5px; margin:0 0 8px}
+.stack{display:inline-block; font-family:"JetBrains Mono",monospace; font-size:10.5px; font-weight:700; letter-spacing:.6px;
+  text-transform:uppercase; padding:3px 8px; border-radius:5px; margin:18px 0 -10px; border:1px solid var(--border); color:var(--ink-soft); background:var(--bg-alt)}
+@page{size:108mm 192mm; margin:8mm 6.5mm 9mm}
+@media print{
+  :root{padding:0}
+  html,body{background:#fff}
+  body{font-size:13.5px}
+  .page{max-width:none; padding:0}
+  .cover{margin:0; min-height:175mm; break-after:page; justify-content:space-between; padding:30px 20px 22px; gap:16px}
+  .cover h1{font-size:40px}
+  .cover .sub{font-size:15px}
+  .toc{break-after:page; padding:10px 0 0}
+  .toc h1{font-size:24px; margin-bottom:10px}
+  .toc .part{margin:12px 0 4px}
+  .toc .row{padding:1.5px 0; font-size:12px}
+  .toc .row .st{font-size:8.5px}
+  .toc .part{margin:6px 0 1px; font-size:9px}
+  .toc h1{font-size:22px; margin-bottom:6px}
+  .niveis li{font-size:13px; padding:6px 0}
+  .fecho-fontes{margin-top:16px; padding-top:10px}
+  .fecho-fontes p{font-size:11.5px; margin-bottom:4px}
+  .chapter{break-before:page; padding-top:0}
+  .opener{margin:0}
+  .chapter-open{padding:10px 0 14px; margin-bottom:16px}
+  .chapter-open .num{font-size:52px; margin:6px 0 2px}
+  .chapter-open h1{font-size:24px; margin-bottom:8px}
+  .chapter-open .deck{font-size:15px}
+  p{font-size:13.5px; line-height:1.6; margin-bottom:11px}
+  p.lead{font-size:15.5px; margin-bottom:14px}
+  ul,ol{font-size:13.5px; line-height:1.55; margin-bottom:12px}
+  li{margin-bottom:4px}
+  h2{font-size:19px; margin:26px 0 10px}
+  h3{font-size:15.5px; margin:18px 0 6px}
+  .pull{font-size:17.5px; margin:20px 0}
+  .box{margin:14px 0; padding:11px 13px}
+  .box p,.box li{font-size:13px}
+  .term{margin:12px 0}
+  .term pre{font-size:11.2px; padding:10px 11px; line-height:1.5}
+  table{font-size:12.6px}
+  th{padding:7px 8px} td{padding:7px 8px}
+  .tbl-wrap{margin:12px 0}
+  figure{margin:16px 0}
+  figcaption{font-size:12px}
+  .steps{margin:12px 0} .step{padding-bottom:9px} .step p{font-size:13px}
+  .cap-fecho{margin-top:18px; padding:12px 13px} .cap-fecho p{font-size:13px}
+  .endnote{margin-top:20px; padding-top:12px; font-size:11.5px}
+  .regua li{font-size:13px; padding:5px 0} .regua .n{font-size:11.5px} .regua .ev{font-size:10.2px}
+  .regua li{break-inside:avoid}
+  .glossario p{font-size:12.8px; margin-bottom:6px; break-inside:avoid}
+  .analogy{margin:14px 0; padding:12px}
+  .analogy p{font-size:13px}
+  .box,figure,.card,.analogy,.dd>div,.step,tr,.pull,.cap-fecho{break-inside:avoid}
+  .tbl-wrap{break-inside:avoid}
+  .term{break-inside:auto} .term-bar{break-after:avoid}
+  .term.t-curto{break-inside:avoid}
+  h2,h3,.stack{break-after:avoid; break-inside:avoid}
+  .term pre{white-space:pre-wrap; word-break:break-word}
+  .fig-frame{box-shadow:none}
+  button.copy{display:none}
+  *{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+}
+</style>
+
+<div class="page">
+<!-- ==================== CAPA ==================== -->
+<section class="cover" aria-label="Capa">
+  <div class="kicker">Manual de campo · lote 1 · prévia</div>
+  <div class="cover-art"><svg viewBox="0 0 400 244" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tela de monitor feita de blocos pequenos; um único bloco aceso em laranja"><defs><clipPath id="arte1"><rect width="400" height="244" rx="12"/></clipPath></defs><g clip-path="url(#arte1)"><rect x="60" y="14" width="280" height="190" rx="14" fill="#262A31" stroke="#3A3F47" stroke-width="3"/><rect x="74" y="28" width="252" height="162" rx="6" fill="#0E1013"/><rect x="82.0" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".38"/><rect x="108.66666666666667" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="135.33333333333334" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="162.0" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="188.66666666666669" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="215.33333333333334" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".38"/><rect x="242.0" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="268.6666666666667" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="295.33333333333337" y="36.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="82.0" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="108.66666666666667" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".38"/><rect x="135.33333333333334" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="162.0" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="188.66666666666669" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="215.33333333333334" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="242.0" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".38"/><rect x="268.6666666666667" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="295.33333333333337" y="61.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="82.0" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="108.66666666666667" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="135.33333333333334" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".38"/><rect x="162.0" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="188.66666666666669" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="209.33333333333334" y="80.0" width="34.66666666666667" height="33.0" rx="6" fill="#FF8A4C" opacity=".22"/><rect x="215.33333333333334" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#FF8A4C"/><rect x="242.0" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="268.6666666666667" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".38"/><rect x="295.33333333333337" y="86.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="82.0" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="108.66666666666667" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="135.33333333333334" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="162.0" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".38"/><rect x="188.66666666666669" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="215.33333333333334" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="242.0" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="268.6666666666667" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="295.33333333333337" y="111.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".38"/><rect x="82.0" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="108.66666666666667" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="135.33333333333334" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="162.0" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="188.66666666666669" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".38"/><rect x="215.33333333333334" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="242.0" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="268.6666666666667" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="295.33333333333337" y="136.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="82.0" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".38"/><rect x="108.66666666666667" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="135.33333333333334" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="162.0" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="188.66666666666669" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="215.33333333333334" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".38"/><rect x="242.0" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#8A8F99" opacity=".22"/><rect x="268.6666666666667" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#7FCBA2" opacity=".22"/><rect x="295.33333333333337" y="161.0" width="22.666666666666668" height="21.0" rx="3" fill="#9DBDE8" opacity=".22"/><rect x="194" y="204" width="12" height="28" fill="#2E3238"/><rect x="160" y="230" width="80" height="8" rx="3" fill="#3A3F47"/></g></svg></div>
+  <h1>Estado<span>&amp; Tela</span></h1>
+  <p class="sub">Aplicações web reativas com React, do DOM manipulado à mão até uma aplicação completa, autenticada e testada, construída com agentes de IA sem perder o controle do código.</p>
+  <div>
+    <div class="credits"><span class="by">Organizado por</span>Prof. Rogério Silva e Claude Opus 5.5<br><span style="color:var(--cover-mut)">2026 · TEC.1052 · ADS · IFPI</span></div>
+    <div class="foot"><b>React 19.3 · Vite 8 · TypeScript</b><br>React Router 8 · TanStack Query 5 · Vitest 5 · Playwright</div>
+  </div>
+</section>
+
+<!-- ==================== SUMÁRIO ==================== -->
+<section class="toc">
+  <h1>Sumário</h1>
+  <div class="row on"><span class="n">0</span><span class="t">Introdução</span><span class="st">p. 3</span></div>
+  <div class="part">Parte I · A mudança de paradigma</div>
+  <div class="row on"><span class="n">1</span><span class="t">Do DOM à mão às interfaces reativas</span><span class="st">p. 7</span></div>
+  <div class="row on"><span class="n">2</span><span class="t">O primeiro projeto em vinte minutos</span><span class="st">p. 18</span></div>
+  <div class="row on"><span class="n">3</span><span class="t">Como o React funciona por dentro</span><span class="st">p. 28</span></div>
+  <div class="part">Parte II · Os fundamentos</div>
+  <div class="row off"><span class="n">4</span><span class="t">Componentes, JSX e composição</span><span class="st">lote 2</span></div>
+  <div class="row off"><span class="n">5</span><span class="t">Props, eventos e fluxo de dados</span><span class="st">lote 2</span></div>
+  <div class="row off"><span class="n">6</span><span class="t">Estado, formulários e interações</span><span class="st">lote 3</span></div>
+  <div class="row off"><span class="n">7</span><span class="t">Efeitos: sincronizar com o mundo lá fora</span><span class="st">lote 3</span></div>
+  <div class="part">Parte III · Arquitetura</div>
+  <div class="row off"><span class="n">8</span><span class="t">Estrutura de projeto por funcionalidade</span><span class="st">lote 4</span></div>
+  <div class="row off"><span class="n">9</span><span class="t">Estilo, tokens e acessibilidade</span><span class="st">lote 4</span></div>
+  <div class="row off"><span class="n">10</span><span class="t">Componentes reutilizáveis e design system</span><span class="st">lote 4</span></div>
+  <div class="row off"><span class="n">11</span><span class="t">Prop drilling e Context</span><span class="st">lote 5</span></div>
+  <div class="row off"><span class="n">12</span><span class="t">Reducer e transições de estado</span><span class="st">lote 5</span></div>
+  <div class="part">Parte IV · A aplicação completa</div>
+  <div class="row off"><span class="n">13</span><span class="t">Rotas e navegação</span><span class="st">lote 6</span></div>
+  <div class="row off"><span class="n">14</span><span class="t">Backend, HTTP e estado remoto</span><span class="st">lote 6</span></div>
+  <div class="row off"><span class="n">15</span><span class="t">Autenticação, sessão e autorização na interface</span><span class="st">lote 7</span></div>
+  <div class="row off"><span class="n">16</span><span class="t">Testes, depuração e desempenho</span><span class="st">lote 7</span></div>
+  <div class="part">Parte V · Renderização moderna</div>
+  <div class="row off"><span class="n">17</span><span class="t">Servidor, cliente e a fronteira entre eles</span><span class="st">lote 8</span></div>
+  <div class="row off"><span class="n">18</span><span class="t">Next.js: visão geral e próximo livro</span><span class="st">lote 8</span></div>
+  <div class="part">Parte VI · Entrega e referência</div>
+  <div class="row off"><span class="n">19</span><span class="t">A entrega com agentes, do plano ao PR</span><span class="st">lote 9</span></div>
+  <div class="row off"><span class="n">20</span><span class="t">Guia de consulta, régua e glossário</span><span class="st">lote 9</span></div>
+</section>
+
+<!-- ==================== INTRODUÇÃO ==================== -->
+<section class="chapter" id="cap00">
+  <div class="chapter-open">
+    <div class="part-tag">Antes de começar</div>
+    <div class="num">00</div>
+    <h1>Introdução</h1>
+    <div class="deck">Para quem é este livro, a ideia que ele defende e como cada capítulo funciona.</div>
+  </div>
+
+  <p class="lead">Você já sabe fazer uma página reagir a um clique. Este livro trata do passo seguinte: fazer uma aplicação inteira continuar certa quando ela tiver trinta telas, várias pessoas no código e um agente de IA escrevendo boa parte dele.</p>
+
+  <p>É para quem já constrói páginas com HTML, CSS e JavaScript, manipula o DOM, consome uma API com <code>fetch</code> e já escreveu um backend REST com Express e TypeScript. Nada disso é ensinado de novo. Se você cursa TEC.1052, guarde por perto o front-end do Mini-Prontuário que escreveu em JavaScript puro: ele é o ponto de partida do capítulo 1.</p>
+
+  <div class="pull">A tela é uma função do estado. Quase todo bug de front-end é um estado guardado no lugar errado, duplicado ou sincronizado à mão.</div>
+
+  <p>Por isso o livro não é uma lista de APIs do React. Cada capítulo responde, de um ângulo diferente, a uma pergunta: <strong>onde este estado mora?</strong></p>
+
+  <figure>
+    <div class="fig-frame"><svg viewBox="0 0 400 352" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os quatro lugares onde o estado mora">
+  <text x="200" y="14" text-anchor="middle" font-size="10" font-weight="800" letter-spacing="1.2" class="f-mut">ONDE ESTE ESTADO MORA?</text>
+  <!-- local -->
+  <rect x="0" y="28" width="194" height="140" rx="8" class="f-goods s-goodl" stroke-width="1.2"/>
+  <text x="12" y="48" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-good">LOCAL · CAP 6</text>
+  <text x="12" y="72" font-size="15" font-weight="800" class="f-ink">Só esta tela usa</text>
+  <text x="12" y="94" font-size="11" class="mono f-soft">useState</text>
+  <text x="12" y="110" font-size="11" class="mono f-soft">useReducer</text>
+  <text x="12" y="138" font-size="10.5" class="f-mut">modal aberto, campo</text>
+  <text x="12" y="153" font-size="10.5" class="f-mut">digitado, aba ativa</text>
+  <!-- compartilhado -->
+  <rect x="206" y="28" width="194" height="140" rx="8" class="f-accs s-accl" stroke-width="1.2"/>
+  <text x="218" y="48" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-acc">COMPARTILHADO · 11-12</text>
+  <text x="218" y="72" font-size="15" font-weight="800" class="f-ink">Muitas telas leem</text>
+  <text x="218" y="94" font-size="11" class="mono f-soft">Context</text>
+  <text x="218" y="110" font-size="11" class="mono f-soft">Context + reducer</text>
+  <text x="218" y="138" font-size="10.5" class="f-mut">tema, usuário logado,</text>
+  <text x="218" y="153" font-size="10.5" class="f-mut">preferências da sessão</text>
+  <!-- remoto -->
+  <rect x="0" y="180" width="194" height="140" rx="8" class="f-infos s-infol" stroke-width="1.2"/>
+  <text x="12" y="200" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-info">REMOTO · CAP 14</text>
+  <text x="12" y="224" font-size="15" font-weight="800" class="f-ink">O servidor é o dono</text>
+  <text x="12" y="246" font-size="11" class="mono f-soft">useQuery</text>
+  <text x="12" y="262" font-size="11" class="mono f-soft">useMutation</text>
+  <text x="12" y="290" font-size="10.5" class="f-mut">pacientes, atendimentos,</text>
+  <text x="12" y="305" font-size="10.5" class="f-mut">prescrições</text>
+  <!-- URL -->
+  <rect x="206" y="180" width="194" height="140" rx="8" class="f-warns s-warnl" stroke-width="1.2"/>
+  <text x="218" y="200" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-warn">URL · CAP 13</text>
+  <text x="218" y="224" font-size="15" font-weight="800" class="f-ink">Cabe num link</text>
+  <text x="218" y="246" font-size="11" class="mono f-soft">useParams</text>
+  <text x="218" y="262" font-size="11" class="mono f-soft">useSearchParams</text>
+  <text x="218" y="290" font-size="10.5" class="f-mut">paciente aberto, página,</text>
+  <text x="218" y="305" font-size="10.5" class="f-mut">busca, filtros</text>
+  <text x="200" y="344" text-anchor="middle" font-size="11" font-weight="700" class="f-acc">E se dá para calcular, não é estado: é derivado.</text>
+</svg>
+</div>
+    <figcaption><b>Fig. 0.1</b> — Os quatro lugares onde um estado pode morar. Hooks, contexto, reducer, rotas e bibliotecas aparecem no livro como respostas a esta pergunta.</figcaption>
+  </figure>
+
+  <h2>O laboratório</h2>
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O livro inteiro acontece num hospital</h4>
+      <p>Ao lado de cada leito há um monitor. Ninguém redesenha a tela dele à mão: os sensores mudam um número e o monitor atualiza só a faixa que mudou. É o modelo mental do React, e o mundo de todas as analogias do livro.</p>
+    </div>
+  </div>
+
+  <p>O projeto é o cliente React do <strong>Mini-Prontuário</strong>, que conversa com a API do ebook <em>Crachá &amp; Porta</em>: sessão em cookie, permissões por papel e uma suíte de ataques. A interface é nova; o servidor é real desde o primeiro dia. São três repositórios, <code>estado-e-tela-api</code>, <code>estado-e-tela-web</code> (uma tag git por capítulo) e <code>estado-e-tela-ebook</code>, com este livro, os roteiros de medição e as saídas. Todos os pacientes são fictícios.</p>
+
+  <h2>Como cada capítulo funciona</h2>
+  <p>A ordem é sempre a mesma: o <strong>problema</strong> num sintoma do Mini-Prontuário; o <strong>modelo mental</strong>, com a caixa <em>Onde a analogia para</em>; o mecanismo <strong>por dentro</strong> e <strong>na prática</strong>; o <strong>erro clássico</strong> e a <strong>prova</strong>, um teste que falha sem a correção; o trabalho <strong>com agentes de IA</strong>; e o <strong>fechamento</strong>, com exercícios em três níveis.</p>
+
+  <p>Este livro faz parte de uma série. O <em>Desenvolvimento Dirigido por IA</em>, o Dev de IA, ensina o método de trabalhar com agentes; aqui ele é aplicado ao React, sem repetição. Quando um procedimento está detalhado lá, uma caixa <strong>Ponte · Dev de IA</strong> resume e aponta o capítulo. Os prompts seguem os formatos da disciplina:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Formato</th><th>Quando</th><th>Partes</th></tr>
+    <tr><td><b>Agente</b></td><td>a IA edita o projeto</td><td>Goal · Context · Constraints · Done when</td></tr>
+    <tr><td><b>C-P-T-R-F-A</b></td><td>conversa no chat</td><td>Contexto · Papel · Tarefa · Restrições · Formato · Aceitação</td></tr>
+    <tr><td><b>V.E.R.M.</b></td><td>antes de aceitar a resposta</td><td>Verifica · Explica · Reduz · Marca</td></tr>
+  </table></div>
+  <p>O livro traz o prompt de agente; as variantes de cada capítulo ficam em <code>prompts/capNN.md</code>, no repositório da tela.</p>
+
+  <h2>A régua e as convenções</h2>
+  <p>O capítulo 20 lista <strong>36 competências</strong> de um desenvolvedor sênior de front-end, cada uma com a evidência exigida. Marcar 27 com evidência é chegar a <strong>75%</strong>. Cada capítulo diz quais itens entrega.</p>
+  <ul>
+    <li><strong>Dado</strong> é fato externo, com fonte. <strong>Medido</strong> é saída real de código que rodamos, guardada em <code>saidas/</code>; nenhuma foi escrita à mão.</li>
+    <li>Todo código impresso sai do git, na tag indicada na barra do bloco, em linhas de até 46 caracteres.</li>
+  </ul>
+</section>
+
+<!-- ==================== CAP 1 ==================== -->
+<section class="chapter" id="cap01">
+  <div class="opener"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Duas enfermarias: numa, alguém corre entre cinco quadros; na outra, um único monitor"><defs><clipPath id="arte2"><rect width="400" height="200" rx="12"/></clipPath></defs><g clip-path="url(#arte2)"><rect width="400" height="200" rx="12" fill="#15171C"/><circle cx="300" cy="60" r="120" fill="#C2410C" opacity=".13"/><circle cx="300" cy="60" r="60" fill="#C2410C" opacity=".10"/><rect x="0" y="160" width="400" height="40" fill="#1B1E23"/><rect x="0" y="160" width="400" height="1.5" fill="#2E3238"/><rect x="24" y="20" width="22" height="22" rx="4" fill="#2F6B4F"/><rect x="32.666666666666664" y="24" width="4.666666666666667" height="14" fill="#F2EFE9"/><rect x="28" y="28.666666666666668" width="14" height="4.666666666666667" fill="#F2EFE9"/><rect x="196" y="0" width="8" height="160" fill="#2E3238"/><rect x="22" y="58" width="38" height="28" rx="3" fill="#F2EFE9" opacity=".9"/><rect x="27" y="64" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="27" y="71" width="20" height="2.4" rx="1" fill="#8A8F99"/><rect x="27" y="78" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="70" y="44" width="38" height="28" rx="3" fill="#F2EFE9" opacity=".9"/><rect x="75" y="50" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="75" y="57" width="20" height="2.4" rx="1" fill="#8A8F99"/><rect x="75" y="64" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="118" y="62" width="38" height="28" rx="3" fill="#F2EFE9" opacity=".9"/><rect x="123" y="68" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="123" y="75" width="20" height="2.4" rx="1" fill="#8A8F99"/><rect x="123" y="82" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="150" y="100" width="38" height="28" rx="3" fill="#F0A868" opacity=".9"/><rect x="155" y="106" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="155" y="113" width="20" height="2.4" rx="1" fill="#8A8F99"/><rect x="155" y="120" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="18" y="100" width="38" height="28" rx="3" fill="#F2EFE9" opacity=".9"/><rect x="23" y="106" width="28" height="2.4" rx="1" fill="#8A8F99"/><rect x="23" y="113" width="20" height="2.4" rx="1" fill="#8A8F99"/><rect x="23" y="120" width="28" height="2.4" rx="1" fill="#8A8F99"/><g transform="rotate(-8 112 132)"><rect x="105.60000000000001" y="142.4" width="4.800000000000001" height="17.6" rx="1.6" fill="#3A3F47"/><rect x="113.6" y="142.4" width="4.800000000000001" height="17.6" rx="1.6" fill="#3A3F47"/><rect x="103.2" y="110.4" width="17.6" height="32.0" rx="6.4" fill="#2F6B4F"/><rect x="111.2" y="113.60000000000001" width="1.6" height="25.6" fill="#15171C" opacity=".35"/><circle cx="112" cy="103.2" r="6.800000000000001" fill="#E8E3DA"/></g><rect x="80" y="118" width="16" height="2" rx="1" fill="#F0A868" opacity="0.7"/><rect x="68" y="124" width="12" height="2" rx="1" fill="#F0A868" opacity="0.49999999999999994"/><rect x="56" y="130" width="8" height="2" rx="1" fill="#F0A868" opacity="0.29999999999999993"/><rect x="291.0" y="110" width="6" height="50" fill="#2E3238"/><rect x="273.0" y="156" width="42" height="5" rx="2" fill="#3A3F47"/><rect x="234" y="30" width="120" height="80" rx="8" fill="#262A31" stroke="#3A3F47" stroke-width="2"/><rect x="242" y="38" width="104" height="64" rx="4" fill="#0E1013"/><polyline points="246.0,48.7 254.0,41.7 262.0,54.7 270.0,48.7 278.0,48.7 286.0,41.7 294.0,54.7 302.0,48.7 310.0,48.7 318.0,41.7 326.0,54.7 334.0,48.7 342.0,48.7" fill="none" stroke="#7FCBA2" stroke-width="2" opacity="1"/><rect x="242" y="61.33333333333333" width="104" height="17.333333333333332" fill="#FF8A4C" opacity=".16"/><rect x="242" y="61.33333333333333" width="3" height="17.333333333333332" fill="#FF8A4C"/><polyline points="246.0,66.0 254.0,73.0 262.0,64.0 270.0,74.0 278.0,65.0 286.0,72.0 294.0,66.0 302.0,73.0 310.0,64.0 318.0,74.0 326.0,65.0 334.0,72.0 342.0,66.0" fill="none" stroke="#FF8A4C" stroke-width="2" opacity="1"/><polyline points="246.0,88.3 254.0,94.3 262.0,88.3 270.0,94.3 278.0,88.3 286.0,94.3 294.0,88.3 302.0,94.3 310.0,88.3 318.0,94.3 326.0,88.3 334.0,94.3 342.0,88.3" fill="none" stroke="#9DBDE8" stroke-width="1.6" opacity=".7"/><rect x="361.59999999999997" y="142.4" width="4.800000000000001" height="17.6" rx="1.6" fill="#3A3F47"/><rect x="369.6" y="142.4" width="4.800000000000001" height="17.6" rx="1.6" fill="#3A3F47"/><rect x="359.2" y="110.4" width="17.6" height="32.0" rx="6.4" fill="#2F6B4F"/><rect x="367.2" y="113.60000000000001" width="1.6" height="25.6" fill="#15171C" opacity=".35"/><circle cx="368" cy="103.2" r="6.800000000000001" fill="#E8E3DA"/><g transform="rotate(-8 349 120)"><rect x="340" y="108" width="18" height="24" rx="3" fill="#F2EFE9"/><rect x="343" y="114" width="12" height="2.4" rx="1" fill="#8A8F99"/><rect x="343" y="119" width="8" height="2.4" rx="1" fill="#C2410C"/><rect x="343" y="124" width="10" height="2.4" rx="1" fill="#8A8F99"/></g></g></svg></div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte I · A mudança de paradigma</div>
+    <div class="num">01</div>
+    <h1>Do DOM à mão às interfaces reativas</h1>
+    <div class="deck">O trabalho de manter a tela em dia com os dados não some quando você adota React. Ele muda de dono.</div>
+  </div>
+
+  <p class="lead">Terça, 14h. A enfermeira dá alta para Maria Souza, paciente de alto risco da Ala B. A linha some, o total cai de 6 para 5, e o painel continua dizendo: <em>alto risco: 2</em>.</p>
+
+  <p>Ninguém escreveu um erro; escreveram uma atualização a menos. A tela tinha três lugares que dependiam da mesma lista, e o código da alta lembrou de dois.</p>
+
+  <h2><span class="sn">1.1</span>Como chegamos aqui</h2>
+  <p>Em 2005, o AJAX deixou a página pedir dados sem recarregar. Em 2006, o jQuery tornou a manipulação do DOM o jeito padrão de programar a tela. Em 2010, Backbone e AngularJS popularizaram as aplicações de página única. Em 2013 veio o React, com uma ideia diferente: a pergunta deixou de ser <em>como alterar a tela</em> quando um dado muda e passou a ser <em>como a tela deve ficar</em> para um estado qualquer. Vue e Svelte seguiram a mesma ideia com outra mecânica, e em 2026 o React passou a ser mantido pela React Foundation, na Linux Foundation.</p>
+
+  <h2><span class="sn">1.2</span>A Ala B em três versões</h2>
+  <p>O laboratório está em <code>laboratorio/cap01</code>, na tag <code>cap01</code>: três páginas com a mesma tela, sem build. Seis pacientes fictícios, uma busca, um campo de anotação e um botão de alta por paciente, e um resumo com o total e quantos são de alto risco. Sirva a pasta com <code>npx serve laboratorio/cap01</code> e abra cada página.</p>
+  <p>Cada uma traz no topo um <strong>medidor</strong>, um <code>MutationObserver</code> que conta os elementos que entram e saem do DOM e os textos ou atributos trocados. É ele que transforma "o React é eficiente" em número.</p>
+
+  <h2><span class="sn">1.3</span>Versão 1: você diz como mudar</h2>
+  <p>A primeira versão é <strong>imperativa</strong>: o código dá ordens ao DOM, passo a passo. Na montagem ele preenche o total e o alto risco; na alta, remove a linha e corrige o total:</p>
+
+  <figure>
+    <div class="fig-frame"><svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Imperativo versus declarativo: quem atualiza a tela">
+  <text x="0" y="14" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-bad">IMPERATIVO · VOCÊ ATUALIZA O DOM</text>
+  <g font-size="10.5">
+    <rect x="0" y="24" width="92" height="40" rx="6" class="f-alt"/><text x="46" y="48" text-anchor="middle" font-weight="700" class="f-ink">clique</text>
+    <rect x="102" y="24" width="92" height="40" rx="6" class="f-alt"/><text x="148" y="42" text-anchor="middle" font-weight="700" class="f-ink">muda</text><text x="148" y="56" text-anchor="middle" class="mono f-mut">pacientes[]</text>
+    <rect x="204" y="24" width="196" height="40" rx="6" class="f-bads s-badl" stroke-width="1"/><text x="216" y="42" font-weight="700" class="f-ink">acha e altera cada nó</text><text x="216" y="56" class="mono f-mut">lista · contador · badge</text>
+  </g>
+  <g class="mono" font-size="10">
+    <rect x="204" y="72" width="62" height="24" rx="4" class="f-bads"/><text x="235" y="88" text-anchor="middle" class="f-bad">#lista</text>
+    <rect x="271" y="72" width="62" height="24" rx="4" class="f-bads"/><text x="302" y="88" text-anchor="middle" class="f-bad">#total</text>
+    <rect x="338" y="72" width="62" height="24" rx="4" class="f-bads"/><text x="369" y="88" text-anchor="middle" class="f-bad">#alto</text>
+  </g>
+  <text x="0" y="122" font-size="11" class="f-soft">Esqueceu um dos três? A tela mente e nenhum erro aparece.</text>
+  <line x1="0" y1="140" x2="400" y2="140" stroke-dasharray="2 4" stroke-width="1" class="s-bord"/>
+  <text x="0" y="166" font-size="9.5" font-weight="800" letter-spacing="1.1" class="f-good">DECLARATIVO · VOCÊ DESCREVE, O REACT ATUALIZA</text>
+  <g font-size="10.5">
+    <rect x="0" y="176" width="92" height="40" rx="6" class="f-alt"/><text x="46" y="200" text-anchor="middle" font-weight="700" class="f-ink">clique</text>
+    <rect x="102" y="176" width="92" height="40" rx="6" class="f-goods s-goodl" stroke-width="1"/><text x="148" y="194" text-anchor="middle" font-weight="700" class="f-ink">setPacientes</text><text x="148" y="208" text-anchor="middle" class="mono f-mut">novo estado</text>
+    <rect x="204" y="176" width="92" height="40" rx="6" class="f-alt"/><text x="250" y="194" text-anchor="middle" font-weight="700" class="f-ink">render</text><text x="250" y="208" text-anchor="middle" class="mono f-mut">UI = f(estado)</text>
+    <rect x="306" y="176" width="94" height="40" rx="6" class="f-alt"/><text x="353" y="194" text-anchor="middle" font-weight="700" class="f-ink">commit</text><text x="353" y="208" text-anchor="middle" class="mono f-mut">só a diferença</text>
+  </g>
+  <g fill="none" stroke-width="1.6" class="s-mut"><path d="M92 196 h10"/><path d="M194 196 h10"/><path d="M296 196 h10"/><path d="M92 44 h10"/><path d="M194 44 h10"/></g>
+  <text x="0" y="246" font-size="11" class="f-soft">Você escreve a tela uma vez, para qualquer estado.</text>
+  <text x="0" y="263" font-size="11" class="f-soft">Esquecer um lugar deixa de ser possível.</text>
+  <text x="0" y="292" font-size="11" font-weight="700" class="f-acc">O trabalho não sumiu: mudou de dono.</text>
+</svg>
+</div>
+    <figcaption><b>Fig. 1.1</b> — Quem atualiza a tela. No imperativo, cada evento precisa encontrar e alterar cada nó afetado. No declarativo, você descreve a tela para qualquer estado, e o React calcula o que mudar.</figcaption>
+  </figure>
+
+  <div class="term t-curto"><div class="term-bar"><span class="arq">1-imperativo.html · alta</span><span class="tag-git">cap01</span></div><pre><span class="c">// alta: tira a linha e corrige o total</span>
+lista.addEventListener(<span class="s">&quot;click&quot;</span>, (e) =&gt; {
+  <span class="k">if</span> (e.target.tagName !== <span class="s">&quot;BUTTON&quot;</span>) <span class="k">return</span>;
+  <span class="k">const</span> li = e.target.closest(<span class="s">&quot;li&quot;</span>);
+  pacientes = pacientes
+    .filter((p) =&gt; p.id !== li.dataset.id);
+  li.remove();
+  total.textContent = pacientes.length;
+});</pre></div>
+
+  <p>O código precisa saber quais nós existem, quais dependem de <code>pacientes</code> e em que ordem atualizá-los. Com três dependências já houve esquecimento; uma tela real tem dezenas.</p>
+
+
+  <h2><span class="sn">1.4</span>Versão 2: estado e <code>render()</code></h2>
+  <p>A segunda versão é a que a disciplina ensinou: um objeto <code>estado</code> e uma função que redesenha a tela inteira a partir dele.</p>
+
+  <div class="term"><div class="term-bar"><span class="arq">2-render.html · render()</span><span class="tag-git">cap01</span></div><pre><span class="c">// a tela inteira sai do estado, sempre</span>
+<span class="k">function</span> render() {
+  <span class="k">const</span> t = estado.busca.toLowerCase();
+  <span class="k">const</span> vis = estado.pacientes.filter((p) =&gt;
+    p.nome.toLowerCase().includes(t));
+  <span class="k">const</span> alto = estado.pacientes
+    .filter((p) =&gt; p.risco === <span class="s">&quot;alto&quot;</span>).length;
+  app.innerHTML = <span class="s">`
+    &lt;p&gt;${estado.pacientes.length} pacientes
+      · alto risco: ${alto}&lt;/p&gt;
+    &lt;ul&gt;${vis.map((p) =&gt; `</span>
+      &lt;li data-id=<span class="s">&quot;${p.id}&quot;</span>&gt;
+        &lt;b&gt;${p.nome}&lt;/b&gt; ${p.leito}
+        &lt;input placeholder=<span class="s">&quot;anotação&quot;</span>&gt;
+        &lt;button&gt;Alta&lt;/button&gt;
+      &lt;/li&gt;<span class="s">`).join(&quot;&quot;)}
+    &lt;/ul&gt;`</span>;
+}</pre></div>
+
+  <p>Ela já pensa do jeito certo: o alto risco é <strong>calculado</strong> a cada render e nunca fica errado. O problema é o <code>innerHTML</code>, que joga fora todos os nós e cria outros. Cada tecla na busca reconstrói a lista, e o que estava dentro dos nós antigos vai junto: o texto das anotações, o foco.</p>
+
+  <h2><span class="sn">1.5</span>Versão 3: React</h2>
+  <p>A terceira mantém a ideia da segunda e troca o mecanismo. O React vem do <code>esm.sh</code> por um <code>importmap</code>:</p>
+
+  <div class="term"><div class="term-bar"><span class="arq">3-react.html · Ala</span><span class="tag-git">cap01</span></div><pre><span class="c">// a tela é uma função do estado</span>
+<span class="k">function</span> Ala() {
+  <span class="k">const</span> [busca, setBusca] = useState(<span class="s">&quot;&quot;</span>);
+  <span class="k">const</span> [pacientes, setPacientes] =
+    useState(PACIENTES);
+
+  <span class="k">const</span> t = busca.toLowerCase();
+  <span class="k">const</span> vis = pacientes.filter((p) =&gt;
+    p.nome.toLowerCase().includes(t));
+  <span class="k">const</span> alto = pacientes
+    .filter((p) =&gt; p.risco === <span class="s">&quot;alto&quot;</span>).length;
+  <span class="k">const</span> alta = (id) =&gt; setPacientes(
+    pacientes.filter((p) =&gt; p.id !== id));
+
+  <span class="k">return</span> h(<span class="s">&quot;div&quot;</span>, <span class="k">null</span>,
+    h(<span class="s">&quot;input&quot;</span>, {
+      placeholder: <span class="s">&quot;buscar&quot;</span>, value: busca,
+      onChange: (e) =&gt;
+        setBusca(e.target.value),
+    }),
+    h(<span class="s">&quot;p&quot;</span>, <span class="k">null</span>,
+      <span class="s">`${pacientes.length} pacientes`</span>
+      + <span class="s">` · alto risco: ${alto}`</span>),
+    h(<span class="s">&quot;ul&quot;</span>, <span class="k">null</span>, vis.map((p) =&gt;
+      h(<span class="s">&quot;li&quot;</span>, { key: p.id },
+        h(<span class="s">&quot;b&quot;</span>, <span class="k">null</span>, p.nome), <span class="s">` ${p.leito} `</span>,
+        h(<span class="s">&quot;input&quot;</span>,
+          { placeholder: <span class="s">&quot;anotação&quot;</span> }),
+        h(<span class="s">&quot;button&quot;</span>,
+          { onClick: () =&gt; alta(p.id) },
+          <span class="s">&quot;Alta&quot;</span>)))));
+}</pre></div>
+
+  <ul>
+    <li><strong><code>useState</code></strong> guarda um valor entre renders e devolve a função que o troca. <code>setPacientes</code> não mexe no DOM: avisa o React de que o estado mudou.</li>
+    <li><strong><code>h</code></strong> é o <code>createElement</code> do React. Ele devolve uma <em>descrição</em> do que deveria existir, não um nó. O JSX vira exatamente estas chamadas (capítulo 3).</li>
+    <li><strong><code>key: p.id</code></strong> diz qual paciente cada linha representa.</li>
+  </ul>
+  <p>A função <code>Ala</code> não sabe se roda pela primeira ou pela centésima vez: recebe o estado e devolve a tela. Quem compara a descrição nova com a anterior e aplica a diferença é o React.</p>
+
+  <h2><span class="sn">1.6</span>O que o medidor mostra</h2>
+  <p>As três páginas passaram pelo mesmo roteiro num Chromium: anotar "ver febre" em João Lima, digitar <code>o</code> na busca, limpar a busca e dar alta a Maria Souza.</p>
+
+  <div class="term t-curto">
+    <div class="term-bar"><span>medicoes/cap01.py · Medido</span></div>
+<pre>Chromium 141.0.7390.37
+
+versão     busca o     alta Maria  nota    alto
+imperativo +0 −0 ~2    +0 −4 ~1    fica<span class="w">    2</span>
+render()   +18 −26 ~0  +22 −26 ~0  <span class="w">some</span>    1
+React      +0 −8 ~1    +0 −4 ~1    fica    1
+
++ elementos que entram  − que saem
+~ textos ou atributos trocados</pre>
+  </div>
+
+  <ul>
+    <li><strong>Busca.</strong> O imperativo esconde duas linhas (dois atributos <code>hidden</code>). O <code>render()</code> destrói 26 elementos e cria 18. O React remove só as duas linhas que saíram e troca um atributo, o <code>value</code> da busca.</li>
+    <li><strong>Alta.</strong> Imperativo e React fazem o mesmo trabalho no DOM, e o imperativo deixa o alto risco em 2.</li>
+    <li><strong>Nota.</strong> Só o <code>render()</code> apagou a anotação.</li>
+  </ul>
+
+  <div class="pull">O imperativo economiza e erra. O render() acerta e destrói. O React acerta e economiza.</div>
+
+  <p>Eficiente não quer dizer mais rápido: na alta, o React ainda executou <code>Ala</code> e comparou duas descrições da tela. O ganho é deixar de escrever, e de esquecer, cada atualização à mão. O capítulo 16 mede quando o tempo passa a importar.</p>
+
+  <h2><span class="sn">1.7</span>Declarativo, estado e reatividade</h2>
+  <p><strong>Declarativo</strong> é descrever o resultado para um estado e deixar o mecanismo decidir os passos. <strong>Estado da interface</strong> são os dados que, se mudarem, mudam o que aparece. <strong>Reatividade</strong> é a tela acompanhar o estado sem você escrever a atualização. No React ela é explícita: a tela só muda quando você chama o <code>set</code> do estado e o componente roda de novo. Vue, Svelte e Solid rastreiam sozinhos o que cada trecho da tela lê; são escolhas diferentes para o mesmo objetivo.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O monitor de beira-leito</h4>
+      <p>A enfermeira não redesenha a tela do monitor. Os sinais vitais mudam e o monitor atualiza a faixa que mudou. Os sinais vitais são o estado; a tela do monitor é a interface.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O monitor real lê os sensores o tempo todo. O React não observa nada: só calcula a tela de novo quando alguém chama o <code>set</code> de um estado. Mudar uma variável comum não muda a tela.</p>
+  </div>
+
+  <h2><span class="sn">1.8</span>Biblioteca, não framework</h2>
+  <p>O React transforma estado em interface. Rotas, busca de dados, build de produção e renderização no servidor vêm de outras ferramentas ou de um <strong>framework</strong> construído sobre ele.</p>
+
+  <div class="box data">
+    <span class="bt">Dado · react.dev, fev. 2025</span>
+    <p>O Create React App foi descontinuado. A documentação recomenda frameworks (Next.js, React Router, Expo) para produção e ferramentas como o Vite para montar a aplicação do zero e aprender o básico.</p>
+  </div>
+
+  <p>Este livro escolhe o caminho do zero com Vite de propósito: cada peça entra quando o problema dela aparece, e você vê o que um framework faz antes de delegar. O Next.js aparece nos capítulos 17 e 18 e terá um ebook próprio.</p>
+
+  <h2><span class="sn">1.9</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Dois vícios imperativos aparecem em código gerado: <code>document.querySelector</code> dentro de componente para "atualizar um contador", que briga com o React pelo mesmo DOM; e HTML montado em string com <code>dangerouslySetInnerHTML</code>, que reabre a porta para XSS que o React fecha ao escapar todo texto.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 1</span><button class="copy" type="button" data-copy="p1-agente">Copiar</button></div>
+<pre id="p1-agente"><span class="k">Goal</span>
+Reescrever a tela de pacientes do meu
+front-end vanilla como função do estado,
+com React por importmap, sem build.
+
+<span class="k">Context</span>
+@laboratorio/cap01/3-react.html (modelo)
+@&lt;sua tela vanilla&gt;.html
+
+<span class="k">Constraints</span>
+- sem document.querySelector em componente
+- sem innerHTML e sem
+  dangerouslySetInnerHTML
+- contagens calculadas no render
+- key de lista é o id do registro
+- fora de escopo: estilo, API, build
+
+<span class="k">Done when</span>
+- anotar e buscar: a anotação fica
+- após a alta, todas as contagens batem
+- no medidor, a alta só remove a linha
+  do paciente e troca textos</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Corrija a alta na versão imperativa. Depois liste o que precisaria mudar se a tela ganhasse um terceiro número, como pacientes em isolamento.</span></li>
+    <li><b>Intermediário</b><span>Na versão <code>render()</code>, mova a busca para dentro do <code>#app</code> e explique, com o medidor, por que o campo perde o foco a cada tecla.</span></li>
+    <li><b>Desafio</b><span>Na versão React, troque <code>key: p.id</code> por <code>key: i</code>. Anote em João Lima, dê alta a Maria Souza e descreva o que aconteceu. O capítulo 3 explica.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 01. <b>Tag:</b> <code>cap01</code>. <b>Prompts:</b> revisão e C-P-T-R-F-A em <code>prompts/cap01.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Sunsetting Create React App</em> (fev. 2025), <em>Creating a React App</em>, <em>Introducing the React Foundation</em> (out. 2025; fundação lançada em fev. 2026). MDN: <em>MutationObserver</em>. Medição em <code>saidas/c1-ala.txt</code>, Chromium 141, com React 19.3.1 servido localmente nas URLs do importmap.</p>
+  </div>
+</section>
+
+<!-- ==================== CAP 2 ==================== -->
+<section class="chapter" id="cap02">
+  <div class="opener"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Carrinho de equipamentos ligado à tomada; uma luz verde acende"><defs><clipPath id="arte3"><rect width="400" height="200" rx="12"/></clipPath></defs><g clip-path="url(#arte3)"><rect width="400" height="200" rx="12" fill="#15171C"/><circle cx="250" cy="80" r="120" fill="#C2410C" opacity=".13"/><circle cx="250" cy="80" r="60" fill="#C2410C" opacity=".10"/><rect x="0" y="160" width="400" height="40" fill="#1B1E23"/><rect x="0" y="160" width="400" height="1.5" fill="#2E3238"/><rect x="24" y="20" width="22" height="22" rx="4" fill="#2F6B4F"/><rect x="32.666666666666664" y="24" width="4.666666666666667" height="14" fill="#F2EFE9"/><rect x="28" y="28.666666666666668" width="14" height="4.666666666666667" fill="#F2EFE9"/><rect x="330" y="96" width="34" height="44" rx="5" fill="#262A31" stroke="#2E3238" stroke-width="2"/><circle cx="341" cy="118" r="3" fill="#15171C"/><circle cx="353" cy="118" r="3" fill="#15171C"/><rect x="150" y="86" width="130" height="10" rx="3" fill="#8A8F99"/><rect x="156" y="96" width="118" height="44" rx="4" fill="#3A3F47"/><rect x="164" y="104" width="46" height="12" rx="2" fill="#262A31"/><rect x="164" y="120" width="46" height="12" rx="2" fill="#262A31"/><rect x="150" y="140" width="130" height="6" rx="2" fill="#8A8F99"/><circle cx="160" cy="153" r="7" fill="#2E3238"/><circle cx="160" cy="153" r="2.5" fill="#8A8F99"/><circle cx="270" cy="153" r="7" fill="#2E3238"/><circle cx="270" cy="153" r="2.5" fill="#8A8F99"/><rect x="176" y="26" width="86" height="58" rx="8" fill="#262A31" stroke="#3A3F47" stroke-width="2"/><rect x="184" y="34" width="70" height="42" rx="4" fill="#0E1013"/><polyline points="188.0,41.0 193.2,34.0 198.3,47.0 203.5,41.0 208.7,41.0 213.8,34.0 219.0,47.0 224.2,41.0 229.3,41.0 234.5,34.0 239.7,47.0 244.8,41.0 250.0,41.0" fill="none" stroke="#7FCBA2" stroke-width="2" opacity="1"/><polyline points="188.0,51.0 193.2,58.0 198.3,49.0 203.5,59.0 208.7,50.0 213.8,57.0 219.0,51.0 224.2,58.0 229.3,49.0 234.5,59.0 239.7,50.0 244.8,57.0 250.0,51.0" fill="none" stroke="#FF8A4C" stroke-width="2" opacity="1"/><polyline points="188.0,66.0 193.2,72.0 198.3,66.0 203.5,72.0 208.7,66.0 213.8,72.0 219.0,66.0 224.2,72.0 229.3,66.0 234.5,72.0 239.7,66.0 244.8,72.0 250.0,66.0" fill="none" stroke="#9DBDE8" stroke-width="1.6" opacity=".7"/><rect x="222" y="104" width="44" height="28" rx="3" fill="#262A31"/><circle cx="254" cy="118" r="12" fill="#7FCBA2" opacity=".18"/><circle cx="254" cy="118" r="3" fill="#7FCBA2"/><path d="M266 128 C 300 160, 320 160, 341 132" fill="none" stroke="#8A8F99" stroke-width="2.5"/><rect x="336" y="126" width="18" height="10" rx="2" fill="#F2EFE9"/><rect x="88.39999999999999" y="139.1" width="5.699999999999999" height="20.9" rx="1.9" fill="#3A3F47"/><rect x="97.9" y="139.1" width="5.699999999999999" height="20.9" rx="1.9" fill="#3A3F47"/><rect x="85.55" y="101.1" width="20.9" height="38.0" rx="7.6" fill="#2F6B4F"/><rect x="95.05" y="104.89999999999999" width="1.9" height="30.4" fill="#15171C" opacity=".35"/><circle cx="96" cy="92.55" r="8.075" fill="#E8E3DA"/></g></svg></div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte I · A mudança de paradigma</div>
+    <div class="num">02</div>
+    <h1>O primeiro projeto em vinte minutos</h1>
+    <div class="deck">Do terminal vazio a um projeto versionado, ligado à API e pronto para um agente trabalhar nele.</div>
+  </div>
+
+  <p class="lead">A página do capítulo 1 funcionou sem build, mas não escala: sem JSX, sem TypeScript, sem pacotes, sem build de produção. Este capítulo monta o projeto de verdade.</p>
+
+  <p>Você precisa do <strong>Node 24</strong> (ou 22.22+), Git, um editor e a extensão <strong>React Developer Tools</strong>. O Vite 8 aceita Node 20.19+, mas o React Router 8, que entra no capítulo 13, exige 22.22+; começar no 24 evita trocar de versão no meio do livro.</p>
+
+  <h2><span class="sn">2.1</span>Gerando o projeto</h2>
+  <div class="term t-curto">
+    <div class="term-bar"><span>terminal</span></div>
+<pre>npm create vite@latest mini-prontuario-web \
+  -- --template react-ts
+cd mini-prontuario-web &amp;&amp; npm install
+npm run dev     <span class="c"># http://localhost:5173</span></pre>
+  </div>
+
+  <p>O <code>index.html</code> é a única página: um <code>&lt;div id="root"&gt;</code> e o script de <code>src/main.tsx</code>, que cria a raiz do React. O <code>vite.config.ts</code> configura o Vite, os <code>tsconfig*.json</code> os tipos, e o <code>.oxlintrc.json</code> o linter, já com as regras dos Hooks.</p>
+
+  <div class="box data">
+    <span class="bt">Dado · o template de outubro de 2026</span>
+    <p>Com <code>create-vite</code> 9.3.1, o template usa <strong>oxlint</strong> em vez de ESLint e fixa o <strong>TypeScript 6.0</strong>: o 7.0, com compilador nativo, ainda não tem a API que parte das ferramentas usa. Não há <code>"strict": true</code> porque o modo estrito virou o padrão:</p>
+  </div>
+
+  <div class="term t-curto">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>$ npx tsc -p tsconfig.app.json --noEmit
+src/_t.ts(1,19): <span class="w">error TS7006</span>: Parameter &#x27;x&#x27;
+  implicitly has an &#x27;any&#x27; type.</pre>
+  </div>
+
+  <h2><span class="sn">2.2</span>Scripts e o portão</h2>
+  <p><code>dev</code> serve a tela e a atualiza quando você salva; <code>build</code> confere os tipos e gera <code>dist/</code>; <code>preview</code> serve o build; <code>lint</code> roda o oxlint. O projeto acrescenta <code>gate</code>, que roda tudo o que precisa passar antes de qualquer entrega:</p>
+
+  <div class="term t-curto">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>$ npm run gate
+&gt; tsc -b &amp;&amp; oxlint &amp;&amp; vite build
+
+vite v8.3.5 building client environment for production...
+✓ 16 modules transformed.
+…
+index-DeCkmCJv.js   219.85 kB │ gzip: 68.76 kB
+✓ built in 108ms</pre>
+  </div>
+
+  <p>O <code>tsc -b</code> não gera arquivos (o <code>tsconfig</code> tem <code>noEmit</code>): quem transforma TypeScript em JavaScript é o Vite, e ele não confere tipos. Por isso o <code>dev</code> mostra a tela mesmo com erro de tipo, e o <code>gate</code> não deixa esse erro passar.</p>
+
+  <h2><span class="sn">2.3</span>O ponto de entrada</h2>
+  <div class="term t-curto"><div class="term-bar"><span class="arq">src/main.tsx</span><span class="tag-git">cap02</span></div><pre><span class="k">import</span> { StrictMode } <span class="k">from</span> <span class="s">&quot;react&quot;</span>;
+<span class="k">import</span> { createRoot } <span class="k">from</span> <span class="s">&quot;react-dom/client&quot;</span>;
+<span class="k">import</span> <span class="s">&quot;./index.css&quot;</span>;
+<span class="k">import</span> App <span class="k">from</span> <span class="s">&quot;./App.tsx&quot;</span>;
+
+createRoot(document.getElementById(<span class="s">&quot;root&quot;</span>)!)
+  .render(
+    &lt;StrictMode&gt;
+      &lt;App /&gt;
+    &lt;/StrictMode&gt;,
+  );</pre></div>
+
+  <p><code>createRoot</code> liga o React a um nó do DOM, e <code>render</code> faz o primeiro desenho. <strong><code>StrictMode</code></strong> só age em desenvolvimento: chama cada componente duas vezes por render e monta e desmonta cada efeito uma vez a mais, para revelar código que depende de rodar uma vez só. Os capítulos 3 e 7 mostram o que ele pega.</p>
+
+  <h2><span class="sn">2.4</span>A tela e a API na mesma origem</h2>
+  <p>A tela roda em <code>:5173</code> e a API em <code>:3000</code>. Portas diferentes são <strong>origens</strong> diferentes para o navegador, o que traria CORS e regras de cookie entre sites. O <strong>proxy</strong> do Vite evita isso:</p>
+
+  <figure>
+    <div class="fig-frame"><svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="O proxy do Vite: tela e API na mesma origem"><rect x="0" y="0" width="400" height="50" rx="6" class="f-alt"/><text x="14" y="20" font-size="9.5" font-weight="800" class="f-mut">NAVEGADOR</text><text x="14" y="39" font-size="13" font-weight="700" class="f-ink mono">http://localhost:5173</text><line x1="200" y1="50" x2="200" y2="76" stroke-width="1.6" class="s-mut"/><path d="M196 70 L200 76 L204 70" fill="none" stroke-width="1.6" class="s-mut"/><rect x="0" y="76" width="400" height="132" rx="6" class="f-accs s-accl" stroke-width="1.2"/><text x="14" y="96" font-size="9.5" font-weight="800" class="f-acc">VITE · SERVIDOR DE DESENVOLVIMENTO · :5173</text><rect x="14" y="108" width="178" height="86" rx="6" class="f-card s-bord" stroke-width="1"/><text x="26" y="128" font-size="11" font-weight="700" class="f-ink mono">/src/main.tsx …</text><text x="26" y="148" font-size="10.5" class="f-soft">transforma TSX em JS</text><text x="26" y="164" font-size="10.5" class="f-soft">e devolve o módulo;</text><text x="26" y="180" font-size="10.5" class="f-soft">salvou, a tela troca</text><rect x="208" y="108" width="178" height="86" rx="6" class="f-card s-bord" stroke-width="1"/><text x="220" y="128" font-size="11" font-weight="700" class="f-ink mono">/api/…  /health</text><text x="220" y="148" font-size="10.5" class="f-soft">não responde: repassa</text><text x="220" y="164" font-size="10.5" class="f-soft">para a API e devolve</text><text x="220" y="180" font-size="10.5" class="f-soft">a resposta como é</text><line x1="297" y1="194" x2="297" y2="234" stroke-width="1.6" class="s-mut"/><path d="M293 228 L297 234 L301 228" fill="none" stroke-width="1.6" class="s-mut"/><rect x="0" y="234" width="400" height="56" rx="6" class="f-infos s-infol" stroke-width="1.2"/><text x="14" y="254" font-size="9.5" font-weight="800" class="f-info">API EXPRESS DO CRACHÁ &amp; PORTA · :3000</text><text x="14" y="274" font-size="11.5" font-weight="700" class="f-ink">sessão, permissões, pacientes</text><text x="0" y="314" font-size="11" class="f-soft">Para o navegador existe uma origem só. O cookie</text><text x="0" y="331" font-size="11" class="f-soft">de sessão vai junto e não há CORS no caminho.</text></svg>
+</div>
+    <figcaption><b>Fig. 2.1</b> — O navegador só conhece <code>localhost:5173</code>. O Vite serve o código da tela e repassa para a API o que começa com <code>/api</code> ou <code>/health</code>.</figcaption>
+  </figure>
+
+  <div class="term"><div class="term-bar"><span class="arq">vite.config.ts</span><span class="tag-git">cap02</span></div><pre><span class="k">import</span> react <span class="k">from</span> <span class="s">&quot;@vitejs/plugin-react&quot;</span>;
+<span class="k">import</span> { defineConfig } <span class="k">from</span> <span class="s">&quot;vite&quot;</span>;
+
+<span class="c">// O Vite serve a tela em :5173 e repassa para</span>
+<span class="c">// a API em :3000 tudo que começa com /api.</span>
+<span class="c">// Para o navegador, é tudo uma origem só.</span>
+<span class="k">export</span> <span class="k">default</span> defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      <span class="s">&quot;/api&quot;</span>: <span class="s">&quot;http://localhost:3000&quot;</span>,
+      <span class="s">&quot;/health&quot;</span>: <span class="s">&quot;http://localhost:3000&quot;</span>,
+    },
+  },
+});</pre></div>
+
+
+  <p>Em produção não há Vite: o build vira arquivos estáticos e o servidor que os publica faz o papel do proxy. O código não muda, porque nunca usa endereço de servidor:</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-00</span>
+    <p>O front chama a API por caminho relativo (<code>/api/...</code>). Verificação: <code>grep -rn "localhost:3000" src</code> não encontra nada.</p>
+  </div>
+
+  <p>O <code>App</code> do template virou um verificador: um botão cujo <strong>handler de evento</strong> chama <code>fetch("/health")</code> e guarda o resultado em estado. Buscar dados ao abrir a tela pede <code>useEffect</code>, e há bons motivos para esperar até o capítulo 7. A sessão também passa pelo proxy: este roteiro entra como Ana pela tela e consulta quem está logado.</p>
+
+  <div class="term t-curto">
+    <div class="term-bar"><span>medicoes/cap02_cookie.py · Medido</span></div>
+<pre>chromium 141.0.7390.37 · http://localhost:5173/
+tela: API ok (via proxy /health)
+POST /api/auth/login  -&gt; 200
+cookie __Host-sessao: httpOnly=True secure=True sameSite=Lax
+document.cookie       -&gt;<span class="w"> &#x27;&#x27;</span>
+GET  /api/auth/me     -&gt; 200 ana@hospital.dev</pre>
+  </div>
+
+  <p>O cookie chegou <code>HttpOnly</code>, <code>Secure</code> e <code>SameSite=Lax</code>, o JavaScript da página não o lê, e mesmo assim o pedido seguinte saiu autenticado: o navegador anexa o cookie sozinho. O capítulo 15 constrói a sessão da tela sobre isso; o porquê de cada atributo está no <em>Crachá &amp; Porta</em>, capítulo 5.</p>
+
+  <p>Para inspecionar, a extensão React Developer Tools acrescenta as abas <strong>Components</strong> (árvore, props e estado) e <strong>Profiler</strong> (quem renderizou e quanto levou). O Vite entrega <em>source maps</em>: os <em>breakpoints</em> param no <code>.tsx</code> original.</p>
+
+  <h2><span class="sn">2.5</span>Git e o contexto do agente</h2>
+  <p>O primeiro commit vem antes da primeira feature, com quatro arquivos que o agente lê antes de qualquer tarefa:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Arquivo</th><th>O que guarda</th></tr>
+    <tr><td><b><code>AGENTS.md</code></b></td><td>Comandos, como o projeto funciona e regras; formato que Codex e agy leem</td></tr>
+    <tr><td><b><code>CLAUDE.md</code></b></td><td>Uma linha, <code>@AGENTS.md</code>: o Claude Code importa o mesmo conteúdo</td></tr>
+    <tr><td><b><code>INVARIANTES.md</code></b></td><td>Regras com verificação; começa com a UI-00</td></tr>
+    <tr><td><b><code>IA.md</code></b></td><td>Cada tarefa feita com agente: pedido, verificação, o que foi recusado</td></tr>
+  </table></div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, caps. 3 a 5</span>
+    <p>Por que o contexto deve ser curto e como um invariante ganha verificação executável: o mapa dos cinco arquivos (cap. 3), <code>CLAUDE.md</code> e <code>AGENTS.md</code> (cap. 4) e <code>INVARIANTES.md</code> (cap. 5).</p>
+  </div>
+
+  <h2><span class="sn">2.6</span>Com agentes de IA</h2>
+  <p>A primeira tarefa num projeto novo é conferir se o agente entendeu o projeto, em modo de plano, sem editar nada. O conteúdo do prompt é o mesmo nas três ferramentas; muda como você planeja, revisa e roda sem interação:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Passo</th><th>Claude Code</th><th>Codex · agy</th></tr>
+    <tr><td><b>Planejar</b></td><td>Shift+Tab (Plan Mode)</td><td><code>/plan</code> · modo de plano</td></tr>
+    <tr><td><b>Revisar</b></td><td><code>/code-review</code></td><td><code>/review</code> · subagente</td></tr>
+    <tr><td><b>Sem interação</b></td><td><code>claude -p</code></td><td><code>codex exec</code> · <code>agy -p</code></td></tr>
+  </table></div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE (MODO DE PLANO) · CAP 2</span><button class="copy" type="button" data-copy="p2-agente">Copiar</button></div>
+<pre id="p2-agente"><span class="k">Goal</span>
+Explicar o caminho de um clique em
+"Verificar API" até a resposta da API.
+
+<span class="k">Context</span>
+@AGENTS.md @vite.config.ts @src/
+A API roda em :3000 (outro repositório).
+
+<span class="k">Constraints</span>
+- só leitura: não edite nada
+- cite arquivo e linha de cada passo
+- diga o que muda em produção
+
+<span class="k">Done when</span>
+- cita main.tsx, App.tsx, vite.config.ts
+- explica por que não há CORS no caminho
+- git status continua limpo</pre>
+  </div>
+
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Diante de um erro de CORS, o agente costuma propor <code>fetch("http://localhost:3000/...")</code> e liberar <code>origin: "*"</code> na API. As duas mudanças funcionam e estão erradas: a primeira quebra a UI-00 e a produção, a segunda abre a API para qualquer site. O <code>AGENTS.md</code> já proíbe mexer na API e no Vite. Comandos de agente mudam rápido; confira na versão instalada.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Gere o projeto, configure o proxy e faça o botão mostrar <strong>ok</strong>. Pare a API e clique de novo: o que aparece, e por quê?</span></li>
+    <li><b>Intermediário</b><span>Introduza um erro de tipo no <code>App.tsx</code>. Rode <code>npm run dev</code> e depois <code>npm run gate</code> e explique a diferença.</span></li>
+    <li><b>Desafio</b><span>Rode <code>npm run build</code> e <code>npm run preview</code>: o botão funciona. Descubra na documentação do Vite por quê, e escreva a configuração que um servidor de produção (nginx, por exemplo) precisaria para a UI-00 continuar valendo.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> prepara 34 e 35. <b>Invariantes:</b> UI-00. <b>Tag:</b> <code>cap02</code>. <b>Prompts:</b> <code>prompts/cap02.md</code>.</p>
+    <p><b>Fontes.</b> Vite 8 (mar. 2026), <em>server.proxy</em>, <em>preview.proxy</em>; react.dev: <em>createRoot</em>, <em>StrictMode</em>; React Router v8; TypeScript 7 (InfoQ). Template de 21 out. 2026. Saídas em <code>saidas/c2-*.txt</code>.</p>
+  </div>
+</section>
+
+<!-- ==================== CAP 3 ==================== -->
+<section class="chapter" id="cap03">
+  <div class="opener"><svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Monitor de beira-leito atualizando só uma faixa da tela, ao lado de um leito e de uma enfermeira"><defs><clipPath id="arte4"><rect width="400" height="200" rx="12"/></clipPath></defs><g clip-path="url(#arte4)"><rect width="400" height="200" rx="12" fill="#15171C"/><circle cx="250" cy="70" r="120" fill="#C2410C" opacity=".13"/><circle cx="250" cy="70" r="60" fill="#C2410C" opacity=".10"/><rect x="0" y="160" width="400" height="40" fill="#1B1E23"/><rect x="0" y="160" width="400" height="1.5" fill="#2E3238"/><rect x="24" y="20" width="22" height="22" rx="4" fill="#2F6B4F"/><rect x="32.666666666666664" y="24" width="4.666666666666667" height="14" fill="#F2EFE9"/><rect x="28" y="28.666666666666668" width="14" height="4.666666666666667" fill="#F2EFE9"/><rect x="246.0" y="122" width="6" height="38" fill="#2E3238"/><rect x="228.0" y="156" width="42" height="5" rx="2" fill="#3A3F47"/><rect x="178" y="28" width="142" height="94" rx="8" fill="#262A31" stroke="#3A3F47" stroke-width="2"/><rect x="186" y="36" width="126" height="78" rx="4" fill="#0E1013"/><polyline points="190.0,49.0 199.8,42.0 209.7,55.0 219.5,49.0 229.3,49.0 239.2,42.0 249.0,55.0 258.8,49.0 268.7,49.0 278.5,42.0 288.3,55.0 298.2,49.0 308.0,49.0" fill="none" stroke="#7FCBA2" stroke-width="2" opacity="1"/><rect x="186" y="64.0" width="126" height="22.0" fill="#FF8A4C" opacity=".16"/><rect x="186" y="64.0" width="3" height="22.0" fill="#FF8A4C"/><polyline points="190.0,71.0 199.8,78.0 209.7,69.0 219.5,79.0 229.3,70.0 239.2,77.0 249.0,71.0 258.8,78.0 268.7,69.0 278.5,79.0 288.3,70.0 298.2,77.0 308.0,71.0" fill="none" stroke="#FF8A4C" stroke-width="2" opacity="1"/><polyline points="190.0,98.0 199.8,104.0 209.7,98.0 219.5,104.0 229.3,98.0 239.2,104.0 249.0,98.0 258.8,104.0 268.7,98.0 278.5,104.0 288.3,98.0 298.2,104.0 308.0,98.0" fill="none" stroke="#9DBDE8" stroke-width="1.6" opacity=".7"/><rect x="296" y="134" width="96" height="16" rx="4" fill="#3A3F47"/><rect x="300" y="126" width="30" height="10" rx="4" fill="#E8E3DA" opacity=".85"/><rect x="330" y="128" width="58" height="8" rx="3" fill="#2F6B4F" opacity=".75"/><rect x="300" y="150" width="5" height="10" fill="#2E3238"/><rect x="383" y="150" width="5" height="10" fill="#2E3238"/><path d="M312 128 C 300 120, 300 116, 316 112" fill="none" stroke="#8A8F99" stroke-width="1.2"/><rect x="96.0" y="128.0" width="6.0" height="22.0" rx="2.0" fill="#3A3F47"/><rect x="106.0" y="128.0" width="6.0" height="22.0" rx="2.0" fill="#3A3F47"/><rect x="93.0" y="88.0" width="22.0" height="40.0" rx="8.0" fill="#2F6B4F"/><rect x="103.0" y="92.0" width="2.0" height="32.0" fill="#15171C" opacity=".35"/><circle cx="104" cy="79.0" r="8.5" fill="#E8E3DA"/><rect x="114" y="96" width="30" height="6" rx="3" fill="#2F6B4F" transform="rotate(-18 114 99)"/><g transform="rotate(-8 149 92)"><rect x="140" y="80" width="18" height="24" rx="3" fill="#F2EFE9"/><rect x="143" y="86" width="12" height="2.4" rx="1" fill="#8A8F99"/><rect x="143" y="91" width="8" height="2.4" rx="1" fill="#C2410C"/><rect x="143" y="96" width="10" height="2.4" rx="1" fill="#8A8F99"/></g></g></svg></div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte I · A mudança de paradigma</div>
+    <div class="num">03</div>
+    <h1>Como o React funciona por dentro</h1>
+    <div class="deck">Gatilho, render e commit, identidade e keys, provados com o motor ligado.</div>
+  </div>
+
+  <p class="lead">Quarta, 10h. A enfermeira anota "ver febre" no campo de João Lima e dá alta a Maria Souza. A anotação aparece na linha de Ana Clara Reis; João fica com o campo vazio.</p>
+
+  <p>O código da alta está certo. O problema está numa linha que parece irrelevante, e para achá-lo é preciso saber o que o React faz entre a sua função devolver a tela e o navegador mostrá-la.</p>
+
+  <h2><span class="sn">3.1</span>O projeto do capítulo</h2>
+  <p>Na tag <code>cap03</code>, a Ala B virou componentes com JSX e TypeScript, em <code>src/features/pacientes</code>. O cartão de cada paciente:</p>
+
+  <div class="term"><div class="term-bar"><span class="arq">src/features/pacientes/CartaoPaciente.tsx</span><span class="tag-git">cap03</span></div><pre><span class="k">import</span> <span class="k">type</span> { Paciente } <span class="k">from</span> <span class="s">&quot;./tipos.ts&quot;</span>;
+
+<span class="k">interface</span> Props {
+  paciente: Paciente;
+  onAlta: (id: string) =&gt; void;
+}
+
+<span class="k">export</span> <span class="k">function</span> CartaoPaciente(
+  { paciente, onAlta }: Props,
+) {
+  <span class="k">const</span> { id, nome, leito } = paciente;
+  <span class="k">return</span> (
+    &lt;li&gt;
+      &lt;b&gt;{nome}&lt;/b&gt; {leito}
+      &lt;input
+        aria-label={<span class="s">`Anotação de ${nome}`</span>}
+        placeholder=<span class="s">&quot;anotação&quot;</span>
+      /&gt;
+      &lt;button onClick={() =&gt; onAlta(id)}&gt;
+        Alta
+      &lt;/button&gt;
+    &lt;/li&gt;
+  );
+}</pre></div>
+
+  <p>A <code>Ala</code> guarda <code>busca</code> e <code>pacientes</code> em estado e calcula o resto, exatamente como a versão 3 do capítulo 1, agora em JSX.</p>
+
+  <h2><span class="sn">3.2</span>JSX é açúcar</h2>
+  <p>O navegador não entende JSX. Antes de chegar a ele, cada tag vira uma chamada de função, como o <code>h</code> do capítulo 1. É isto que o Vite entrega quando o navegador pede o cartão:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>servidor do Vite · Medido</span></div>
+<pre>GET /src/features/pacientes/CartaoPaciente.tsx
+(trecho; metadados de depuração viraram …)
+
+export function CartaoPaciente({ paciente, onAlta }) {
+  const { id, nome, leito } = paciente;
+  return _jsxDEV(&quot;li&quot;, { children: [
+    _jsxDEV(&quot;b&quot;, { children: nome }, …),
+    &quot; &quot;,
+    leito,
+    _jsxDEV(&quot;input&quot;, {
+      &quot;aria-label&quot;: `Anotação de ${nome}`,
+      placeholder: &quot;anotação&quot;
+    }, …),
+    _jsxDEV(&quot;button&quot;, {
+      onClick: () =&gt; onAlta(id),
+      children: &quot;Alta&quot;
+    }, …)
+  ] }, …);
+}</pre>
+  </div>
+
+  <p>Em desenvolvimento a função se chama <code>jsxDEV</code> e carrega arquivo e linha de cada tag para as mensagens de erro; em produção, <code>jsx</code>. As chaves do JSX viram expressões comuns, os filhos viram a prop <code>children</code>, e o resultado é um <strong>elemento</strong>: um objeto que <em>descreve</em> um <code>&lt;li&gt;</code>. Nenhum nó do DOM foi criado.</p>
+
+  <h2><span class="sn">3.3</span>Gatilho, render, commit</h2>
+  <figure>
+    <div class="fig-frame"><svg viewBox="0 0 400 372" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ciclo gatilho, render, commit e efeitos">
+  <line x1="15" y1="20" x2="15" y2="262" stroke-width="2.5" class="s-accl"/>
+  <circle cx="15" cy="20" r="12" class="f-acc"/><circle cx="15" cy="80" r="12" class="f-acc"/><circle cx="15" cy="140" r="12" class="f-acc"/><circle cx="15" cy="200" r="12" class="f-good"/><circle cx="15" cy="260" r="12" class="f-info"/>
+  <g font-size="12" font-weight="800" text-anchor="middle" class="f-bg"><text x="15" y="24">1</text><text x="15" y="84">2</text><text x="15" y="144">3</text><text x="15" y="204">4</text><text x="15" y="264">5</text></g>
+  <g font-size="13" font-weight="800" class="f-ink">
+    <text x="38" y="18">Gatilho</text><text x="38" y="78">Render</text><text x="38" y="138">Commit</text><text x="38" y="198">Pintura</text><text x="38" y="258">Efeitos</text>
+  </g>
+  <g font-size="10.5" class="f-mut">
+    <text x="38" y="36">montagem inicial ou um set de estado</text>
+    <text x="38" y="96">React chama o componente; nada toca o DOM</text>
+    <text x="38" y="156">aplica no DOM só a diferença calculada</text>
+    <text x="38" y="216">o navegador desenha a tela</text>
+    <text x="38" y="276">sincroniza com o que está fora do React</text>
+  </g>
+  <g class="mono" font-size="9.5" font-weight="700">
+    <rect x="292" y="6" width="108" height="20" rx="4" class="f-accs"/><text x="300" y="20" class="f-acc">setBusca("ana")</text>
+    <rect x="292" y="66" width="108" height="20" rx="4" class="f-accs"/><text x="300" y="80" class="f-acc">Lista() → JSX</text>
+    <rect x="292" y="126" width="108" height="20" rx="4" class="f-accs"/><text x="300" y="140" class="f-acc">3 &lt;li&gt; removidos</text>
+    <rect x="292" y="186" width="108" height="20" rx="4" class="f-goods"/><text x="300" y="200" class="f-good">frame novo</text>
+    <rect x="292" y="246" width="108" height="20" rx="4" class="f-infos"/><text x="300" y="260" class="f-info">document.title</text>
+  </g>
+  <rect x="0" y="292" width="400" height="78" rx="6" class="f-accs"/>
+  <text x="14" y="316" font-size="12" font-weight="800" class="f-acc">O que o aluno precisa levar</text>
+  <g font-size="11" class="f-soft">
+    <text x="14" y="338">Renderizar não é mexer no DOM. Um render pode terminar</text>
+    <text x="14" y="355">sem nenhuma mudança na tela, e isso é normal.</text>
+  </g>
+</svg>
+</div>
+    <figcaption><b>Fig. 3.1</b> — As etapas de toda atualização. O <strong>gatilho</strong> é a montagem inicial ou um <code>set</code>. No <strong>render</strong>, o React chama os componentes e recebe a árvore nova. No <strong>commit</strong>, compara com a anterior e aplica no DOM só o que mudou. A pintura já é do navegador; os efeitos são o capítulo 7.</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A passagem de plantão</h4>
+      <p>Na troca de turno, a enfermeira compara o quadro de ontem com a situação de hoje e anota só o que mudou. Olhar a situação é o render; anotar a diferença é o commit.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O plantão tem hora marcada; o render só acontece com gatilho e pode terminar sem diferença nenhuma. O React pode até descartar um render pela metade para atender algo mais urgente. O commit, nunca: é aplicado inteiro, de uma vez.</p>
+  </div>
+
+  <h2><span class="sn">3.4</span>Renderizar não é mexer no DOM</h2>
+  <p>Para separar as duas coisas, o projeto tem o <strong><code>Renderometro</code></strong>, construído sobre o <code>&lt;Profiler&gt;</code> do React: a cada commit em que algo dentro dele renderizou, o React chama <code>onRender</code> com o nome, a fase e o tempo.</p>
+
+  <div class="term"><div class="term-bar"><span class="arq">src/lab/Renderometro.tsx</span><span class="tag-git">cap03</span></div><pre><span class="k">export</span> <span class="k">function</span> Renderometro(
+  { id, children }: Props,
+) {
+  <span class="k">return</span> (
+    &lt;Profiler
+      id={id}
+      onRender={(quem, fase, ms) =&gt; {
+        <span class="k">const</span> linha = <span class="s">`${quem} · ${fase}`</span>
+          + <span class="s">` · ${ms.toFixed(2)} ms`</span>;
+        registros.push(linha);
+        console.log(<span class="s">`[render] ${linha}`</span>);
+      }}
+    &gt;
+      {children}
+    &lt;/Profiler&gt;
+  );
+}</pre></div>
+
+  <p>A lista e cada cartão estão dentro de um <code>Renderometro</code>. Um roteiro no Chromium cruza o que ele anotou com o que um <code>MutationObserver</code> viu no DOM:</p>
+
+  <div class="term t-curto">
+    <div class="term-bar"><span>medicoes/cap03.py · Medido</span></div>
+<pre>digitar &quot;o&quot; na busca
+  Maria Souza     update
+  João Lima       update
+  Pedro Alves     update
+  Raimundo Nonato update
+  Lista           update
+  DOM: +0 −8 ~1
+<span class="c">…</span>
+anotar em João Lima
+  DOM: +0 −0 ~0</pre>
+  </div>
+
+  <p>Uma tecla na busca fez a lista e os quatro cartões visíveis renderizarem de novo. No DOM, porém, só saíram as duas linhas que deixaram de bater, oito elementos, e mudou o <code>value</code> da busca. Os cartões foram <em>calculados</em> de novo, deram o mesmo resultado, e o commit não os tocou.</p>
+
+  <p>Digitar na anotação de João não provocou render nenhum: aquele campo não tem estado no React, o texto vive no <code>&lt;input&gt;</code> do DOM. Guarde isso para a seção 3.6.</p>
+
+  <h2><span class="sn">3.5</span>O "Virtual DOM", com precisão</h2>
+  <p>"Virtual DOM" é o apelido da árvore de elementos que cada render devolve. Ele <strong>não é uma cópia do DOM mantida em sincronia</strong>: é a descrição produzida por um render, comparada com a do render anterior. E <strong>não é sempre mais rápido</strong> que mexer no DOM à mão: no capítulo 1, imperativo e React fizeram o mesmo trabalho no DOM, e o React ainda executou componentes. O que ele entrega é correção sem esforço manual.</p>
+
+  <p>A comparação, a <strong>reconciliação</strong>, segue regras simples:</p>
+  <div class="tbl-wrap"><table>
+    <tr><th>Na mesma posição</th><th>O que o React faz</th></tr>
+    <tr><td><b>Mesmo tipo</b></td><td>Mantém o nó e o estado; atualiza o que mudou nas props</td></tr>
+    <tr><td><b>Tipo diferente</b></td><td>Desmonta o que havia, com o estado, e monta do zero</td></tr>
+    <tr><td><b>Em listas, com <code>key</code></b></td><td>Casa os itens pela key, não pela posição</td></tr>
+  </table></div>
+
+  <h2><span class="sn">3.6</span>Identidade: o estado mora na posição</h2>
+  <p>A regra da documentação é curta: <strong>o React mantém o estado de um componente enquanto ele for renderizado na mesma posição da árvore</strong>. Ser "o mesmo", para o React, é estar no mesmo lugar, com o mesmo tipo e, em listas, a mesma key. Na tag <code>cap03-antes</code>, a lista usava o índice como key:</p>
+
+  <div class="term t-curto"><div class="term-bar"><span class="arq">src/features/pacientes/ListaPacientes.tsx</span><span class="tag-git">cap03-antes → cap03</span></div><pre><span class="c">…</span>
+     &lt;ul&gt;
+<span class="w">-      {pacientes.map((p, i) =&gt; (</span>
+<span class="w">-        &lt;Renderometro key={i} id={p.nome}&gt;</span>
+<span class="s">+      {pacientes.map((p) =&gt; (</span>
+<span class="s">+        &lt;Renderometro key={p.id} id={p.nome}&gt;</span>
+           &lt;CartaoPaciente</pre></div>
+
+  <figure>
+    <div class="fig-frame"><svg viewBox="0 0 400 394" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Key por índice versus key por id na alta de um paciente"><text x="0" y="14" font-size="9.5" font-weight="800" class="f-bad">KEY = ÍNDICE</text><text x="0" y="34" font-size="10" font-weight="700" class="f-mut">antes</text><text x="206" y="34" font-size="10" font-weight="700" class="f-mut">depois da alta de Maria</text><rect x="0" y="42" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="8" y="61" font-size="9.5" font-weight="700" class="f-acc mono">0</text><text x="44" y="61" font-size="10.5" font-weight="700" class="f-ink">Maria</text><rect x="118" y="49" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><rect x="0" y="78" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="8" y="97" font-size="9.5" font-weight="700" class="f-acc mono">1</text><text x="44" y="97" font-size="10.5" font-weight="700" class="f-ink">João</text><rect x="118" y="85" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><text x="123" y="97" font-size="9.5" font-weight="600" class="f-ink mono">ver febre</text><rect x="0" y="114" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="8" y="133" font-size="9.5" font-weight="700" class="f-acc mono">2</text><text x="44" y="133" font-size="10.5" font-weight="700" class="f-ink">Ana Clara</text><rect x="118" y="121" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><rect x="206" y="42" width="186" height="30" rx="5" class="f-bads s-badl" stroke-width="1"/><text x="214" y="61" font-size="9.5" font-weight="700" class="f-acc mono">0</text><text x="250" y="61" font-size="10.5" font-weight="700" class="f-ink">João</text><rect x="324" y="49" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><rect x="206" y="78" width="186" height="30" rx="5" class="f-bads s-badl" stroke-width="1"/><text x="214" y="97" font-size="9.5" font-weight="700" class="f-acc mono">1</text><text x="250" y="97" font-size="10.5" font-weight="700" class="f-ink">Ana Clara</text><rect x="324" y="85" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><text x="329" y="97" font-size="9.5" font-weight="600" class="f-bad mono">ver febre</text><rect x="206" y="114" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="214" y="133" font-size="9.5" font-weight="700" class="f-acc mono">2</text><text x="250" y="133" font-size="10.5" font-weight="700" class="f-ink">Pedro</text><rect x="324" y="121" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><text x="0" y="166" font-size="10.5" class="f-soft">A nota fica presa à posição 1. Quem está lá agora é</text><text x="0" y="182" font-size="10.5" class="f-soft">Ana Clara, e João perdeu o que você escreveu.</text><line x1="0" y1="198" x2="400" y2="198" stroke-dasharray="2 4" stroke-width="1" class="s-bord"/><text x="0" y="218" font-size="9.5" font-weight="800" class="f-good">KEY = ID DO PACIENTE</text><text x="0" y="238" font-size="10" font-weight="700" class="f-mut">antes</text><text x="206" y="238" font-size="10" font-weight="700" class="f-mut">depois da alta de Maria</text><rect x="0" y="246" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="8" y="265" font-size="9.5" font-weight="700" class="f-acc mono">p1</text><text x="44" y="265" font-size="10.5" font-weight="700" class="f-ink">Maria</text><rect x="118" y="253" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><rect x="0" y="282" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="8" y="301" font-size="9.5" font-weight="700" class="f-acc mono">p2</text><text x="44" y="301" font-size="10.5" font-weight="700" class="f-ink">João</text><rect x="118" y="289" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><text x="123" y="301" font-size="9.5" font-weight="600" class="f-ink mono">ver febre</text><rect x="0" y="318" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="8" y="337" font-size="9.5" font-weight="700" class="f-acc mono">p3</text><text x="44" y="337" font-size="10.5" font-weight="700" class="f-ink">Ana Clara</text><rect x="118" y="325" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><rect x="206" y="246" width="186" height="30" rx="5" class="f-alt s-bord" stroke-width="1"/><text x="214" y="265" font-size="9.5" font-weight="700" class="f-acc mono">p1</text><text x="250" y="265" font-size="10.5" font-weight="700" class="f-mut">Maria</text><rect x="324" y="253" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><rect x="206" y="282" width="186" height="30" rx="5" class="f-goods s-goodl" stroke-width="1"/><text x="214" y="301" font-size="9.5" font-weight="700" class="f-acc mono">p2</text><text x="250" y="301" font-size="10.5" font-weight="700" class="f-ink">João</text><rect x="324" y="289" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><text x="329" y="301" font-size="9.5" font-weight="600" class="f-ink mono">ver febre</text><rect x="206" y="318" width="186" height="30" rx="5" class="f-card s-bord" stroke-width="1"/><text x="214" y="337" font-size="9.5" font-weight="700" class="f-acc mono">p3</text><text x="250" y="337" font-size="10.5" font-weight="700" class="f-ink">Ana Clara</text><rect x="324" y="325" width="62" height="16" rx="3" class="f-bg s-bord" stroke-width="1"/><line x1="212" y1="261" x2="318" y2="261" stroke-width="1.6" class="s-mut"/><text x="0" y="370" font-size="10.5" class="f-soft">Cada nota acompanha o seu paciente. Só a linha de</text><text x="0" y="386" font-size="10.5" class="f-soft">Maria sai do DOM; as outras nem são tocadas.</text></svg>
+</div>
+    <figcaption><b>Fig. 3.2</b> — Com key por índice, o React vê que a última posição sumiu e que as outras só trocaram de props. O <code>&lt;input&gt;</code> da posição 1 fica no DOM, com o texto, mostrando agora Ana Clara.</figcaption>
+  </figure>
+
+  <p>O texto nunca esteve no React; estava no nó. Com key por índice, os nós são reaproveitados pela posição e o texto fica preso a eles. Com o <code>id</code>, o React sabe que <code>p1</code> saiu e que <code>p2</code> continua <code>p2</code>. O teste descreve o que a enfermeira faz, sem olhar para dentro do componente:</p>
+
+  <div class="term t-curto"><div class="term-bar"><span class="arq">src/features/pacientes/Ala.test.tsx</span><span class="tag-git">cap03</span></div><pre>test(<span class="s">&quot;anotação acompanha o paciente&quot;</span>,
+  <span class="k">async</span> () =&gt; {
+    render(&lt;Ala /&gt;);
+    <span class="k">await</span> userEvent.<span class="k">type</span>(
+      nota(<span class="s">&quot;João Lima&quot;</span>), <span class="s">&quot;ver febre&quot;</span>);
+    <span class="k">await</span> darAlta(<span class="s">&quot;Maria Souza&quot;</span>);
+    expect(nota(<span class="s">&quot;João Lima&quot;</span>).value)
+      .toBe(<span class="s">&quot;ver febre&quot;</span>);
+  });</pre></div>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap03-antes · key={i}</span><p><code>× anotação acompanha o paciente</code><br><code>→ expected '' to be 'ver febre'</code></p></div>
+    <div class="yes"><span class="lb">cap03 · key={p.id}</span><p><code>✓ anotação acompanha o paciente</code><br><code>✓ alto risco cai na alta</code></p></div>
+  </div>
+
+  <p>É a <strong>prova de revert</strong> da série: o teste falha sem a correção e passa com ela. As saídas completas estão em <code>saidas/c3-key-*.txt</code>. Trocar a key de propósito também serve para zerar um componente; o capítulo 6 usa isso.</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-01</span>
+    <p>Lista usa a key do domínio (o <code>id</code>), nunca o índice. Verificação: o teste "anotação acompanha o paciente".</p>
+  </div>
+
+  <h2><span class="sn">3.7</span>Montar, atualizar, desmontar</h2>
+  <p><strong>Montar</strong> é aparecer numa posição: nós criados, estado no valor inicial. <strong>Atualizar</strong> é renderizar de novo no mesmo lugar. <strong>Desmontar</strong> é sair da árvore, levando nós e estado. Na medição completa, Ana Clara e Luzia voltam como <code>mount</code> quando a busca é limpa: tinham sido desmontadas.</p>
+
+  <p>Para isso funcionar, o render precisa ser <strong>puro</strong>: as mesmas props e o mesmo estado produzem a mesma tela, e renderizar não altera nada fora do componente. O <code>StrictMode</code> testa a promessa chamando cada componente duas vezes em desenvolvimento, e é por isso que o <code>Renderometro</code> conta commits pelo <code>Profiler</code> em vez de somar uma variável no corpo do componente. Internamente, o render é dividido em unidades de trabalho, as <em>fibers</em>, o que permite pausá-lo; recursos como <code>startTransition</code> usam isso e aparecem quando forem úteis.</p>
+
+  <h2><span class="sn">3.8</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Agentes geram <code>key={index}</code> com frequência, porque é o exemplo mais curto, e às vezes <code>key={Math.random()}</code>, que é pior: cada render remonta tudo e apaga todo estado da lista. Nenhum dos dois quebra o build. A UI-01 e o teste pegam ambos.</p>
+  </div>
+
+  <p>Para um bug como o da abertura, o primeiro prompt pede diagnóstico com evidência, não correção:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 3 · DIAGNÓSTICO</span><button class="copy" type="button" data-copy="p3-agente">Copiar</button></div>
+<pre id="p3-agente"><span class="k">Goal</span>
+Descobrir por que a anotação de um
+paciente aparece em outro depois de
+uma alta, e provar a causa.
+
+<span class="k">Context</span>
+@src/features/pacientes/ @INVARIANTES.md
+Passos: anotar em João Lima, dar alta a
+Maria Souza; a nota vai para Ana Clara.
+
+<span class="k">Constraints</span>
+- antes, um teste que reproduz o defeito
+  pelo que o usuário vê, falhando
+- depois, a correção mínima
+- sem dependência nova
+
+<span class="k">Done when</span>
+- npm run gate verde com a correção
+- o teste novo FALHA se a correção
+  for revertida
+- a causa aponta arquivo e linha</pre>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, caps. 9 e 13</span>
+    <p>O "falha se revertido" vem do capítulo 9: agentes escrevem com facilidade testes que passam antes e depois da mudança. A revisão em contexto novo, de preferência com outra ferramenta, é o capítulo 13; o prompt dela está em <code>prompts/cap03.md</code>.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Rode <code>npm test</code> em <code>cap03-antes</code> e em <code>cap03</code>. Explique a diferença em três frases, usando "posição" e "key".</span></li>
+    <li><b>Intermediário</b><span>Preveja quais componentes renderizam ao dar alta ao último paciente. Rode com o <code>Renderometro</code> e compare. Por que a previsão para key por índice seria diferente?</span></li>
+    <li><b>Desafio</b><span>Troque a key por <code>Math.random()</code>, meça uma tecla na busca com <code>medicoes/cap03.py</code> e explique o número.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 02, 03, 04. <b>Invariantes:</b> UI-01. <b>Tags:</b> <code>cap03-antes</code>, <code>cap03</code>. <b>Prompts:</b> <code>prompts/cap03.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Render and Commit</em>, <em>Preserving and Resetting State</em>, <em>Rendering Lists</em>, <em>Keeping Components Pure</em>, <em>&lt;Profiler&gt;</em>, <em>&lt;StrictMode&gt;</em>. Saídas em <code>saidas/c3-*.txt</code>.</p>
+  </div>
+</section>
+
+</div>
+
+<script>
+document.addEventListener('click', async (e) => {
+  const b = e.target.closest('button.copy');
+  if (!b) return;
+  const el = document.getElementById(b.dataset.copy);
+  if (!el) return;
+  const label = b.textContent;
+  try { await navigator.clipboard.writeText(el.textContent.trim()); b.textContent = 'Copiado'; }
+  catch (err) {
+    const r = document.createRange(); r.selectNodeContents(el);
+    const s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    b.textContent = 'Selecionado';
+  }
+  setTimeout(() => { b.textContent = label; }, 1600);
+});
+</script>

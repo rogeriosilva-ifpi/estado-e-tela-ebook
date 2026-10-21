@@ -1,0 +1,31 @@
+Chromium 141.0.7390.37 · modo dev · StrictMode
+
+digitar "o" na busca
+  Maria Souza     update
+  João Lima       update
+  Pedro Alves     update
+  Raimundo Nonato update
+  Lista           update
+  DOM: +0 −8 ~1
+
+apagar a busca
+  Maria Souza     update
+  João Lima       update
+  Ana Clara Reis  mount
+  Pedro Alves     update
+  Luzia Freitas   mount
+  Raimundo Nonato update
+  Lista           update
+  DOM: +8 −0 ~1
+
+alta de Maria Souza
+  João Lima       update
+  Ana Clara Reis  update
+  Pedro Alves     update
+  Luzia Freitas   update
+  Raimundo Nonato update
+  Lista           update
+  DOM: +0 −4 ~2
+
+anotar em João Lima
+  DOM: +0 −0 ~0

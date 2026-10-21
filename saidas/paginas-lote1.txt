@@ -1,0 +1,5 @@
+Frente    6 p   orçamento   6   OK
+01       11 p   orçamento   8   ESTOURO +3
+02       10 p   orçamento   7   ESTOURO +3
+03       13 p   orçamento  11   ESTOURO +2
+total    40 p   orçamento  32   teto do livro 220
