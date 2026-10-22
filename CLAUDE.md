@@ -10,7 +10,7 @@ Silva. Fonte em HTML, saída em site (index.html) e PDF 108 × 192 mm.
 - `python3 fonte/pdf.py <abs index.html> <abs pdf>` renderiza no Chromium
   headless (não troque por WeasyPrint: as figuras usam CSS do documento).
 - `python3 fonte/medir.py <pdf> --json` mede páginas por capítulo contra o
-  orçamento aprovado (204 p, teto 220) e grava `saidas/paginas.json`,
+  orçamento aprovado (244 p, teto 250) e grava `saidas/paginas.json`,
   que o sumário usa no build seguinte.
 
 ## Regras que o build faz cumprir

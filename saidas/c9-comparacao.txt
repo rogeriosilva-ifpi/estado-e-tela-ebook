@@ -1,0 +1,14 @@
+
+tela cap09
+  CSS do build: 3129 bytes, 990 com gzip
+  cartão + selo: 101 linhas, 4 arquivos
+  classe no DOM: _cartao_1q05y_1
+  tema light: 0 regra(s), 0 elemento(s)
+  tema dark: 0 regra(s), 0 elemento(s)
+
+tela cap09-tailwind
+  CSS do build: 6026 bytes, 1718 com gzip
+  cartão + selo: 74 linhas, 2 arquivos
+  classe no DOM: flex flex-wrap items-center gap-2 border-b b
+  tema light: 0 regra(s), 0 elemento(s)
+  tema dark: 0 regra(s), 0 elemento(s)

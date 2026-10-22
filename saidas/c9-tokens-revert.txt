@@ -1,0 +1,64 @@
+$ git diff
+@@ -18,5 +18,5 @@
+ }
+ .leito {
+   font-size: var(--texto-pequeno);
+-  color: var(--texto-fraco);
++  color: #9ca3af;
+ }
+$ npx vitest run src/estilo
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ❯ src/estilo/tokens.test.ts (12 tests | 1 failed) 8ms
+   × cor só nasce em tokens.css 4ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/estilo/tokens.test.ts > cor só nasce em tokens.css
+AssertionError: features/pacientes/CartaoPaciente.module.css: expected '.cartao {\n  display: flex;\n  flex-w…' not to match /#[0-9a-f]{3,8}\b/i
+
+- Expected:
+/#[0-9a-f]{3,8}\b/i
+
++ Received:
+".cartao {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-2);
+  align-items: center;
+  padding: var(--espaco-2) 0;
+  border-bottom: 1px solid var(--borda);
+}
+.cartao[aria-current] {
+  box-shadow: inset 4px 0 var(--acao);
+  padding-left: var(--espaco-3);
+}
+.nome {
+  padding: 0;
+  background: none;
+  color: var(--texto);
+  font-weight: 600;
+}
+.leito {
+  font-size: var(--texto-pequeno);
+  color: #9ca3af;
+}
+"
+
+ ❯ src/estilo/tokens.test.ts:72:24
+     70|     const txt =
+     71|       readFileSync(`src/${f}`, "utf8");
+     72|     expect(txt, f).not.toMatch(
+       |                        ^
+     73|       /#[0-9a-f]{3,8}\b/i);
+     74|   }
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  13:00:04
+   Duration  560ms (environment 95%, import 2%, tests 2%, transform 1%, worker 1%)
+

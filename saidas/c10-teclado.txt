@@ -1,0 +1,17 @@
+
+tela cap10-antes
+  ao abrir, foco em: button “Alta” (fora da caixa)
+  árvore de acessibilidade: 0 diálogo(s), 24 botões expostos
+  8 Tabs: 8 no fundo da página, 0 na barra do navegador
+  Esc: caixa continua aberta
+  (fechada pelo botão Cancelar)
+  ao fechar, foco em: body
+  depois da alta, foco em: body
+
+tela cap10
+  ao abrir, foco em: button “Cancelar” (dentro da caixa)
+  árvore de acessibilidade: 1 diálogo(s), 2 botões expostos
+  8 Tabs: 0 no fundo da página, 3 na barra do navegador
+  Esc: caixa fechou
+  ao fechar, foco em: button “Alta”
+  depois da alta, foco em: body

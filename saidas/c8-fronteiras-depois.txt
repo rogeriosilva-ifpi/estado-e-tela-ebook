@@ -1,0 +1,5 @@
+$ npx depcruise src
+
+✔ no dependency violations found (36 modules, 77 dependencies cruised)
+
+exit 0

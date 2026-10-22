@@ -1,0 +1,168 @@
+<!-- ==================== CAP 9 ==================== -->
+<section class="chapter" id="cap09">
+  <div class="opener">{{ARTE:abertura_09}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte III · Arquitetura</div>
+    <div class="num">09</div>
+    <h1>Estilo, tokens e acessibilidade</h1>
+    <div class="deck">Cor com significado, foco que se vê, contraste que se calcula. Bonito é o que todo mundo consegue usar, nos dois temas.</div>
+  </div>
+
+  <p class="lead">Sexta, 22h. O enfermeiro do plantão usa o celular no modo escuro. Na lista da Ala B, o risco dos pacientes virou uma pílula clara com letras brancas, quase ilegível. De dia, no computador da recepção, tudo parecia ótimo.</p>
+
+  <p>Estilo parece gosto até alguém não conseguir ler a tela. O capítulo troca o gosto por três coisas verificáveis: <strong>tokens</strong> com nome de função, <strong>escopo</strong> por componente e auditoria de acessibilidade com teclado de verdade.</p>
+
+  <h2><span class="sn">9.1</span>Quatro jeitos de estilizar</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Jeito</th><th>Escopo</th><th>Custo</th></tr>
+    <tr><td>CSS global</td><td>a página</td><td>toda regra pode vazar</td></tr>
+    <tr><td>CSS Modules</td><td>o componente</td><td>um arquivo por componente</td></tr>
+    <tr><td>Tailwind</td><td>o elemento</td><td>marcação longa; mais build</td></tr>
+    <tr><td>Kit de componentes</td><td>o kit</td><td>as decisões são do kit</td></tr>
+  </table></div>
+
+  <p>O projeto usa CSS Modules com tokens (decisão D4) e, em 9.5, compara com Tailwind. Nenhum dos quatro, sozinho, resolve contraste ou foco.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O piso sinalizado</h4>
+      <p>No hospital, a faixa verde no chão leva à emergência e a azul ao ambulatório. Toda placa repete o destino por escrito, e ao lado de cada escada há uma rampa. A cor ajuda quem enxerga cor; o texto e a rampa garantem que todos cheguem.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O piso é pintado uma vez. A tela troca de tema com um clique do sistema operacional, e cada cor precisa funcionar nas duas versões. Por isso o token guarda um par de valores, não uma tinta.</p>
+  </div>
+
+  <h2><span class="sn">9.2</span>"Deixe com cara de produto"</h2>
+  <p>Na tag <code>cap09-antes</code>, um agente recebeu o pedido "deixe com cara de sistema moderno, com tema escuro" e entregou um <code>index.css</code> global de 48 linhas. O trecho decisivo:</p>
+
+  {{BLOCO:cap09-antes:src/index.css|linhas=27-37|reticencias=sim|rotulo=index.css}}
+
+  <p>Numa olhada, está bonito. O instrumento <code>vigia-a11y</code> roda o axe-core com as regras WCAG 2.2 AA nos dois temas e percorre a página com Tab, conferindo se cada parada tem contorno ou sombra visível:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/vigia_a11y.py · Medido</span></div>
+<pre>{{SAIDA:c9-vigia.txt|linhas=11-14|destaque=}}
+…
+{{SAIDA:c9-vigia.txt|linhas=19-22|destaque=#e5e7eb sobre #ffffff: 1.23:1}}
+…
+{{SAIDA:c9-vigia.txt|linhas=27-29|destaque=22 sem foco visível}}
+…</pre>
+  </div>
+
+  <p>Três defeitos clássicos. O cinza <code>#9ca3af</code> sobre branco dá 2,53:1, e a WCAG pede 4,5:1 para texto. O <code>outline: none</code> sem substituto apagou o foco de 22 das 37 paradas: quem usa teclado não sabe onde está. E o tema escuro trocou só o <code>body</code>: texto claro caiu sobre painéis brancos, 1,23:1. Na tag <code>cap08</code>, sem visual nenhum, o tema escuro já tinha 6 selos ilegíveis: cor fixa e <code>color-scheme: light dark</code> não combinam.</p>
+
+  <h2><span class="sn">9.3</span>Tokens: o nome diz a função</h2>
+  <p>Na tag <code>cap09</code>, toda cor nasce num arquivo só, com nome de função e os dois temas lado a lado:</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:tokens}}</div>
+    <figcaption><b>Fig. 9.1</b> — Em cima, as três camadas de uma cor: trocar o tema muda só a primeira. Embaixo, contrastes calculados por <code>tokens.test.ts</code>, com o cinza do <code>cap09-antes</code> para comparar.</figcaption>
+  </figure>
+
+  {{BLOCO:cap09:src/estilo/tokens.css|linhas=4-14|reticencias=sim|rotulo=estilo/tokens.css}}
+
+  <p><code>light-dark(claro, escuro)</code> escolhe o valor pelo <code>color-scheme</code> em vigor, e é suportado pelos navegadores atuais desde 2024. Ninguém usa <code>#1d4ed8</code>; usa <code>var(--acao)</code>. Quando o tema muda, muda o valor e nenhum componente percebe.</p>
+
+  <p>Contraste é conta, não opinião. <code>tokens.test.ts</code> lê o arquivo de tokens, aplica a fórmula de luminância relativa da WCAG e, para cada par da lista <code>PARES</code> (texto sobre fundo, 4,5:1; foco, 3:1), exige o mínimo nos dois temas:</p>
+
+  {{BLOCO:cap09:src/estilo/tokens.test.ts|linhas=53-62|reticencias=sim|rotulo=estilo/tokens.test.ts}}
+
+  <p>O teste também proíbe hexadecimal em qualquer <code>.css</code> fora de <code>tokens.css</code>. A prova de revert: volte o cinza antigo num módulo e rode o teste.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c9-tokens-revert.txt|linhas=4-8}}
+…
+{{SAIDA:c9-tokens-revert.txt|linhas=13-14|destaque=× cor só nasce em tokens.css}}</pre>
+  </div>
+
+  <h2><span class="sn">9.4</span>Base nativa e escopo por componente</h2>
+  <p>Elementos nativos ganham estilo uma vez, em <code>estilo/base.css</code>, só com tokens. É ali que mora a regra de foco:</p>
+
+  {{BLOCO:cap09:src/estilo/base.css|linhas=37-41|rotulo=estilo/base.css}}
+
+  <p><code>:focus-visible</code> mostra o contorno no teclado e não no clique de mouse em botão: é a resposta a quem tirou o <code>outline</code> "porque o clique deixava uma borda feia". O laranja do foco tem pelo menos 3:1 contra os fundos.</p>
+
+  <p>O resto é CSS Module. O selo virou <code>SeloRisco.module.css</code>, e o componente usa <code>className={css.selo}</code>. No DOM, a classe chega como <code>_cartao_1q05y_1</code>: o Vite acrescenta um sufixo por arquivo, e uma regra de um componente não alcança outro.</p>
+
+  {{BLOCO:cap09:src/features/pacientes/SeloRisco.module.css|linhas=8-11|reticencias=sim|rotulo=pacientes/SeloRisco.module.css}}
+
+  <p>O selo escreve "alto", "médio" ou "baixo". A cor reforça, mas não é a única pista: a WCAG pede que informação não dependa só de cor (critério 1.4.1), e cerca de um em cada doze homens tem alguma deficiência de visão de cores (Colour Blind Awareness). A nova medição:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/vigia_a11y.py · Medido</span></div>
+<pre>{{SAIDA:c9-vigia.txt|linhas=34-38}}</pre>
+  </div>
+
+  <p>Zero violações nos dois temas. A parada que sobra é ponto cego do vigia: no botão do calendário do campo de data, o Chromium desenha o anel dentro do shadow DOM, onde o <code>getComputedStyle</code> não chega. Uma captura de tela confirmou o anel. Instrumento também precisa de alguém olhando.</p>
+
+  <h2><span class="sn">9.5</span>A mesma tela em Tailwind</h2>
+  <p>A tag lateral <code>cap09-tailwind</code> refaz o cartão e o selo com Tailwind 4.3, sem o <em>preflight</em> e com um <code>@theme inline</code> que transforma os tokens em utilitários (<code>bg-alto-fundo</code>, <code>text-texto-fraco</code>):</p>
+
+  {{BLOCO:cap09-tailwind:src/features/pacientes/CartaoPaciente.tsx|linhas=19-27|reticencias=sim|rotulo=pacientes/CartaoPaciente.tsx}}
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap09.py · Medido</span></div>
+<pre>{{SAIDA:c9-comparacao.txt|linhas=2-14}}</pre>
+  </div>
+
+  <p>Os dois passam no axe: usam os mesmos tokens. Tailwind escreve menos (74 linhas em dois arquivos contra 101 em quatro, mais 26 de configuração, uma vez). O CSS final ficou maior (1,7 KB contra 1 KB comprimido). Aberto o arquivo, o excesso são 21 declarações <code>@property</code> com as variáveis internas dos utilitários e um bloco de valores iniciais para navegadores sem suporte a elas. Um detalhe pegou na montagem: <code>base.css</code> fora de camada vence qualquer utilitário em <code>@layer</code>, então foi preciso importá-lo em <code>layer(base)</code>.</p>
+
+  <p>O fio continua em CSS Modules porque, para quem aprende, é CSS de verdade com escopo e não esconde a cascata. Tailwind é escolha legítima numa equipe que já o usa; os tokens servem aos dois.</p>
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-11 e UI-12</span>
+    <p><strong>UI-11:</strong> cor, espaço e raio vêm de token; hexadecimal só em <code>tokens.css</code>; todo par de texto passa 4,5:1 nos dois temas. Verificação: <code>tokens.test.ts</code>.</p>
+    <p><strong>UI-12:</strong> toda parada de teclado tem foco visível; informação nunca só por cor. Verificação: <code>medicoes/vigia_a11y.py</code>.</p>
+  </div>
+
+  <h2><span class="sn">9.6</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>"Deixe bonito" volta com os três vícios de 9.2 (cinza-claro, <code>outline: none</code>, tema escuro só no <code>body</code>) e, quando há ação, um quarto: <code>&lt;div onClick&gt;</code>, que o mouse aciona e o teclado nem alcança. Nada disso quebra o portão comum: peça contraste e teclado como critério de pronto.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 9</span><button class="copy" type="button" data-copy="p9-agente">Copiar</button></div>
+<pre id="p9-agente"><span class="k">Goal</span>
+Destacar o paciente selecionado na lista
+e o campo com erro no formulário.
+
+<span class="k">Context</span>
+@docs/UI.md @src/estilo/tokens.css
+@INVARIANTES.md (UI-11, UI-12)
+
+<span class="k">Constraints</span>
+- só var(--token); cor nova entra em
+  tokens.css com os dois temas e o par
+  em tokens.test.ts
+- nunca outline: none sem substituto
+- erro com texto, não só borda vermelha
+
+<span class="k">Done when</span>
+- npm run gate verde
+- vigia_a11y.py: 0 violações nos dois
+  temas; foco visível em toda parada</pre>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, cap. 6</span>
+    <p><code>docs/UI.md</code> ganhou a seção Estilo: onde ficam os tokens, como criar um, o que nunca fazer, no formato do capítulo 6 do <em>Dev de IA</em>.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Mude o <code>--texto-fraco</code> escuro para <code>#6b7280</code>. Quem acusa primeiro, <code>tokens.test.ts</code> ou o vigia? Por quê?</span></li>
+    <li><b>Intermediário</b><span>Deixe a lista legível em 320 px de largura, sem rolagem horizontal, só com tokens. Prove com uma captura do Playwright.</span></li>
+    <li><b>Desafio</b><span>Acrescente ao vigia o alvo de toque mínimo de 24 × 24 px (WCAG 2.2, 2.5.8). Quantos falham hoje?</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 15, 16. <b>Invariantes:</b> UI-11, UI-12. <b>Tags:</b> <code>cap09-antes</code>, <code>cap09</code>, <code>cap09-tailwind</code>. <b>Prompts:</b> <code>prompts/cap09.md</code>.</p>
+    <p><b>Fontes.</b> W3C: WCAG 2.2 (1.4.1, 1.4.3, 1.4.11, 2.4.7, 2.5.8) e a definição de luminância relativa. MDN: <em>light-dark()</em>, <em>:focus-visible</em>, <em>color-scheme</em>. Vite: <em>CSS Modules</em>. Tailwind CSS 4: <em>Preflight</em>, <em>Theme variables</em>. Deque: axe-core 4.14. Colour Blind Awareness: <em>About colour blindness</em>. Saídas em <code>saidas/c9-*.txt</code>.</p>
+  </div>
+</section>

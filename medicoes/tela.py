@@ -59,8 +59,9 @@ def _porta_livre():
 
 
 @contextlib.contextmanager
-def sessao(tag, porta=None):
-    """tag pode ser "tag+arquivo.patch": aplica o patch (de medicoes/)."""
+def sessao(tag, porta=None, modulos=None):
+    """tag pode ser "tag+arquivo.patch": aplica o patch (de medicoes/).
+    modulos: outro node_modules (tag com dependências próprias)."""
     tag, _, patch = tag.partition("+")
     pasta = Path(tempfile.mkdtemp(prefix=f"tela-{tag}-"))
     subprocess.run(["git", "-C", str(WEB), "worktree", "add", "--detach",
@@ -68,7 +69,7 @@ def sessao(tag, porta=None):
     if patch:
         subprocess.run(["git", "apply", str(Path(__file__).parent / patch)],
                        cwd=pasta, check=True)
-    (pasta / "node_modules").symlink_to(WEB / "node_modules")
+    (pasta / "node_modules").symlink_to(modulos or WEB / "node_modules")
     # Com API, a tela precisa ser http://localhost:5173: é a única
     # origem que a API aceita (CORS_ORIGINS e a defesa contra CSRF).
     host = "localhost" if porta else "127.0.0.1"

@@ -1,0 +1,1016 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/pacientes/Ala.test.tsx > anotação acompanha o paciente 226ms
+ ✓ src/features/pacientes/Ala.test.tsx > alto risco cai na alta 61ms
+ ✓ src/features/pacientes/Ala.test.tsx > anotação sobrevive à busca 45ms
+ ✓ src/features/pacientes/Ala.test.tsx > busca vazia avisa 27ms
+ ✓ src/features/pacientes/Ala.test.tsx > selecionar mostra o detalhe 23ms
+ ✓ src/features/pacientes/Ala.test.tsx > prioridade no cartão e no detalhe 33ms
+ × src/features/pacientes/Ala.test.tsx > alta pede confirmação num diálogo 59ms
+   → Unable to find an accessible element with the role "dialog" and name "Dar alta a Maria Souza?"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "Resumo":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Pacientes":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Detalhe":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Buscar paciente":
+  <input
+    aria-label="Buscar paciente"
+    placeholder="buscar"
+    value=""
+  />
+
+  Name "Anotação de Maria Souza":
+  <input
+    aria-label="Anotação de Maria Souza"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de João Lima":
+  <input
+    aria-label="Anotação de João Lima"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Ana Clara Reis":
+  <input
+    aria-label="Anotação de Ana Clara Reis"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Pedro Alves":
+  <input
+    aria-label="Anotação de Pedro Alves"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Luzia Freitas":
+  <input
+    aria-label="Anotação de Luzia Freitas"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Raimundo Nonato":
+  <input
+    aria-label="Anotação de Raimundo Nonato"
+    placeholder="anotação"
+  />
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  <ul
+    class="_lista_5a772b"
+  />
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Maria Souza":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "João Lima":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Ana Clara Reis":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="true"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Pedro Alves":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Luzia Freitas":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Raimundo Nonato":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Confirmar alta":
+  <button />
+
+  Name "Cancelar":
+  <button />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="_painel_a43c40"
+    >
+      <h2
+        class="_titulo_a43c40"
+      >
+        Resumo
+      </h2>
+      <p>
+        6
+         pacientes · alto risco: 
+        2
+        · médio: 
+        2
+        · baixo: 
+        2
+      </p>
+    </section>
+    <section
+      class="_painel_a43c40"
+    >
+      <h2
+        class="_titulo_a43c40"
+      >
+        Pacientes
+      </h2>
+      <input
+        aria-label="Buscar paciente"
+        placeholder="buscar"
+        value=""
+      />
+      <ul
+        class="_lista_5a772b"
+      >
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Maria Souza
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            101
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="alto"
+          >
+            alto
+          </span>
+          <input
+            aria-label="Anotação de Maria Souza"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            João Lima
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            102
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="baixo"
+          >
+            baixo
+          </span>
+          <input
+            aria-label="Anotação de João Lima"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Ana Clara Reis
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            103
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="alto"
+          >
+            alto
+          </span>
+          <span
+            aria-label="prioridade"
+          >
+            ★
+          </span>
+          <input
+            aria-label="Anotação de Ana Clara Reis"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="true"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Pedro Alves
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            104
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="médio"
+          >
+            médio
+          </span>
+          <input
+            aria-label="Anotação de Pedro Alves"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Luzia Freitas
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            105
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="baixo"
+          >
+            baixo
+          </span>
+          <input
+            aria-label="Anotação de Luzia Freitas"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Raimundo Nonato
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            106
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="médio"
+          >
+            médio
+          </span>
+          <input
+            aria-label="Anotação de Raimundo Nonato"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+      </ul>
+    </section>
+    <section
+      class="_painel_a43c40"
+    >
+      <h2
+        class="_titulo_a43c40"
+      >
+        Detalhe
+      </h2>
+      <p>
+        Selecione um paciente.
+      </p>
+    </section>
+    <div
+      class="_fundo_0258bd"
+    >
+      <div
+        class="_caixa_0258bd"
+      >
+        <p>
+          Dar alta a 
+          Maria Souza
+          ?
+        </p>
+        <button>
+          Confirmar alta
+        </button>
+         
+        <button>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/pacientes/Ala.test.tsx > alta pede confirmação num diálogo
+TestingLibraryElementError: Unable to find an accessible element with the role "dialog" and name "Dar alta a Maria Souza?"
+
+Here are the accessible roles:
+
+  heading:
+
+  Name "Resumo":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Pacientes":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Detalhe":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "Buscar paciente":
+  <input
+    aria-label="Buscar paciente"
+    placeholder="buscar"
+    value=""
+  />
+
+  Name "Anotação de Maria Souza":
+  <input
+    aria-label="Anotação de Maria Souza"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de João Lima":
+  <input
+    aria-label="Anotação de João Lima"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Ana Clara Reis":
+  <input
+    aria-label="Anotação de Ana Clara Reis"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Pedro Alves":
+  <input
+    aria-label="Anotação de Pedro Alves"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Luzia Freitas":
+  <input
+    aria-label="Anotação de Luzia Freitas"
+    placeholder="anotação"
+  />
+
+  Name "Anotação de Raimundo Nonato":
+  <input
+    aria-label="Anotação de Raimundo Nonato"
+    placeholder="anotação"
+  />
+
+  --------------------------------------------------
+  list:
+
+  Name "":
+  <ul
+    class="_lista_5a772b"
+  />
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  --------------------------------------------------
+  button:
+
+  Name "Maria Souza":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "João Lima":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Ana Clara Reis":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="true"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Pedro Alves":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Luzia Freitas":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Raimundo Nonato":
+  <button
+    class="_nome_03f8eb"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+  />
+
+  Name "Alta":
+  <button />
+
+  Name "Confirmar alta":
+  <button />
+
+  Name "Cancelar":
+  <button />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <section
+      class="_painel_a43c40"
+    >
+      <h2
+        class="_titulo_a43c40"
+      >
+        Resumo
+      </h2>
+      <p>
+        6
+         pacientes · alto risco: 
+        2
+        · médio: 
+        2
+        · baixo: 
+        2
+      </p>
+    </section>
+    <section
+      class="_painel_a43c40"
+    >
+      <h2
+        class="_titulo_a43c40"
+      >
+        Pacientes
+      </h2>
+      <input
+        aria-label="Buscar paciente"
+        placeholder="buscar"
+        value=""
+      />
+      <ul
+        class="_lista_5a772b"
+      >
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Maria Souza
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            101
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="alto"
+          >
+            alto
+          </span>
+          <input
+            aria-label="Anotação de Maria Souza"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            João Lima
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            102
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="baixo"
+          >
+            baixo
+          </span>
+          <input
+            aria-label="Anotação de João Lima"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Ana Clara Reis
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            103
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="alto"
+          >
+            alto
+          </span>
+          <span
+            aria-label="prioridade"
+          >
+            ★
+          </span>
+          <input
+            aria-label="Anotação de Ana Clara Reis"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="true"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Pedro Alves
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            104
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="médio"
+          >
+            médio
+          </span>
+          <input
+            aria-label="Anotação de Pedro Alves"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Luzia Freitas
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            105
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="baixo"
+          >
+            baixo
+          </span>
+          <input
+            aria-label="Anotação de Luzia Freitas"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+        <li
+          class="_cartao_03f8eb"
+        >
+          <button
+            class="_nome_03f8eb"
+          >
+            Raimundo Nonato
+          </button>
+           
+          <span
+            class="_leito_03f8eb"
+          >
+            leito 
+            106
+          </span>
+          <span
+            class="_selo_dc3256"
+            data-risco="médio"
+          >
+            médio
+          </span>
+          <input
+            aria-label="Anotação de Raimundo Nonato"
+            placeholder="anotação"
+          />
+          <button
+            aria-pressed="false"
+          >
+            Prioridade
+          </button>
+          <button>
+            Alta
+          </button>
+        </li>
+      </ul>
+    </section>
+    <section
+      class="_painel_a43c40"
+    >
+      <h2
+        class="_titulo_a43c40"
+      >
+        Detalhe
+      </h2>
+      <p>
+        Selecione um paciente.
+      </p>
+    </section>
+    <div
+      class="_fundo_0258bd"
+    >
+      <div
+        class="_caixa_0258bd"
+      >
+        <p>
+          Dar alta a 
+          Maria Souza
+          ?
+        </p>
+        <button>
+          Confirmar alta
+        </button>
+         
+        <button>
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/features/pacientes/Ala.test.tsx:103:28
+    101|     render(<Ala />);
+    102|     await pedirAlta("Maria Souza");
+    103|     const dialogo = screen.getByRole("dialog",
+       |                            ^
+    104|       { name: "Dar alta a Maria Souza?" });
+    105|     await userEvent.click(within(dialogo)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 6 passed (7)
+   Start at  13:06:30
+   Duration  1.15s (tests 45%, environment 42%, import 10%, transform 3%)
+

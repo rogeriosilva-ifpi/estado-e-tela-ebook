@@ -1,0 +1,38 @@
+
+tela cap08
+  tema light: 0 regra(s), 0 elemento(s)
+  tema dark: 1 regra(s), 6 elemento(s)
+    color-contrast (serious): 6
+      #ffffff sobre #fbe3df: 1.22:1 (mínimo 4.5:1)
+      #ffffff sobre #eeeeee: 1.16:1 (mínimo 4.5:1)
+  teclado: 37 paradas, 1 sem foco visível
+    input “nascimento”
+
+tela cap09-antes
+  tema light: 1 regra(s), 19 elemento(s)
+    color-contrast (serious): 19
+      #9ca3af sobre #ffffff: 2.53:1 (mínimo 4.5:1)
+      #ffffff sobre #f87171: 2.76:1 (mínimo 4.5:1)
+      #ffffff sobre #34d399: 1.92:1 (mínimo 4.5:1)
+      #ffffff sobre #93c5fd: 1.8:1 (mínimo 4.5:1)
+      #ffffff sobre #fbbf24: 1.66:1 (mínimo 4.5:1)
+  tema dark: 1 regra(s), 27 elemento(s)
+    color-contrast (serious): 27
+      #9ca3af sobre #ffffff: 2.53:1 (mínimo 4.5:1)
+      #e5e7eb sobre #ffffff: 1.23:1 (mínimo 4.5:1)
+      #ffffff sobre #f87171: 2.76:1 (mínimo 4.5:1)
+      #ffffff sobre #34d399: 1.92:1 (mínimo 4.5:1)
+      #ffffff sobre #93c5fd: 1.8:1 (mínimo 4.5:1)
+      #ffffff sobre #fbbf24: 1.66:1 (mínimo 4.5:1)
+  teclado: 37 paradas, 22 sem foco visível
+    button “Verificar API”
+    button “Entrar”
+    input “nascimento”
+    button “Admitir”
+    … e mais 18
+
+tela cap09
+  tema light: 0 regra(s), 0 elemento(s)
+  tema dark: 0 regra(s), 0 elemento(s)
+  teclado: 37 paradas, 1 sem foco visível
+    input “nascimento”

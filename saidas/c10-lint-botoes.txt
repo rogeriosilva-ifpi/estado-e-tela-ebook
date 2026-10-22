@@ -1,0 +1,9 @@
+$ npx oxlint
+src/compartilhado/LimiteDeErro.tsx:37:10: error react(forbid-elements): <button> is forbidden. help: Use Botao de compartilhado/ (UI-13).
+src/features/acesso/FormLogin.tsx:58:8: error react(forbid-elements): <button> is forbidden. help: Use Botao de compartilhado/ (UI-13).
+src/features/pacientes/CartaoPaciente.tsx:22:8: error react(forbid-elements): <button> is forbidden. help: Use Botao de compartilhado/ (UI-13).
+src/features/pacientes/CartaoPaciente.tsx:36:8: error react(forbid-elements): <button> is forbidden. help: Use Botao de compartilhado/ (UI-13).
+src/features/pacientes/CartaoPaciente.tsx:42:8: error react(forbid-elements): <button> is forbidden. help: Use Botao de compartilhado/ (UI-13).
+src/features/admissao/FormAdmissao.tsx:50:8: error react(forbid-elements): <button> is forbidden. help: Use Botao de compartilhado/ (UI-13).
+src/app/StatusApi.tsx:24:8: error react(forbid-elements): <button> is forbidden. help: Use Botao de compartilhado/ (UI-13).
+exit 1

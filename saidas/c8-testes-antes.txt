@@ -1,0 +1,76 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+stderr | src/features/prontuario/BuscaProntuario.test.tsx > sem login, avisa em vez de quebrar
+An error occurred in the <BuscaProntuario> component.
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries.
+
+
+ ❯ src/features/prontuario/BuscaProntuario.test.tsx (2 tests | 1 failed) 1174ms
+   × sem login, avisa em vez de quebrar 1027ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/prontuario/BuscaProntuario.test.tsx > sem login, avisa em vez de quebrar
+TestingLibraryElementError: Unable to find an element with the text: Entre para buscar no prontuário.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div />
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/features/prontuario/BuscaProntuario.test.tsx:85:25
+     83|     await userEvent.type(screen.getByLabelText(
+     84|       "Buscar no prontuário"), "ma");
+     85|     expect(await screen.findByText(
+       |                         ^
+     86|       "Entre para buscar no prontuário."))
+     87|       .toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+⎯⎯⎯⎯⎯⎯ Unhandled Errors ⎯⎯⎯⎯⎯⎯
+
+Vitest caught 1 unhandled error during the test run.
+This might cause false positive tests. Resolve unhandled errors to make sure your tests are not affected.
+
+⎯⎯⎯⎯⎯ Uncaught Exception ⎯⎯⎯⎯⎯
+TypeError: achados.map is not a function
+ ❯ BuscaProntuario src/features/prontuario/BuscaProntuario.tsx:25:18
+     23|         “{termo}”</p>
+     24|       <ul aria-label="Resultados">
+     25|         {achados.map((a) => (
+       |                  ^
+     26|           <li key={a.id}>{a.nome}</li>
+     27|         ))}
+ ❯ Object.react_stack_bottom_frame node_modules/react-dom/cjs/react-dom-client.development.js:28571:20
+ ❯ renderWithHooks node_modules/react-dom/cjs/react-dom-client.development.js:8030:22
+ ❯ updateFunctionComponent node_modules/react-dom/cjs/react-dom-client.development.js:10569:19
+ ❯ beginWork node_modules/react-dom/cjs/react-dom-client.development.js:12205:18
+ ❯ runWithFiberInDEV node_modules/react-dom/cjs/react-dom-client.development.js:1048:13
+ ❯ performUnitOfWork node_modules/react-dom/cjs/react-dom-client.development.js:19176:22
+ ❯ workLoopSync node_modules/react-dom/cjs/react-dom-client.development.js:19004:41
+ ❯ renderRootSync node_modules/react-dom/cjs/react-dom-client.development.js:18985:11
+ ❯ performWorkOnRoot node_modules/react-dom/cjs/react-dom-client.development.js:18094:35
+
+This error originated in "src/features/prontuario/BuscaProntuario.test.tsx" test file. It doesn't mean the error was thrown inside the file itself, but while it was running.
+The last test to run before this error was "sem login, avisa em vez de quebrar". This means either:
+- the error was thrown while Vitest was running this test, or
+- the error was thrown after the test completed, and this was the most recent test at that point.
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 1 passed (2)
+     Errors  1 error
+   Start at  12:52:40
+   Duration  1.81s (tests 68%, environment 25%, import 5%, transform 2%)
+

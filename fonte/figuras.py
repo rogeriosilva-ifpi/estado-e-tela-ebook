@@ -259,10 +259,128 @@ def fig_efeito():
     return f'<svg viewBox="0 0 400 {y+32}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quando usar um efeito e o ciclo de setup e limpeza">{"".join(s)}</svg>'
 
 
+def caixa(x, y, w, h, cls, titulo, sub=None, tcls="f-ink", mono=True):
+    out = [r(x, y, w, h, cls, 6, ' stroke-width="1.1"')]
+    meio = x + w / 2
+    if sub:
+        out.append(t(meio, y + h / 2 - 2, titulo, 10.5, tcls, 700, mono=mono, anc="middle"))
+        out.append(t(meio, y + h / 2 + 12, sub, 9, "f-soft", anc="middle"))
+    else:
+        out.append(t(meio, y + h / 2 + 4, titulo, 10.5, tcls, 700, mono=mono, anc="middle"))
+    return "".join(out)
+
+
+def fig_camadas():
+    s = [t(0, 14, "QUEM PODE IMPORTAR QUEM", 9.5, "f-mut", 800)]
+    s.append(caixa(130, 22, 140, 34, "f-accs s-accl", "app/", "monta a tela inteira", "f-acc"))
+    s.append(seta(200, 56, 200, 68))
+    feats = ["acesso", "admissao", "pacientes", "prontuario"]
+    s.append('<line x1="46" y1="72" x2="349" y2="72" stroke-width="1.4" class="s-mut"/>')
+    s.append('<line x1="46" y1="124" x2="349" y2="124" stroke-width="1.4" class="s-mut"/>')
+    for i, f in enumerate(feats):
+        x = i * 101
+        s.append(f'<line x1="{x+46}" y1="72" x2="{x+46}" y2="80" stroke-width="1.4" class="s-mut"/>')
+        s.append(caixa(x, 80, 92, 34, "f-card s-bord", f + "/"))
+        s.append(f'<line x1="{x+46}" y1="114" x2="{x+46}" y2="124" stroke-width="1.4" class="s-mut"/>')
+    s.append(seta(100, 124, 100, 142))
+    s.append(seta(300, 124, 300, 142))
+    s.append(caixa(20, 144, 160, 36, "f-goods s-goodl", "compartilhado/", "Painel, Campo, BarraBusca", "f-good"))
+    s.append(caixa(220, 144, 160, 36, "f-infos s-infol", "api/", "pedir() e ErroHttp", "f-info"))
+    y = 200
+    s.append(t(0, y, "PROIBIDO", 9.5, "f-bad", 800))
+    s.append(caixa(0, y + 8, 112, 30, "f-card s-bord", "prontuario/"))
+    s.append(caixa(288, y + 8, 112, 30, "f-card s-bord", "pacientes/"))
+    s.append(f'<line x1="116" y1="{y+23}" x2="282" y2="{y+23}" stroke-width="1.6" stroke-dasharray="4 3" class="s-bad"/>')
+    s.append(f'<path d="M276 {y+18} L282 {y+23} L276 {y+28}" fill="none" stroke-width="1.6" class="s-bad"/>')
+    s.append(t(199, y + 17, "feature-isolada ✗", 10, "f-bad", 800, mono=True, anc="middle"))
+    return f'<svg viewBox="0 0 400 {y+42}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Camadas do projeto e a direção permitida dos imports">{"".join(s)}</svg>'
+
+
+def fig_erros():
+    s = [t(0, 14, "O CAMINHO DE UM ERRO", 9.5, "f-mut", 800)]
+    s.append(caixa(0, 26, 400, 34, "f-alt s-bord", "fetch → status, corpo"))
+    s.append(seta(200, 60, 200, 76))
+    s.append(caixa(0, 78, 400, 34, "f-infos s-infol", "pedir(): !r.ok → throw new ErroHttp(status)", None, "f-info"))
+    s.append(seta(100, 112, 100, 132))
+    s.append(seta(300, 112, 300, 132))
+    s.append(caixa(0, 134, 192, 46, "f-goods s-goodl", "esperado", "401 · 403 · 409 · 400", "f-good", False))
+    s.append(caixa(208, 134, 192, 46, "f-bads s-badl", "inesperado", "500 · rede · defeito", "f-bad", False))
+    s.append(seta(100, 180, 100, 198))
+    s.append(seta(300, 180, 300, 198))
+    s.append(caixa(0, 200, 192, 46, "f-card s-bord", "vira estado", "aviso no lugar dele", "f-ink", False))
+    s.append(caixa(208, 200, 192, 46, "f-card s-bord", "throw no render", "LimiteDeErro do painel", "f-ink", False))
+    return f'<svg viewBox="0 0 400 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Erro esperado vira estado; erro inesperado sobe ao limite do painel">{"".join(s)}</svg>'
+
+
+def fig_tokens():
+    s = [t(0, 14, "DO VALOR AO USO", 9.5, "f-mut", 800)]
+    col = [("valor", "#1d4ed8 / #8fb4ff", "claro / escuro", "f-alt s-bord", "f-ink"),
+           ("token", "--acao", "nome da função", "f-accs s-accl", "f-acc"),
+           ("componente", ".primaria", "background: var(--acao)", "f-goods s-goodl", "f-good")]
+    for i, (rot, v, sub, cls, tc) in enumerate(col):
+        x = i * 138
+        s.append(t(x, 34, rot, 9.5, "f-mut", 700))
+        s.append(caixa(x, 40, 124, 44, cls, v, sub, tc))
+        if i < 2:
+            s.append(f'<line x1="{x+126}" y1="62" x2="{x+136}" y2="62" stroke-width="1.6" class="s-mut"/>'
+                     f'<path d="M{x+131} 58 L{x+136} 62 L{x+131} 66" fill="none" stroke-width="1.6" class="s-mut"/>')
+    y = 100
+    s.append(f'<line x1="0" y1="{y}" x2="400" y2="{y}" stroke-dasharray="2 4" stroke-width="1" class="s-bord"/>')
+    y += 22
+    s.append(t(0, y, "CONTRASTE: A CONTA DA WCAG, NÃO O OLHO", 9.5, "f-mut", 800))
+    pares = [("texto-fraco / superficie", "6,91", "7,29", "4,5"),
+             ("acao-texto / acao", "6,70", "8,93", "4,5"),
+             ("alto-texto / alto-fundo", "6,66", "8,34", "4,5"),
+             ("foco / fundo", "4,64", "11,08", "3"),
+             ("#9ca3af / #ffffff (cap09-antes)", "2,53", "—", "4,5")]
+    y += 18
+    s.append(t(218, y, "claro", 9.5, "f-mut", 700, anc="middle"))
+    s.append(t(288, y, "escuro", 9.5, "f-mut", 700, anc="middle"))
+    s.append(t(360, y, "mínimo", 9.5, "f-mut", 700, anc="middle"))
+    for i, (par, c, e, m) in enumerate(pares):
+        y += 26
+        ruim = i == len(pares) - 1
+        s.append(r(0, y - 17, 400, 24, "f-bads s-badl" if ruim else "f-card s-bord", 4, ' stroke-width="1"'))
+        s.append(t(8, y, par, 10, "f-bad" if ruim else "f-ink", 700, mono=True))
+        s.append(t(218, y, c + ":1", 10.5, "f-bad" if ruim else "f-good", 800, anc="middle"))
+        s.append(t(288, y, e + (":1" if e != "—" else ""), 10.5, "f-good", 800, anc="middle"))
+        s.append(t(360, y, m + ":1", 10.5, "f-soft", anc="middle"))
+    return f'<svg viewBox="0 0 400 {y+12}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Valor, token e componente; pares de contraste nos dois temas">{"".join(s)}</svg>'
+
+
+def fig_catalogo():
+    s = [t(0, 14, "TRÊS ANDARES DE COMPONENTE", 9.5, "f-mut", 800)]
+    andares = [
+        ("domínio", "features/", ["ConfirmaAlta", "CartaoPaciente", "FormAdmissao"],
+         "sabe o que é uma alta", "f-accs s-accl", "f-acc"),
+        ("catálogo", "compartilhado/", ["Modal", "Botao", "Aviso"],
+         "sabe o que é perigo, foco, erro", "f-goods s-goodl", "f-good"),
+        ("nativo", "HTML", ["<dialog>", "<button>", "<p role>"],
+         "sabe clicar, abrir, anunciar", "f-alt s-bord", "f-ink"),
+    ]
+    y = 28
+    for i, (nome, pasta, pecas, sabe, cls, tc) in enumerate(andares):
+        s.append(r(0, y, 400, 70, cls, 8, ' stroke-width="1.1"'))
+        s.append(t(12, y + 18, nome.upper(), 9.5, tc, 800))
+        s.append(t(388, y + 18, pasta, 10, "f-soft", 700, mono=True, anc="end"))
+        for k, pc in enumerate(pecas):
+            x = 12 + k * 128
+            s.append(r(x, y + 26, 118, 24, "f-card s-bord", 4, ' stroke-width="1"'))
+            s.append(t(x + 59, y + 42, pc.replace("<", "&lt;").replace(">", "&gt;"), 10, "f-ink", 700, mono=True, anc="middle"))
+        s.append(t(12, y + 64, sabe, 9.5, "f-soft"))
+        if i < 2:
+            s.append(seta(200, y + 70, 200, y + 86))
+            s.append(t(208, y + 83, "compõe" if i == 0 else "embrulha", 9.5, "f-mut", 700))
+        y += 88
+    return f'<svg viewBox="0 0 400 {y-14}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Componentes de domínio compõem o catálogo, que embrulha o HTML nativo">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
                     ("arvore", fig_arvore), ("fluxo", fig_fluxo),
                     ("envio", fig_envio), ("barreiras", fig_barreiras),
-                    ("efeito", fig_efeito)):
+                    ("efeito", fig_efeito), ("camadas", fig_camadas),
+                    ("erros", fig_erros), ("tokens", fig_tokens),
+                    ("catalogo", fig_catalogo)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

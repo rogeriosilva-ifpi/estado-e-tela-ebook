@@ -1,0 +1,153 @@
+<!-- ==================== CAP 10 ==================== -->
+<section class="chapter" id="cap10">
+  <div class="opener">{{ARTE:abertura_10}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte III · Arquitetura</div>
+    <div class="num">10</div>
+    <h1>Componentes reutilizáveis e design system</h1>
+    <div class="deck">Um componente de catálogo é uma decisão tomada uma vez: visual, semântica, foco e teclado. Quem usa só escolhe a variante.</div>
+  </div>
+
+  <p class="lead">Segunda, 10h. Um clique errado no botão "Alta" tirou da lista um paciente que ia ficar. A equipe pede uma confirmação. Em meia hora o agente entrega a caixa "Dar alta a Maria Souza?". Funciona com o mouse. Com o teclado, não.</p>
+
+  <p>A caixa de confirmação parece fácil e esconde meia dúzia de decisões: foco, Esc, fundo clicável, o que o leitor de tela anuncia, para onde o foco volta. Resolvidas uma vez no catálogo, nenhuma tela as resolve de novo.</p>
+
+  <h2><span class="sn">10.1</span>Genérico e de domínio</h2>
+  <p>O projeto já tem dois tipos de componente. <code>CartaoPaciente</code> sabe o que é um paciente; <code>Painel</code> não sabe o que mostra. O primeiro é <strong>de domínio</strong> e mora na feature; o segundo é <strong>genérico</strong> e mora em <code>compartilhado/</code>. O catálogo do projeto, o seu pequeno <em>design system</em>, é o segundo grupo com regras escritas.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:catalogo}}</div>
+    <figcaption><b>Fig. 10.1</b> — Três andares, e cada um só conhece o de baixo. O catálogo embrulha o HTML nativo e toma as decisões de acessibilidade uma vez.</figcaption>
+  </figure>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A maleta padronizada</h4>
+      <p>Na maleta de instrumentos, cada peça tem um encaixe com a forma dela. Quem abre sabe na hora o que falta, e ninguém improvisa uma tesoura. A equipe não discute qual termômetro usar: discute o paciente.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>A maleta vem pronta da fábrica. O catálogo cresce com o projeto, e cresce errado se alguém criar o encaixe antes de existir a peça. A regra do <code>docs/UI.md</code> vale aqui: peça nova entra no catálogo no terceiro uso real.</p>
+  </div>
+
+  <h2><span class="sn">10.2</span>A caixa que só o mouse vê</h2>
+  <p>Na tag <code>cap10-antes</code>, a confirmação é uma <code>div</code> fixa por cima da tela, com os tokens do capítulo 9:</p>
+
+  {{BLOCO:cap10-antes:src/features/pacientes/ConfirmaAlta.tsx|linhas=14-23|reticencias=sim|rotulo=pacientes/ConfirmaAlta.tsx}}
+
+  <p>O véu cobre a tela e bloqueia o clique no fundo, então quem testa com o mouse aprova. Este roteiro abre a confirmação com Enter no botão Alta de Maria e segue só pelo teclado. A árvore de acessibilidade vem do próprio Chromium, pelo protocolo de depuração (CDP):</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap10.py · Medido</span></div>
+<pre>{{SAIDA:c10-teclado.txt|linhas=2-9|destaque=8 no fundo da página;caixa continua aberta;0 diálogo(s)}}</pre>
+  </div>
+
+  <p>O foco ficou no botão Alta, atrás do véu. Oito Tabs andaram pelos cartões de baixo, invisíveis para quem enxerga e acessíveis para quem não enxerga: o leitor de tela recebe 24 botões e nenhum diálogo. O Esc não faz nada. Ao cancelar, o botão clicado sai da árvore e o foco cai no <code>body</code>, no topo da página.</p>
+
+  <h2><span class="sn">10.3</span>Modal com <code>&lt;dialog&gt;</code></h2>
+  <p>O HTML tem o elemento certo desde 2022 em todos os navegadores. Aberto com <code>showModal()</code>, o <code>&lt;dialog&gt;</code> vai para a camada superior da página, torna o resto inerte (nem clique, nem foco, nem leitor de tela), fecha no Esc e, ao fechar, devolve o foco a quem o abriu. O componente do catálogo só liga o estado do React a essa API:</p>
+
+  {{BLOCO:cap10:src/compartilhado/Modal.tsx|linhas=20-38|reticencias=sim|rotulo=compartilhado/Modal.tsx}}
+
+  <p>É um efeito legítimo, no sentido do capítulo 7: sincroniza o estado <code>aberto</code> com um sistema que o React não controla, a API imperativa do elemento. O <code>onClose</code> dispara também no Esc, e por isso o pai fica sabendo. <code>useId</code> gera o id que liga o título ao diálogo, e o leitor de tela anuncia o título junto com o papel de diálogo.</p>
+
+  {{BLOCO:cap10:src/features/pacientes/ConfirmaAlta.tsx|linhas=19-30|reticencias=sim|rotulo=pacientes/ConfirmaAlta.tsx}}
+
+  <p>O <code>showModal()</code> põe o foco no primeiro elemento focável. Numa ação sem volta, esse elemento deve ser o Cancelar: um Enter distraído não dá alta a ninguém. A mesma medição, na tag <code>cap10</code>:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap10.py · Medido</span></div>
+<pre>{{SAIDA:c10-teclado.txt|linhas=11-18|destaque=0 no fundo da página;caixa fechou;button “Alta”}}</pre>
+  </div>
+
+  <p>As paradas "na barra do navegador" são de propósito: o diálogo nativo deixa o Tab sair para a interface do navegador e voltar, e ninguém fica preso. Uma linha não mudou: depois da alta, o foco cai no <code>body</code>, porque o botão que abriu o diálogo saiu com o paciente. Esse é o desafio dos exercícios.</p>
+
+  <div class="box warn">
+    <span class="bt">Atenção · o jsdom não tem <code>showModal</code></span>
+    <p>O jsdom 29 não implementa <code>showModal()</code> nem <code>close()</code>; <code>src/teste/dialogo.ts</code> simula só abrir e fechar. O teste de unidade prova papel e nome do diálogo; foco, Esc e fundo inerte, só o roteiro no Chromium.</p>
+  </div>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap10-antes</span><p><code>× alta pede confirmação num diálogo</code><br><code>→ Unable to find an accessible</code><br><code>&nbsp;&nbsp;element with the role "dialog"</code></p></div>
+    <div class="yes"><span class="lb">cap10</span><p><code>✓ alta pede confirmação num diálogo</code></p></div>
+  </div>
+
+  <h2><span class="sn">10.4</span>A API de um componente</h2>
+  <p>Todo componente do catálogo responde a quatro perguntas: que <strong>variantes</strong> existem, o que ele <strong>repassa</strong> ao elemento nativo, que <strong>padrão</strong> ele muda e onde entra o <strong>conteúdo</strong>. O <code>Botao</code>:</p>
+
+  {{BLOCO:cap10:src/compartilhado/Botao.tsx|linhas=12-28|rotulo=compartilhado/Botao.tsx}}
+
+  <p>As variantes são poucas e com significado: <code>primaria</code> (uma por área), <code>secundaria</code>, <code>perigo</code> (ação sem volta) e <code>texto</code> (o nome clicável do paciente). <code>ComponentProps&lt;"button"&gt;</code> e o <code>...resto</code> repassam tudo o que o nativo aceita: <code>onClick</code>, <code>disabled</code>, <code>aria-pressed</code>, o texto como <code>children</code>. O padrão que muda é o <code>type</code>: o <code>&lt;button&gt;</code> nativo dentro de um formulário é <code>submit</code> e envia, uma surpresa conhecida; no catálogo, envio é sempre explícito (<code>type="submit"</code>).</p>
+
+  <p>No React 19, <code>ref</code> chega como prop comum; o <code>forwardRef</code> de tanto código antigo deixou de ser necessário e será descontinuado. O conteúdo entra por <code>children</code>. Moldura com dois buracos, corpo e ações, recebe um segundo <code>ReactNode</code> por prop (um <em>slot</em>), nunca dez props de configuração.</p>
+
+  <p>O <code>Aviso</code> junta uma decisão espalhada pelas telas: <code>tom="erro"</code> vira <code>role="alert"</code>, lido na hora; <code>tom="info"</code> vira <code>role="status"</code>, lido quando o leitor fica livre.</p>
+
+  <h2><span class="sn">10.5</span>O catálogo vigiado</h2>
+  <p>Catálogo que ninguém é obrigado a usar vira sugestão. O oxlint tem a regra <code>react/forbid-elements</code>: <code>&lt;button&gt;</code> e <code>&lt;dialog&gt;</code> crus passam a ser erro fora de <code>Botao.tsx</code> e <code>Modal.tsx</code>. Ligada antes da migração, a regra virou a lista de tarefas:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c10-lint-botoes.txt|linhas=1-3}}
+…</pre>
+  </div>
+
+  <p>Sete botões em seis arquivos, migrados um a um com o portão verde. O <code>docs/UI.md</code> ganhou a tabela do catálogo com a regra de uso de cada peça.</p>
+
+  <p>Catálogo próprio faz sentido enquanto o nativo resolve o comportamento, como aqui. Para combobox, menu ou calendário, cujo teclado é difícil de acertar, uma biblioteca <em>headless</em> entrega comportamento e acessibilidade sem visual. Um kit pronto serve a painel interno com prazo curto, desde que o visual do kit seja aceitável.</p>
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-13 e UI-14</span>
+    <p><strong>UI-13:</strong> botão é <code>Botao</code>; aviso é <code>Aviso</code>. Verificação: <code>react/forbid-elements</code>.</p>
+    <p><strong>UI-14:</strong> caixa sobre a tela é <code>Modal</code>; ação sem volta pede confirmação, Cancelar primeiro. Verificação: <code>Ala.test.tsx</code> e <code>cap10.py</code>.</p>
+  </div>
+
+  <h2><span class="sn">10.6</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>A caixa de <code>div</code> de 10.2; o "genérico" com dez props booleanas criado antes do segundo uso; <code>forwardRef</code> e <code>defaultProps</code> de React antigo em componente novo. Com o catálogo no <code>docs/UI.md</code> e o lint, o agente acha a peça pronta e o portão recusa a improvisada.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 10</span><button class="copy" type="button" data-copy="p10-agente">Copiar</button></div>
+<pre id="p10-agente"><span class="k">Goal</span>
+Botão Limpar na admissão, que pede
+confirmação se houver algo digitado.
+
+<span class="k">Context</span>
+@docs/UI.md @INVARIANTES.md
+
+<span class="k">Constraints</span>
+- use Modal e Botao; nada de dialog,
+  button ou div clicável crus
+- não generalize ConfirmaAlta: é o
+  segundo uso, copie e espere o terceiro
+- Cancelar primeiro (UI-14)
+
+<span class="k">Done when</span>
+- npm run gate verde
+- teste: cancelar mantém o digitado
+- cap10.py adaptado: foco entra, Esc
+  fecha e o foco volta ao botão</pre>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, cap. 6</span>
+    <p>O <code>docs/UI.md</code> tem agora os três blocos do capítulo 6 do <em>Dev de IA</em>: onde cada coisa mora, como estilizar e o catálogo com regras de uso.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Troque a ordem dos botões em <code>ConfirmaAlta</code> e rode <code>cap10.py</code>. Que linha muda, e por que importa?</span></li>
+    <li><b>Intermediário</b><span>Dê ao <code>Campo</code> os estados de erro e desabilitado, só com tokens. Que pares novos entram em <code>tokens.test.ts</code>?</span></li>
+    <li><b>Desafio</b><span>Depois da alta, leve o foco ao cartão seguinte, ou à busca se a lista esvaziar, com <code>ref</code> como prop. Prove com <code>cap10.py</code> que a última linha deixa de ser <code>body</code>.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 17, 35. <b>Invariantes:</b> UI-13, UI-14. <b>Tags:</b> <code>cap10-antes</code>, <code>cap10</code>. <b>Prompts:</b> <code>prompts/cap10.md</code>.</p>
+    <p><b>Fontes.</b> HTML Living Standard: <em>the dialog element</em>. MDN: <em>&lt;dialog&gt;</em>, <em>HTMLDialogElement.showModal()</em>, <em>ARIA: alert role</em>, <em>ARIA: status role</em>. react.dev: <em>React 19</em> (<em>ref as a prop</em>), <em>useId</em>. Oxc: <em>react/forbid-elements</em>. WAI-ARIA APG: <em>Dialog (Modal) Pattern</em>. Saídas em <code>saidas/c10-*.txt</code>.</p>
+  </div>
+</section>

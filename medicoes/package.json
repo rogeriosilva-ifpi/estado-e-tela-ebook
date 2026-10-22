@@ -1,0 +1,8 @@
+{
+  "name": "estado-e-tela-medicoes",
+  "private": true,
+  "description": "Dependências JS dos roteiros de medição (axe-core para o vigia-a11y).",
+  "devDependencies": {
+    "axe-core": "4.14.0"
+  }
+}

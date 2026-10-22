@@ -1,0 +1,15 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/prontuario/BuscaProntuario.test.tsx > resposta velha não sobrescreve a nova 147ms
+ ✓ src/features/prontuario/BuscaProntuario.test.tsx > sem login, avisa em vez de quebrar 20ms
+ ✓ src/compartilhado/LimiteDeErro.test.tsx > painel quebrado não derruba vizinho 114ms
+
+ Test Files  2 passed (2)
+      Tests  3 passed (3)
+   Start at  12:52:56
+   Duration  1.51s (environment 63%, tests 21%, import 14%, transform 1%)
+
+    Isolate  2 workers spawned · ~497ms startup each (spawn + environment, per file)
+             at least ~497ms faster with isolate: false — reuses workers across files instead of one per file
+

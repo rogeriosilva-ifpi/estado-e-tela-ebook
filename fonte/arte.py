@@ -268,3 +268,107 @@ def abertura_07():
     c.append(pessoa(88, 160, GR, 0.95, jaleco=True))
     c.append(f'<rect x="100" y="104" width="34" height="6" rx="3" fill="{GR}" transform="rotate(-10 100 107)"/>')
     return svg("".join(c), rotulo="Tubos de exame saindo do laboratório; um resultado antigo é barrado por uma faixa de luz")
+
+
+def abertura_08():
+    """Planta da ala vista de cima: setores com porta para o corredor
+    comum; uma porta corta-fogo fechada contém o setor em alarme."""
+    c = [painel(glow_x=330, glow_y=70, piso=False)]
+    c.append(cruz(16, 14, 12))
+    # corredor comum
+    c.append(f'<rect x="24" y="124" width="352" height="30" rx="3" fill="{WALL}"/>')
+    for x in range(40, 370, 28):
+        c.append(f'<rect x="{x}" y="138" width="14" height="2" rx="1" fill="{LINE}"/>')
+    setores = [(30, 104, GR2), (142, 104, GR2), (262, 108, RED)]
+    for x, w, cor in setores:
+        c.append(f'<rect x="{x}" y="34" width="{w}" height="84" rx="4" fill="{DOOR}" stroke="{LINE}" stroke-width="3"/>')
+        # porta para o corredor
+        c.append(f'<rect x="{x+w/2-11}" y="114" width="22" height="8" fill="{WALL}"/>')
+        c.append(luz(x + w - 12, 44, cor, 3.5))
+        # leitos e quadros vistos de cima
+        for k in range(2):
+            lx = x + 12 + k * (w / 2 - 4)
+            c.append(f'<rect x="{lx}" y="56" width="{w/2-22}" height="18" rx="3" fill="{DGREY}"/>')
+            c.append(f'<rect x="{lx+3}" y="59" width="10" height="12" rx="3" fill="{SKIN}" opacity=".8"/>')
+        c.append(quadro(x + 12, 86, w - 24, 20, 2, DGREY))
+    # alarme no terceiro setor, contido
+    c.append(f'<circle cx="316" cy="76" r="44" fill="{RED}" opacity=".14"/>')
+    c.append(f'<circle cx="316" cy="76" r="22" fill="{RED}" opacity=".12"/>')
+    # porta corta-fogo fechada entre o segundo e o terceiro setor
+    c.append(f'<rect x="250" y="30" width="8" height="94" rx="2" fill="{AMB}"/>')
+    for y in range(34, 120, 12):
+        c.append(f'<rect x="250" y="{y}" width="8" height="5" fill="{RED}"/>')
+    # quem passa pelo corredor segue
+    c.append(f'<circle cx="104" cy="139" r="6" fill="{SKIN}"/>')
+    c.append(f'<rect x="112" y="135" width="16" height="8" rx="4" fill="{GR}"/>')
+    return svg("".join(c), rotulo="Planta de uma ala vista de cima; uma porta corta-fogo fechada contém o setor em alarme")
+
+
+def cadeira(x, base, cor=BLUE):
+    """Pessoa em cadeira de rodas, de perfil."""
+    return (f'<circle cx="{x}" cy="{base-12}" r="12" fill="none" stroke="{GREY}" stroke-width="3"/>'
+            f'<circle cx="{x+20}" cy="{base-4}" r="4" fill="{GREY}"/>'
+            f'<rect x="{x-6}" y="{base-26}" width="30" height="5" rx="2" fill="{GREY}"/>'
+            f'<rect x="{x-8}" y="{base-50}" width="5" height="28" rx="2" fill="{GREY}"/>'
+            f'<rect x="{x-4}" y="{base-54}" width="18" height="30" rx="7" fill="{cor}"/>'
+            f'<rect x="{x+8}" y="{base-28}" width="16" height="6" rx="3" fill="{DGREY}"/>'
+            f'<rect x="{x+20}" y="{base-28}" width="6" height="20" rx="2" fill="{DGREY}"/>'
+            f'<circle cx="{x+5}" cy="{base-63}" r="8" fill="{SKIN}"/>')
+
+
+def abertura_09():
+    """Corredor com faixas coloridas no piso levando às portas, e
+    uma rampa ao lado da escada: o caminho serve a todos."""
+    c = [painel(glow_x=210, glow_y=60)]
+    c.append(cruz(18, 16, 12))
+    # portas ao fundo, cada uma com a luz da sua faixa
+    for x, cor in ((150, GR2), (196, BLUE), (242, OR2)):
+        c.append(f'<rect x="{x}" y="70" width="34" height="90" rx="2" fill="{DOOR}" stroke="{LINE}" stroke-width="2"/>')
+        c.append(f'<rect x="{x}" y="64" width="34" height="5" rx="2" fill="{cor}"/>')
+    # faixas no piso, do primeiro plano até cada porta
+    for x0, x1, cor in ((60, 167, GR2), (120, 213, BLUE), (180, 259, OR2)):
+        c.append(f'<polygon points="{x0},200 {x0+14},200 {x1+3},160 {x1-3},160" fill="{cor}" opacity=".85"/>')
+    # escada e rampa à direita
+    for k in range(4):
+        c.append(f'<rect x="{300+k*10}" y="{160-(k+1)*10}" width="{70-k*10}" height="10" fill="{DGREY}"/>')
+    c.append(f'<polygon points="296,200 400,200 400,128" fill="{LINE}"/>')
+    c.append(f'<line x1="300" y1="186" x2="400" y2="116" stroke="{AMB}" stroke-width="3"/>')
+    c.append(f'<g transform="rotate(-34 350 166)">{cadeira(342, 184)}</g>')
+    c.append(pessoa(70, 176, GR, 0.9, jaleco=True))
+    return svg("".join(c), rotulo="Corredor com faixas coloridas no piso levando a portas, e uma rampa ao lado da escada")
+
+
+def abertura_10():
+    """Maleta de instrumentos aberta: cada peça no seu encaixe de
+    espuma; uma peça fora, ao lado do encaixe vazio com a forma dela."""
+    c = [painel(glow_x=120, glow_y=50)]
+    c.append(cruz(362, 16, 12))
+    # tampa
+    c.append(f'<polygon points="70,30 330,30 342,62 58,62" fill="{DOOR}" stroke="{LINE}" stroke-width="2"/>')
+    c.append(f'<rect x="186" y="36" width="28" height="6" rx="3" fill="{AMB}"/>')
+    # base com espuma
+    c.append(f'<rect x="56" y="64" width="288" height="96" rx="6" fill="{DGREY}" stroke="{LINE}" stroke-width="2"/>')
+    c.append(f'<rect x="64" y="72" width="272" height="80" rx="4" fill="{WALL}"/>')
+    # encaixes e peças (termômetro, tesoura, seringa, estetoscópio)
+    c.append(f'<rect x="76" y="82" width="14" height="60" rx="7" fill="{BG}"/>')
+    c.append(f'<rect x="79" y="86" width="8" height="46" rx="4" fill="{PAPER}"/>')
+    c.append(f'<circle cx="83" cy="134" r="5" fill="{RED}"/>')
+    for cx in (110, 124):
+        c.append(f'<circle cx="{cx}" cy="128" r="8" fill="{BG}"/>')
+        c.append(f'<circle cx="{cx}" cy="128" r="5" fill="none" stroke="{BLUE}" stroke-width="2.5"/>')
+    c.append(f'<line x1="112" y1="120" x2="126" y2="84" stroke="{GREY}" stroke-width="3"/>')
+    c.append(f'<line x1="122" y1="120" x2="108" y2="84" stroke="{GREY}" stroke-width="3"/>')
+    c.append(f'<rect x="150" y="96" width="70" height="16" rx="4" fill="{BG}"/>')
+    c.append(f'<rect x="156" y="99" width="44" height="10" rx="2" fill="{PAPER}" opacity=".9"/>')
+    c.append(f'<rect x="200" y="102" width="16" height="4" fill="{GREY}"/>')
+    c.append(f'<rect x="150" y="104" width="8" height="2" fill="{GREY}"/>')
+    # encaixe vazio do estetoscópio: a forma espera a peça
+    c.append(f'<path d="M244 86 q0 34 22 34 q22 0 22 -34" fill="none" stroke="{BG}" stroke-width="9" stroke-linecap="round"/>')
+    c.append(f'<circle cx="300" cy="128" r="12" fill="{BG}"/>')
+    c.append(f'<line x1="266" y1="120" x2="290" y2="126" stroke="{BG}" stroke-width="7" stroke-linecap="round"/>')
+    # a peça, fora, com a mesma forma
+    c.append(f'<g transform="translate(-140 50) scale(.6)">'
+             f'<path d="M244 86 q0 34 22 34 q22 0 22 -34" fill="none" stroke="{GR2}" stroke-width="4" stroke-linecap="round"/>'
+             f'<line x1="266" y1="120" x2="290" y2="126" stroke="{GR2}" stroke-width="3"/>'
+             f'<circle cx="300" cy="128" r="9" fill="{GR2}"/></g>')
+    return svg("".join(c), rotulo="Maleta de instrumentos aberta, cada peça no seu encaixe; um estetoscópio fora, ao lado do encaixe vazio com a sua forma")

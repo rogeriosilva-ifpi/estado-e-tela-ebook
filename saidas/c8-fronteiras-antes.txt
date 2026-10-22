@@ -1,0 +1,7 @@
+$ npx depcruise src
+
+  error feature-isolada: src/features/prontuario/BuscaProntuario.tsx → src/features/pacientes/BarraBusca.tsx
+
+x 1 dependency violations (1 errors, 0 warnings). 33 modules, 65 dependencies cruised.
+
+exit 1

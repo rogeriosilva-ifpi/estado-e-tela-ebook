@@ -1,0 +1,163 @@
+<!-- ==================== CAP 8 ==================== -->
+<section class="chapter" id="cap08">
+  <div class="opener">{{ARTE:abertura_08}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte III · Arquitetura</div>
+    <div class="num">08</div>
+    <h1>Estrutura de projeto por funcionalidade</h1>
+    <div class="deck">Comece simples; reorganize quando a dor aparecer; deixe uma ferramenta vigiar as fronteiras e um limite conter cada falha.</div>
+  </div>
+
+  <p class="lead">Quarta, 7h. A recepcionista abre o Mini-Prontuário, ainda sem entrar, e digita "ma" na busca. A tela inteira fica em branco: login, admissão, a Ala B, tudo.</p>
+
+  <p>Um erro numa busca derrubou seis painéis. No mesmo dia, a revisão acha o prontuário importando um componente de dentro da Ala. Dois sintomas de um projeto sem planta: ninguém escreveu quem fala com quem, nem até onde uma falha vai.</p>
+
+  <h2><span class="sn">8.1</span>Três estágios, e quando mudar</h2>
+  <p>Estrutura não se escolhe no primeiro dia. Um arquivo só serve até você rolar mais do que lê; pastas por tipo (<code>components/</code>, <code>hooks/</code>) servem até uma mudança de tela tocar quatro pastas. A partir daí, organize por funcionalidade.</p>
+
+  <p>Na organização por funcionalidade, cada pasta de <code>features/</code> guarda tudo de uma funcionalidade: componentes, hooks, tipos e testes. É a fatia vertical do <em>Arquitetura em Tempos de IA</em>, capítulo 4, aplicada à tela. Em volta delas ficam três pastas sem domínio: <code>app/</code> monta a tela, <code>compartilhado/</code> guarda peças que qualquer uma usa e <code>api/</code> fala com o servidor.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A planta do hospital</h4>
+      <p>Cada setor tem seus leitos, seu posto e sua equipe. Todos dão para o mesmo corredor, e ninguém atravessa a UTI para chegar à farmácia. Entre os setores há portas corta-fogo: um incêndio na cozinha fica na cozinha.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>Parede de hospital não se move; pasta se move com um comando, e um <code>import</code> atravessa qualquer parede em silêncio. A planta do código precisa de uma ferramenta que confira as paredes a cada portão.</p>
+  </div>
+
+  <h2><span class="sn">8.2</span>A dor, medida</h2>
+  <p>Na tag <code>cap08-antes</code>, um agente recebeu o pedido "a busca do prontuário deve ter a mesma barra da Ala" e reaproveitou o componente que já existia:</p>
+
+  {{BLOCO:cap08-antes:src/features/prontuario/BuscaProntuario.tsx|linhas=1-5|rotulo=prontuario/BuscaProntuario.tsx}}
+
+  <p>O portão passa, mas agora mudar a Ala pode quebrar o prontuário sem aviso. O segundo problema é o da recepção. Este roteiro sobe a API real e a tela e digita "ma" sem login e com a API fora do ar (logado, tudo funciona):</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap08.py · Medido</span></div>
+<pre>{{SAIDA:c8-busca.txt|linhas=2-10|destaque=painéis na tela: 0;0 encontrado(s) para “ma”}}</pre>
+  </div>
+
+  <p>Sem login, a API responde 401 com <code>{"error": …}</code>. O código fazia <code>r.json()</code> sem olhar o status, guardava o objeto como lista e o <code>.map</code> lançou no render. Sem nada que contenha o erro, o React desmonta a árvore inteira. Com a API fora do ar é pior: a tela fica de pé e <em>mente</em>, porque "0 encontrado(s)" parece resposta.</p>
+
+  <h2><span class="sn">8.3</span>A nova planta</h2>
+  <p>Na tag <code>cap08</code>, <code>BarraBusca</code> desceu para <code>compartilhado/</code>, sem nada de domínio, e ganhou a prop <code>rotulo</code>. <code>App</code> e o verificador da API foram para <code>app/</code>. A regra de quem importa quem cabe numa figura:</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:camadas}}</div>
+    <figcaption><b>Fig. 8.1</b> — As dependências só descem. O que duas features usam vai para <code>compartilhado/</code>, sem domínio; a busca não importa nada da Ala.</figcaption>
+  </figure>
+
+  <h2><span class="sn">8.4</span>Uma porta só para a rede</h2>
+  <p>Login, admissão, busca e status tinham cada um o seu <code>fetch</code> e a sua forma de ler a resposta. Agora todos passam por <code>api/cliente.ts</code>:</p>
+
+  {{BLOCO:cap08:src/api/cliente.ts|linhas=23-45|rotulo=api/cliente.ts}}
+
+  <p>Resposta fora de 2xx vira <code>ErroHttp</code> com status e corpo; quem chama recebe o dado ou uma exceção, nunca um <code>Response</code> para interpretar. O <code>T</code> é promessa ao TypeScript, não verificação: validar a resposta com Zod fica para o capítulo 14.</p>
+
+  <p>Para que ninguém volte a chamar <code>fetch</code> por fora, a regra <code>no-restricted-globals</code> do oxlint proíbe o global, com uma mensagem que aponta para <code>pedir()</code>; um bloco <code>overrides</code> a desliga em <code>src/api/</code> e nos testes, que simulam a rede.</p>
+
+
+  <h2><span class="sn">8.5</span>Erro esperado, erro inesperado</h2>
+  <p>Um 401 na busca é previsível, e a feature sabe o que dizer. Um 500 ou uma rede caída não têm frase pronta: o melhor é isolar o estrago.</p>
+
+  {{BLOCO:cap08:src/features/prontuario/useBuscaPacientes.ts|linhas=38-51|reticencias=sim|rotulo=prontuario/useBuscaPacientes.ts}}
+
+  <figure>
+    <div class="fig-frame">{{FIG:erros}}</div>
+    <figcaption><b>Fig. 8.2</b> — Dois caminhos depois do cliente. O esperado vira estado e aparece no lugar dele; o inesperado é relançado no render e o painel o contém.</figcaption>
+  </figure>
+
+  <p>O <code>.catch</code> roda numa promessa, fora do render, e um erro ali não chega a nenhum limite. Por isso o hook guarda a falha em estado e a relança no render, na penúltima linha, onde o React sabe tratá-la. Quem a recebe é o <strong>limite de erro</strong> (<em>error boundary</em>):</p>
+
+  {{BLOCO:cap08:src/compartilhado/LimiteDeErro.tsx|linhas=16-22|reticencias=sim|rotulo=compartilhado/LimiteDeErro.tsx}}
+
+  <div class="box data">
+    <span class="bt">Dado · react.dev, Component</span>
+    <p>Limite de erro ainda é classe: não há Hook equivalente a <code>componentDidCatch</code>. Ele captura erros do render dos filhos, não de handlers, código assíncrono, SSR ou dele mesmo. Exceção: erro dentro de <code>startTransition</code> chega ao limite, e por isso uma action do React 19 que lança cai nele.</p>
+  </div>
+
+  <p>No <code>render</code>, quando <code>falhou</code> é verdadeiro, o limite mostra "algo falhou" e um botão "Tentar de novo" no lugar dos filhos. Onde pôr os limites é decisão de produto. Aqui, cada <code>Painel</code> embrulha os filhos num <code>LimiteDeErro</code> com o próprio título: a moldura que já existia virou a porta corta-fogo. A mesma busca, na tag <code>cap08</code>:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap08.py · Medido</span></div>
+<pre>{{SAIDA:c8-busca.txt|linhas=16-24|destaque=Entre para buscar no prontuário.;algo falhou}}</pre>
+  </div>
+
+  <p>Sem login, a busca avisa. Com a API fora, só o painel da busca cai; os outros cinco continuam. "Tentar de novo" remonta os filhos do zero, com o estado limpo.</p>
+
+  <h2><span class="sn">8.6</span>Fronteiras no portão</h2>
+  <p>A planta só vale se alguém conferir. O instrumento <code>fronteiras</code> é o dependency-cruiser com as regras do projeto, rodando em <code>npm run gate</code>:</p>
+
+  {{BLOCO:cap08:.dependency-cruiser.cjs|linhas=5-17|reticencias=sim|rotulo=.dependency-cruiser.cjs}}
+
+  <p>O <code>$1</code> repete o nome capturado na origem: de <code>features/prontuario/</code> só se vai a <code>features/prontuario/</code>. Outras duas regras proíbem a base de importar telas e proíbem ciclos. As regras do <code>cap08</code> sobre o código do <code>cap08-antes</code>:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c8-fronteiras-antes.txt|linhas=1-6|destaque=feature-isolada}}</pre>
+  </div>
+
+  <p>E a prova de revert do erro de tela, no teste que entrou na tag <code>cap08-antes</code>:</p>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap08-antes</span><p><code>× sem login, avisa em vez de quebrar</code><br><code>TypeError: achados.map is not</code><br><code>&nbsp;&nbsp;a function</code></p></div>
+    <div class="yes"><span class="lb">cap08</span><p><code>✓ sem login, avisa em vez de quebrar</code><br><code>✓ painel quebrado não derruba vizinho</code></p></div>
+  </div>
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-08 a UI-10</span>
+    <p><strong>UI-08:</strong> feature não importa feature; base não importa tela; sem ciclos (<code>npm run fronteiras</code>). <strong>UI-09:</strong> só <code>src/api/</code> chama <code>fetch</code> (<code>no-restricted-globals</code>). <strong>UI-10:</strong> erro esperado vira aviso; o inesperado sobe ao limite do painel (os dois testes acima).</p>
+  </div>
+
+  <h2><span class="sn">8.7</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Diante de um erro na busca, o agente costuma escrever <code>catch { return [] }</code>: a tela não cai e passa a mentir "0 encontrado(s)", como em 8.2. Diante de <code>feature-isolada</code>, copia o componente ou abre exceção em <code>pathNot</code>. Peça que o erro inesperado apareça, proteja a configuração do portão e peça a refatoração em passos pequenos, com o portão verde entre eles.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 8</span><button class="copy" type="button" data-copy="p8-agente">Copiar</button></div>
+<pre id="p8-agente"><span class="k">Goal</span>
+Admissão mostra "Sessão expirada" no 401;
+com a rede caída, só o painel avisa.
+
+<span class="k">Context</span>
+@docs/UI.md @INVARIANTES.md @src/api/
+
+<span class="k">Constraints</span>
+- só src/api chama fetch (UI-09)
+- erro inesperado não vira lista vazia
+  nem mensagem genérica: sobe ao limite
+- não edite .dependency-cruiser.cjs
+  nem .oxlintrc.json
+
+<span class="k">Done when</span>
+- npm run gate verde
+- teste novo: 401 mostra o aviso
+- teste novo: fetch que rejeita mostra
+  "algo falhou" em Admissão, e o painel
+  Pacientes continua</pre>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, caps. 5 e 7</span>
+    <p>UI-08 a UI-10 entraram no <code>INVARIANTES.md</code> com a forma de verificar (cap. 5), e a verificação virou comando do portão (cap. 7). Regra sem verificação é sugestão.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Mova <code>SeloRisco</code> para <code>compartilhado/</code> sem mudar nada e rode <code>npm run fronteiras</code>. Qual regra falha, e por quê?</span></li>
+    <li><b>Intermediário</b><span>Faça <code>StatusApi</code> distinguir rede caída de resposta 500. A diferença mora no cliente ou no componente?</span></li>
+    <li><b>Desafio</b><span>Dê a cada feature um <code>index.ts</code> público e uma regra que proíba importá-la por outro caminho. Prove que <code>app/</code> não alcança mais <code>useBuscaPacientes</code>.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 14, 35. <b>Invariantes:</b> UI-08, UI-09, UI-10. <b>Tags:</b> <code>cap08-antes</code>, <code>cap08</code> (tela) e <code>cap07</code> (API). <b>Prompts:</b> <code>prompts/cap08.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Component</em> (<em>Catching rendering errors with an Error Boundary</em>), <em>useTransition</em>. dependency-cruiser: <em>rules reference</em>. Oxc: <em>no-restricted-globals</em>. <em>Arquitetura em Tempos de IA</em>, cap. 4. Saídas em <code>saidas/c8-*.txt</code>.</p>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+
+tela cap08-antes
+ sem login
+  painéis na tela: 0
+  a busca diz: (a seção sumiu)
+  erro na página: TypeError: achados.map is not a function
+ API fora do ar
+  painéis na tela: 6
+  a busca diz: 0 encontrado(s) para “ma”
+  erro na página: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JS
+ logado
+  painéis na tela: 6
+  a busca diz: 2 encontrado(s) para “ma” / Maria Souza / João Lima
+  erro na página: nenhum
+
+tela cap08
+ sem login
+  painéis na tela: 6
+  a busca diz: Entre para buscar no prontuário.
+  erro na página: nenhum
+ API fora do ar
+  painéis na tela: 6
+  a busca diz: Busca no prontuário: algo falhou. / Tentar de novo
+  erro na página: nenhum
+ logado
+  painéis na tela: 6
+  a busca diz: 2 encontrado(s) para “ma” / Maria Souza / João Lima
+  erro na página: nenhum
