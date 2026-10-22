@@ -1,0 +1,14 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/admissao/FormAdmissao.test.tsx > valida antes de enviar 124ms
+ ✓ src/features/admissao/FormAdmissao.test.tsx > não envia duas vezes 131ms
+ ✓ src/features/admissao/FormAdmissao.test.tsx > dois cliques no mesmo instante 99ms
+ ✓ src/features/admissao/FormAdmissao.test.tsx > mostra o que o servidor recusou 108ms
+ ✓ src/features/admissao/FormAdmissao.test.tsx > CNS repetido no servidor 97ms
+
+ Test Files  1 passed (1)
+      Tests  5 passed (5)
+   Start at  13:07:42
+   Duration  1.27s (tests 48%, environment 39%, import 11%, transform 1%)
+

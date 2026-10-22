@@ -1,0 +1,158 @@
+<!-- ==================== CAP 6 ==================== -->
+<section class="chapter" id="cap06">
+  <div class="opener">{{ARTE:abertura_06}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte II · Os fundamentos</div>
+    <div class="num">06</div>
+    <h1>Estado, formulários e interações</h1>
+    <div class="deck">Guarde o mínimo, calcule o resto, e trate cada envio como algo que pode chegar duas vezes.</div>
+  </div>
+
+  <p class="lead">Segunda, 7h40. A rede do pronto-socorro está lenta. A recepcionista admite Rosa Amaral, nada parece acontecer, e ela clica de novo. Rosa ganha dois prontuários com o mesmo CNS, e o exame da tarde vai para um deles.</p>
+
+  <p>O formulário estava certo: validava, enviava e mostrava o resultado. Faltava tratar o tempo entre o clique e a resposta. Este capítulo monta os dois formulários do Mini-Prontuário, o de entrada e o de admissão, e termina com a defesa contra esse erro, medida no navegador.</p>
+
+  <h2><span class="sn">6.1</span>O estado é uma foto</h2>
+  <p><code>useState</code> devolve o valor <em>deste render</em> e uma função para pedir o próximo. Chamar <code>setX</code> não muda <code>x</code> na linha seguinte; agenda um render novo, em que <code>x</code> terá o valor novo.</p>
+
+  <p>Por isso <code>setTotal(total + 1)</code> três vezes seguidas soma 1: as três chamadas leem o mesmo <code>total</code> da foto. Com a <strong>atualização funcional</strong>, <code>setTotal((t) =&gt; t + 1)</code>, cada chamada recebe o resultado da anterior e a soma dá 3. Use essa forma sempre que o próximo valor depender do anterior.</p>
+
+  <h2><span class="sn">6.2</span>Guardar ou calcular</h2>
+  <p>Antes de criar um estado, faça a pergunta do capítulo 5: <strong>dá para calcular?</strong> Total de pacientes, lista filtrada, paciente selecionado e "o formulário é válido?" são <strong>derivados</strong>: calculados a cada render, a partir de outro estado ou de props. Estado guardado em dobro precisa ser sincronizado à mão, e a sincronização é onde nascem os bugs. O capítulo 7 mostra o efeito que tenta fazer essa sincronização e por que ele é o erro mais comum de React.</p>
+
+  <div class="box rule">
+    <span class="bt">Regra prática</span>
+    <p>Estado é o que o usuário fez ou o que o servidor disse. Todo o resto é derivado.</p>
+  </div>
+
+  <h2><span class="sn">6.3</span>Controlado e não controlado</h2>
+  <p>Um campo pode guardar o valor em dois lugares. No <strong>controlado</strong>, o valor mora no estado do React e cada tecla passa por ele. É o formulário de entrada:</p>
+
+  {{BLOCO:cap06:src/features/acesso/FormLogin.tsx|linhas=10-22|reticencias=sim|rotulo=FormLogin.tsx · controlado}}
+
+  <p>No <strong>não controlado</strong>, o valor mora no próprio <code>&lt;input&gt;</code>, e o código só o lê no envio, com <code>FormData</code>. É o formulário de admissão, que usa <code>name</code> nos campos e <code>defaultValue</code> para devolver o que foi digitado quando há erro. Use controlado quando a tela reage a cada tecla (busca, máscara, botão que só habilita com o campo cheio); não controlado quando o valor só importa no envio, o caso da maioria dos cadastros.</p>
+
+  <h2><span class="sn">6.4</span>Os estados de um envio</h2>
+  <p>Todo envio passa pelos mesmos momentos, e a tela precisa de uma resposta para cada um. Em vez de quatro booleanos (<code>enviando</code>, <code>erro</code>, <code>ok</code>, <code>invalido</code>) que podem se contradizer, o resultado é um tipo só, uma <strong>união discriminada</strong> do TypeScript:</p>
+
+  {{BLOCO:cap06:src/features/admissao/admitir.ts|linhas=3-10}}
+
+  <figure>
+    <div class="fig-frame">{{FIG:envio}}</div>
+    <figcaption><b>Fig. 6.1</b> — Os estados de um envio. Com uma união, "ok com mensagem de erro" é impossível de escrever: o TypeScript não deixa.</figcaption>
+  </figure>
+
+  <p>A função <code>admitir</code> valida, envia e traduz a resposta HTTP num desses estados. A validação, em <code>esquema.ts</code>, repete as regras do esquema Zod da API (nome com duas letras, CNS com 15 dígitos, data ISO), agora com mensagens para quem preenche.</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-05</span>
+    <p>A tela valida para ajudar; o servidor valida para decidir. Erro do servidor aparece no campo. Verificação: o teste "mostra o que o servidor recusou", que simula um 400 com <code>campos: ["cns"]</code>.</p>
+  </div>
+
+  <h2><span class="sn">6.5</span>Actions do React 19</h2>
+  <p>O React 19 trouxe um jeito próprio de tratar envio: passar uma função para <code>&lt;form action&gt;</code> e guardar o resultado com <strong><code>useActionState</code></strong>. O hook devolve o último resultado, a ação para o formulário e um booleano <code>pendente</code>:</p>
+
+  {{BLOCO:cap06:src/features/admissao/FormAdmissao.tsx|linhas=12-24|rotulo=FormAdmissao.tsx · action}}
+
+  <p>A action recebe o resultado anterior e o <code>FormData</code>, e o que ela devolve vira o próximo <code>res</code>. Não há <code>preventDefault</code> nem <code>setRes</code> à mão. Um detalhe que surpreende: sempre que a action termina sem lançar erro, o React <strong>reinicia os campos não controlados</strong> para o <code>defaultValue</code>. Depois de admitir, os campos ficam vazios; depois de uma recusa, voltam com o que foi digitado, porque o <code>defaultValue</code> de cada <code>Campo</code> vem de <code>res.valores</code>.</p>
+
+  <h2><span class="sn">6.6</span>O erro clássico: o envio que chega duas vezes</h2>
+  <p>Na tag <code>cap06-antes</code>, o envio era um <code>onSubmit</code> comum, e nada impedia o segundo clique. O teste com servidor lento falha:</p>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap06-antes</span><p><code>× não envia duas vezes</code><br><code>→ expected "vi.fn()" to be called 1 times, but got 2 times</code></p></div>
+    <div class="yes"><span class="lb">cap06</span><p><code>✓ não envia duas vezes</code><br><code>✓ dois cliques no mesmo instante</code></p></div>
+  </div>
+
+  <p>A correção óbvia é <code>disabled={pendente}</code>, e é a que a documentação mostra. Medimos se basta: um roteiro abre a tela no Chromium contra a API real, deixa a rede 800 ms mais lenta e dá dois cliques no mesmo instante. A linha "sem ref" é o <code>cap06</code> com só o <code>disabled</code>, aplicado por <code>medicoes/cap06-so-disabled.patch</code>.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap06.py · Medido</span></div>
+<pre>{{SAIDA:c6-envio-duplo.txt|linhas=3-17|destaque=2 ['p101', 'p102']}}</pre>
+  </div>
+
+  <p><strong><code>disabled</code> não bastou.</strong> Ele só chega ao DOM no render seguinte, e o segundo clique veio antes. Desabilitar o botão é um aviso visual de que algo está em curso, não uma trava. A trava precisa valer no instante do clique, e para isso serve um <strong><code>useRef</code></strong>: uma caixa que guarda um valor entre renders sem provocar render, e que muda na hora.</p>
+
+  {{BLOCO:cap06:src/features/admissao/FormAdmissao.tsx|linhas=26-31|rotulo=FormAdmissao.tsx · a trava}}
+
+  <p>O <code>onSubmit</code> roda antes da action. O primeiro clique liga a trava; o segundo encontra a trava ligada e cancela o envio. O <code>finally</code> da action solta a trava, com sucesso ou com erro.</p>
+
+  <div class="box warn">
+    <span class="bt">Atenção · o teste que não percebeu</span>
+    <p>O teste "dois cliques no mesmo instante" falha em <code>cap06-antes</code> e passa em <code>cap06</code>, mas também passa com só o <code>disabled</code>. O jsdom, o navegador simulado do Vitest, não reproduz essa corrida. Por isso a prova deste capítulo é a medição no Chromium. O capítulo 16 volta a esse limite: cada ambiente de teste prova uma coisa.</p>
+  </div>
+
+  <h2><span class="sn">6.7</span>A segunda barreira mora no servidor</h2>
+  <p>A trava do ref vale para um formulário, numa aba. Duas abas abertas, um clique em cada, e a tela não tem como saber da outra. Só o servidor vê os dois pedidos. Por isso a API ganhou, na tag <code>cap06</code>, uma regra: o CNS identifica a pessoa, e um segundo cadastro com o mesmo CNS responde <strong>409 Conflict</strong>.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap06.py · Medido</span></div>
+<pre>{{SAIDA:c6-envio-duplo.txt|linhas=19-23}}</pre>
+  </div>
+
+  <figure>
+    <div class="fig-frame">{{FIG:barreiras}}</div>
+    <figcaption><b>Fig. 6.2</b> — As barreiras contra o envio duplo, na ordem em que o clique as encontra. A terceira é a única que vale para qualquer cliente.</figcaption>
+  </figure>
+
+  <p>A função <code>admitir</code> trata o 409 à parte e mostra a mensagem do servidor. Antes dessa correção, ele caía em "Falha no servidor. Tente de novo.", uma mensagem que convida exatamente ao clique que gerou o problema.</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-04</span>
+    <p>Ação que cria registro trava no clique, com <code>useRef</code>, e o servidor recusa duplicata com 409. <code>disabled</code> é aviso visual, não trava. Verificação: os testes do formulário e <code>medicoes/cap06.py</code>.</p>
+  </div>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O carimbo da admissão</h4>
+      <p>Na recepção, a ficha carimbada não é carimbada de novo: quem pegou a ficha segura a vez. E o arquivo central confere o CNS antes de abrir uma pasta, porque outra recepção pode estar admitindo a mesma pessoa.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O carimbo físico é visível na hora. O <code>disabled</code> do React não: ele aparece um render depois, e o ref, que trava de verdade, nem aparece na tela.</p>
+  </div>
+
+  <h2><span class="sn">6.8</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Pedido um formulário "que não envie duas vezes", agentes costumam entregar só o <code>disabled</code>, porque é o exemplo da documentação. Também é comum a validação ficar só no cliente, e os erros do servidor caírem numa mensagem genérica. A UI-04 e a UI-05 dizem ao agente o que vale.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 6</span><button class="copy" type="button" data-copy="p6-agente">Copiar</button></div>
+<pre id="p6-agente"><span class="k">Goal</span>
+Formulário de novo atendimento (POST
+/api/encounters) que nunca cria dois.
+
+<span class="k">Context</span>
+@src/features/admissao/ @INVARIANTES.md
+
+<span class="k">Constraints</span>
+- useActionState + trava com useRef
+  (UI-04); disabled não é trava
+- estados num tipo só, como Resultado
+- 400 no campo; 403 e 409 em role=alert
+- não altere a API
+
+<span class="k">Done when</span>
+- npm run gate verde
+- teste: servidor lento, dois cliques,
+  um fetch; falha sem o ref
+- teste: 403 mostra a mensagem do papel</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>No <code>FormLogin</code>, troque o estado <code>enviando</code> por um <code>useActionState</code>. O que acontece com os campos controlados depois de um login com erro?</span></li>
+    <li><b>Intermediário</b><span>Faça o botão "Admitir" só habilitar quando os três campos estiverem preenchidos, sem criar estado novo. Que tipo de campo isso exige?</span></li>
+    <li><b>Desafio</b><span>Rode <code>medicoes/cap06.py</code> com a rede 3 segundos mais lenta e observe o que a pessoa vê enquanto espera. Proponha o texto e o estado visual que faltam.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 07, 09; prepara 08. <b>Invariantes:</b> UI-04, UI-05. <b>Tags:</b> <code>cap06-antes</code>, <code>cap06</code> (tela) e <code>cap06</code> (API). <b>Prompts:</b> <code>prompts/cap06.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>State as a Snapshot</em>, <em>&lt;form&gt;</em>, <em>useActionState</em>, <em>useRef</em>. RFC 9110 (409). Saídas em <code>saidas/c6-*.txt</code>.</p>
+  </div>
+</section>

@@ -1,0 +1,21 @@
+Chromium 141.0.7390.37 · API real · ?atraso=900:lento:ma
+
+== cap07-antes
+   30 ms  pede  q=m
+   32 ms  pede  q=ma
+   35 ms  chega q=m
+  196 ms  pede  q=mar
+  204 ms  chega q=mar
+  945 ms  chega q=ma
+  termo na tela: 'mar'
+  resultados:    ['Maria Souza', 'João Lima']
+
+== cap07
+   17 ms  pede  q=m
+   23 ms  pede  q=ma
+   29 ms  cancelado q=m
+  188 ms  pede  q=mar
+  191 ms  cancelado q=ma
+  198 ms  chega q=mar
+  termo na tela: 'mar'
+  resultados:    ['Maria Souza']

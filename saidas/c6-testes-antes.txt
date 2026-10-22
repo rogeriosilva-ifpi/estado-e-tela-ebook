@@ -1,0 +1,28 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/admissao/FormAdmissao.test.tsx > valida antes de enviar 118ms
+ × src/features/admissao/FormAdmissao.test.tsx > não envia duas vezes 129ms
+   → expected "vi.fn()" to be called 1 times, but got 2 times
+ ✓ src/features/admissao/FormAdmissao.test.tsx > mostra o que o servidor recusou 106ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/admissao/FormAdmissao.test.tsx > não envia duas vezes
+AssertionError: expected "vi.fn()" to be called 1 times, but got 2 times
+ ❯ src/features/admissao/FormAdmissao.test.tsx:51:13
+     49|   await admitir();
+     50|   await admitir();
+     51|   expect(f).toHaveBeenCalledTimes(1);
+       |             ^
+     52|   responder(Response.json({ id: "p101" },
+     53|     { status: 201 }));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 2 passed (3)
+   Start at  13:01:02
+   Duration  1.02s (environment 47%, tests 38%, import 13%, transform 2%)
+

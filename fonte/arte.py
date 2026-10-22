@@ -4,7 +4,7 @@ Mesmo mundo e mesmo traço do Crachá & Porta (arte_base.py): um hospital
 à noite, formas geométricas planas sobre painel grafite, pessoas sem
 rosto, nenhuma letra. A metáfora-mestra é o monitor de beira-leito.
 """
-from arte_base import (AMB, BG, BLUE, DGREY, DOOR, FLOOR, GR, GR2, GREY,
+from arte_base import (RED, AMB, BG, BLUE, DGREY, DOOR, FLOOR, GR, GR2, GREY,
                        LINE, OR, OR2, PAPER, SKIN, WALL, cruz, luz, painel,
                        pessoa, svg)
 
@@ -205,3 +205,66 @@ def abertura_05():
     c.append(f'<path d="M226 128 C 210 100, 175 120, 150 70 L150 40" fill="none" stroke="{AMB}" stroke-width="2" stroke-dasharray="4 3"/>')
     c.append(luz(150, 34, AMB, 4))
     return svg("".join(c), rotulo="A prescrição desce do médico para a enfermagem; o fio da campainha do leito sobe até a luz do posto")
+
+
+def carimbo(cx, cy, cor=GR2, r=16):
+    return (f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="{cor}" stroke-width="3"/>'
+            f'<path d="M{cx-7} {cy} l5 5 l9 -10" fill="none" stroke="{cor}" stroke-width="3" stroke-linecap="round"/>')
+
+
+def abertura_06():
+    """Prancheta de admissão com campos e um carimbo verde; um carimbo
+    repetido, riscado, ao lado."""
+    c = [painel(glow_x=210, glow_y=60)]
+    c.append(cruz(24, 20))
+    # balcão de admissão
+    c.append(f'<rect x="60" y="120" width="290" height="40" rx="3" fill="{DGREY}"/>')
+    c.append(f'<rect x="54" y="114" width="302" height="8" rx="2" fill="{GREY}"/>')
+    # ficha grande
+    c.append(f'<g transform="rotate(-4 200 70)">'
+             f'<rect x="146" y="22" width="108" height="92" rx="5" fill="{PAPER}"/>'
+             f'<rect x="184" y="16" width="32" height="10" rx="3" fill="{GREY}"/>')
+    for i, w in enumerate((70, 52, 64)):
+        y = 42 + i * 18
+        c.append(f'<rect x="158" y="{y}" width="{w}" height="3" rx="1" fill="{GREY}"/>'
+                 f'<rect x="158" y="{y+6}" width="84" height="7" rx="2" fill="none" stroke="{GREY}" stroke-width="1"/>')
+    c.append(carimbo(232, 96, GR, 11))
+    c.append('</g>')
+    # ficha duplicada, riscada
+    c.append(f'<g transform="rotate(8 300 80)" opacity=".75">'
+             f'<rect x="270" y="46" width="66" height="62" rx="4" fill="{SKIN}"/>'
+             f'<rect x="280" y="60" width="44" height="3" rx="1" fill="{GREY}"/>'
+             f'<rect x="280" y="72" width="34" height="3" rx="1" fill="{GREY}"/>'
+             f'<path d="M274 52 L332 104 M332 52 L274 104" stroke="{RED}" stroke-width="3" stroke-linecap="round"/>'
+             f'</g>')
+    c.append(pessoa(96, 160, GR, 0.95, jaleco=True))
+    return svg("".join(c), rotulo="Ficha de admissão carimbada sobre o balcão; ao lado, uma ficha duplicada riscada")
+
+
+def tubo(x, y):
+    return (f'<rect x="{x}" y="{y}" width="10" height="30" rx="5" fill="{PAPER}" opacity=".9"/>'
+            f'<rect x="{x}" y="{y}" width="10" height="9" rx="3" fill="{OR2}"/>')
+
+
+def abertura_07():
+    """Tubos de exame indo ao laboratório; um resultado antigo barrado."""
+    c = [painel(glow_x=300, glow_y=60)]
+    c.append(cruz(24, 20))
+    # porta do laboratório à direita
+    c.append(f'<rect x="300" y="44" width="80" height="116" rx="3" fill="{LINE}"/>')
+    c.append(f'<rect x="306" y="50" width="68" height="110" fill="{DOOR}"/>')
+    c.append(f'<rect x="314" y="58" width="52" height="34" rx="2" fill="{WALL}"/>')
+    c.append(luz(340, 34, GR2, 3.5))
+    # esteira de tubos saindo do laboratório
+    c.append(f'<rect x="120" y="128" width="180" height="6" rx="2" fill="{GREY}"/>')
+    for i, x in enumerate((150, 196)):
+        c.append(f'<g opacity="{.55 + i * .4}">{tubo(x, 96)}</g>')
+    # resultado antigo, barrado por uma faixa de luz
+    c.append(f'<rect x="232" y="84" width="4" height="48" fill="{RED}" opacity=".85"/>')
+    c.append(f'<rect x="226" y="80" width="16" height="4" rx="2" fill="{RED}"/>')
+    c.append(f'<g opacity=".6">{tubo(252, 96)}</g>')
+    c.append(f'<rect x="248" y="88" width="18" height="18" rx="9" fill="none" stroke="{RED}" stroke-width="2"/>')
+    # enfermeira recebendo o tubo novo
+    c.append(pessoa(88, 160, GR, 0.95, jaleco=True))
+    c.append(f'<rect x="100" y="104" width="34" height="6" rx="3" fill="{GR}" transform="rotate(-10 100 107)"/>')
+    return svg("".join(c), rotulo="Tubos de exame saindo do laboratório; um resultado antigo é barrado por uma faixa de luz")

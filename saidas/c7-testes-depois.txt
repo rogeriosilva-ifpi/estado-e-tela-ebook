@@ -1,0 +1,10 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/prontuario/BuscaProntuario.test.tsx > resposta velha não sobrescreve a nova 165ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  12:04:27
+   Duration  796ms (environment 62%, tests 23%, import 12%, transform 2%)
+

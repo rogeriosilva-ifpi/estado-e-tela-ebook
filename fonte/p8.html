@@ -1,0 +1,173 @@
+<!-- ==================== CAP 7 ==================== -->
+<section class="chapter" id="cap07">
+  <div class="opener">{{ARTE:abertura_07}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte II · Os fundamentos</div>
+    <div class="num">07</div>
+    <h1>Efeitos: sincronizar com o mundo lá fora</h1>
+    <div class="deck">Efeito não é "rodar código depois do render". É manter algo fora do React em dia com o estado, e desfazer isso quando o estado muda.</div>
+  </div>
+
+  <p class="lead">Terça, 16h. A médica procura "mar" na busca do prontuário. A tela mostra Maria Souza e, um instante depois, João Lima também. João não tem "mar" no nome. Ela recarrega, digita de novo, e o erro não volta.</p>
+
+  <p>Bug que aparece e some é quase sempre uma questão de tempo. Aqui, duas respostas do servidor chegaram fora de ordem, e a mais velha venceu. Este capítulo trata do único lugar do React feito para falar com o mundo lá fora, o efeito, e de como ele erra quando ninguém pensa em limpeza.</p>
+
+  <h2><span class="sn">7.1</span>As regras dos Hooks</h2>
+  <p>Funções que começam com <code>use</code> são <strong>Hooks</strong>. O React guarda o estado deles pela <em>ordem</em> em que são chamados em cada render, por isso eles só podem ser chamados no nível de cima de um componente ou de outro Hook: nunca dentro de <code>if</code>, laço ou função comum. A regra <code>react/rules-of-hooks</code> do oxlint já vem como erro no template.</p>
+
+  <h2><span class="sn">7.2</span>Três tipos de lógica</h2>
+  <p>Todo código de um componente cabe em um de três lugares, e só um deles é um efeito:</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:efeito}}</div>
+    <figcaption><b>Fig. 7.1</b> — Em cima, a pergunta que decide se você precisa de um efeito. Embaixo, o ciclo de um efeito com limpeza, com a busca deste capítulo como exemplo.</figcaption>
+  </figure>
+
+  <p>Total e lista filtrada são cálculo. Enviar a admissão é resposta a evento. Buscar o termo atual no servidor é sincronização. A diferença entre os dois últimos é a causa. O envio acontece porque alguém clicou; a busca precisa acontecer porque o termo <em>é</em> "mar", não importa como ele chegou a ser. Efeito é para o que precisa ficar em dia com o estado, seja qual for o caminho até ele.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O pedido ao laboratório</h4>
+      <p>A enfermaria não faz o exame: pede ao laboratório, que fica fora dela. Se o médico troca o pedido antes do resultado sair, alguém precisa cancelar o pedido antigo, ou o resultado errado chega ao prontuário.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O laboratório devolve um resultado só. Um efeito pode rodar e se desfazer muitas vezes por minuto, a cada mudança de dependência, e a limpeza roda sempre antes do próximo setup.</p>
+  </div>
+
+  <h2><span class="sn">7.3</span>A busca sem limpeza</h2>
+  <p>Na tag <code>cap07-antes</code>, a busca do prontuário pede ao servidor, a cada tecla, os pacientes cujo nome contém o termo. A API ganhou o filtro <code>?q=</code> na tag <code>cap07</code>:</p>
+
+  {{BLOCO:cap07-antes:src/features/prontuario/BuscaProntuario.tsx|linhas=7-26|rotulo=BuscaProntuario.tsx}}
+
+  <p>O efeito declara que depende de <code>termo</code> e roda a cada mudança. Cada execução dispara um <code>fetch</code> e esquece dele. Se a resposta de "ma" chegar depois da de "mar", ela sobrescreve a tela. O <code>location.search</code> só existe para o laboratório: repassa à API o parâmetro <code>?atraso=</code>, que fora de produção segura a resposta de um termo escolhido.</p>
+
+  <p>Este roteiro abre a tela com <code>?atraso=900:lento:ma</code>, digita "ma" e, logo depois, "r", e registra cada pedido e cada resposta:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap07.py · Medido</span></div>
+<pre>{{SAIDA:c7-corrida.txt|linhas=3-11|destaque=945 ms  chega q=ma;'João Lima'}}</pre>
+  </div>
+
+  <p>A resposta de "mar" chegou em 204 ms e mostrou Maria. A de "ma", pedida antes, chegou em 945 ms e trocou a tela pela lista de "ma", com João. O termo na tela continua "mar". Em produção, quem decide a ordem é a rede, não um parâmetro.</p>
+
+  <p>O segundo efeito do componente tem outro defeito: copia <code>achados.length</code> para um estado <code>total</code>. É um valor derivado guardado em dobro, e cada busca custa um render a mais. O oxlint avisa, mas aviso não derruba o portão:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c7-lint-antes.txt|linhas=1-4}}</pre>
+  </div>
+
+  <h2><span class="sn">7.4</span>A correção: limpar e cancelar</h2>
+  <p>Na tag <code>cap07</code>, a busca virou um <strong>Hook personalizado</strong>, uma função comum cujo nome começa com <code>use</code> e que chama outros Hooks:</p>
+
+  {{BLOCO:cap07:src/features/prontuario/useBuscaPacientes.ts|linhas=11-34}}
+
+  <p>A função devolvida pelo efeito é a <strong>limpeza</strong>. O React a chama antes de rodar o efeito de novo e quando o componente sai da tela. Aqui ela cancela o pedido com <code>AbortController</code>: o <code>fetch</code> antigo é interrompido e a resposta dele nunca chega ao <code>setAchados</code>. O <code>catch</code> ignora só o cancelamento, que não é erro.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap07.py · Medido</span></div>
+<pre>{{SAIDA:c7-corrida.txt|linhas=13-21|destaque=cancelado q=ma}}</pre>
+  </div>
+
+  <p>Quando o termo virou "mar", a limpeza cancelou "ma" em 191 ms. A documentação oficial mostra outra forma de limpeza, uma variável <code>ignore</code> que descarta a resposta velha; ela evita o bug, mas deixa o pedido seguir na rede. O <code>AbortController</code> evita o bug e economiza o servidor.</p>
+
+  <p>O componente ficou com uma linha para os achados e uma para o total, agora calculado:</p>
+
+  {{BLOCO:cap07:src/features/prontuario/BuscaProntuario.tsx|linhas=7-10|reticencias=sim}}
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-06 e UI-07</span>
+    <p><strong>UI-06:</strong> efeito só sincroniza com sistema externo; nunca copia um estado para outro. Verificação: <code>react/set-state-in-effect</code> agora como <strong>erro</strong> no <code>.oxlintrc.json</code>, junto com <code>react/exhaustive-deps</code>.</p>
+    <p><strong>UI-07:</strong> efeito que busca dados cancela o pedido na limpeza. Verificação: o teste da corrida.</p>
+  </div>
+
+  <h2><span class="sn">7.5</span>A prova sem servidor</h2>
+  <p>A medição usa a API real. O teste não pode depender da rede, então ele cria uma rede falsa em que nenhum pedido responde sozinho: o teste decide a ordem.</p>
+
+  {{BLOCO:cap07:src/features/prontuario/BuscaProntuario.test.tsx|linhas=50-74|rotulo=BuscaProntuario.test.tsx}}
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap07-antes</span><p><code>× resposta velha não sobrescreve a nova</code><br><code>→ expected [ 'Maria Souza', 'João Lima' ]</code><br><code>&nbsp;&nbsp;to deeply equal [ 'Maria Souza' ]</code></p></div>
+    <div class="yes"><span class="lb">cap07</span><p><code>✓ resposta velha não sobrescreve a nova</code></p></div>
+  </div>
+
+  <p>A rede falsa respeita o <code>signal</code>: um pedido cancelado rejeita com <code>AbortError</code>, como o <code>fetch</code> de verdade. Se ela ignorasse o cancelamento, a versão corrigida falharia, e o teste estaria testando a rede falsa, não o componente.</p>
+
+  <h2><span class="sn">7.6</span>StrictMode e a limpeza</h2>
+  <p>Em desenvolvimento, o <code>StrictMode</code> monta cada componente, desmonta e monta de novo, rodando setup, limpeza e setup. É um teste automático da limpeza: se o efeito estiver certo, ninguém percebe; se faltar limpeza, aparecem dois pedidos, duas conexões, dois ouvintes de evento. A regra da documentação é que o usuário não deve conseguir distinguir uma montagem de setup, limpeza e setup. Não desligue o <code>StrictMode</code> para "resolver" o efeito duplicado: corrija a limpeza.</p>
+
+  <h2><span class="sn">7.7</span>useRef, useMemo e useCallback</h2>
+  <p>O <strong><code>useRef</code></strong> apareceu no capítulo 6 como trava. Ele guarda um valor que sobrevive aos renders, muda na hora e não provoca render. Serve também para guardar um nó do DOM (<code>ref={campo}</code>), por exemplo para dar foco. Não leia nem escreva <code>ref.current</code> durante o render: o render precisa ser puro.</p>
+
+  <p><strong><code>useMemo</code></strong> guarda o resultado de um cálculo e <strong><code>useCallback</code></strong> guarda uma função, ambos até uma dependência mudar. Eles existem por dois motivos: evitar repetir um cálculo caro e manter a mesma referência entre renders, para que um filho memoizado não renderize à toa ou um efeito não rode de novo.</p>
+
+  <div class="box data">
+    <span class="bt">Dado · react.dev, React Compiler 1.0 (out. 2025)</span>
+    <p>O compilador memoiza automaticamente. Para código novo, a documentação recomenda deixar a memoização com ele e usar <code>useMemo</code> e <code>useCallback</code> como válvula de escape, quando for preciso controle exato. O projeto liga o compilador no capítulo 16, com medição antes e depois.</p>
+  </div>
+
+  <p>Por isso o Mini-Prontuário ainda não usa nenhum dos dois; meça antes de usar. Por fim, o <strong><code>useEffectEvent</code></strong>, estável desde o React 19.2, cria uma função que o efeito chama e que sempre vê os valores atuais sem entrar nas dependências: por exemplo, registrar a busca em log com o nome de quem está logado sem refazer a busca quando a sessão muda.</p>
+
+  <h2><span class="sn">7.8</span>Você talvez não precise de um efeito</h2>
+  <p>A documentação oficial tem uma página inteira sobre efeitos desnecessários. No Mini-Prontuário, eles teriam esta cara:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Tentação</th><th>No lugar</th></tr>
+    <tr><td>Efeito que filtra a lista quando a busca muda</td><td>Filtre no render (cap. 3)</td></tr>
+    <tr><td>Efeito que copia <code>achados.length</code> para <code>total</code></td><td>Calcule no render (este capítulo)</td></tr>
+    <tr><td>Efeito que envia a admissão quando <code>enviar</code> vira <code>true</code></td><td>Envie no handler ou na action (cap. 6)</td></tr>
+    <tr><td>Efeito que zera o formulário quando muda o paciente</td><td>Troque a <code>key</code> do formulário (cap. 3)</td></tr>
+    <tr><td>Efeito que avisa o pai que algo mudou</td><td>Chame o callback no handler (cap. 5)</td></tr>
+    <tr><td>Efeito que busca dados</td><td>Pode ficar, com limpeza; no cap. 14, uma biblioteca de dados</td></tr>
+  </table></div>
+
+  <h2><span class="sn">7.9</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>É o tema em que código gerado mais erra. Três vícios aparecem juntos: <code>fetch</code> em efeito sem limpeza; <code>setState</code> no efeito para derivar um valor; e dependência removida da lista "para parar o loop", que esconde o bug em vez de corrigi-lo. Com <code>set-state-in-effect</code> e <code>exhaustive-deps</code> como erro, os dois últimos não passam do portão; o primeiro, o teste da corrida pega.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 7</span><button class="copy" type="button" data-copy="p7-agente">Copiar</button></div>
+<pre id="p7-agente"><span class="k">Goal</span>
+Busca do prontuário com "buscando…" e
+mensagem quando a rede falhar.
+
+<span class="k">Context</span>
+@src/features/prontuario/ @INVARIANTES.md
+
+<span class="k">Constraints</span>
+- o hook devolve dados, carregando e
+  erro num tipo só
+- AbortError não é erro de rede
+- não mexa em .oxlintrc.json
+- fora de escopo: debounce, cache
+
+<span class="k">Done when</span>
+- npm run gate verde
+- o teste da corrida passa sem mudar
+- teste novo: rede que rejeita mostra
+  a mensagem; um cancelamento, não</pre>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, caps. 9 e 13</span>
+    <p>"Não mexa em <code>.oxlintrc.json</code>" existe porque um agente diante de um erro de lint às vezes desliga a regra. Restrições que protegem o portão estão no capítulo 9; a revisão em contexto novo, que pega esse tipo de atalho, no 13.</p>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Troque o <code>AbortController</code> pela variável <code>ignore</code> da documentação e rode o teste da corrida. Passa? Rode <code>medicoes/cap07.py</code> e compare as linhas "cancelado".</span></li>
+    <li><b>Intermediário</b><span>Coloque o foco no campo de busca quando a tela abre, com <code>useRef</code>. Isso precisa de efeito? Por quê?</span></li>
+    <li><b>Desafio</b><span>Acrescente um atraso de 300 ms depois da última tecla antes de buscar (<em>debounce</em>), sem biblioteca, como um Hook <code>useAtrasado(valor, ms)</code>. Prove com um teste que três teclas rápidas geram um pedido só.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 10, 11, 12, 13, 36. <b>Invariantes:</b> UI-06, UI-07. <b>Tags:</b> <code>cap07-antes</code>, <code>cap07</code> (tela) e <code>cap07</code> (API). <b>Prompts:</b> <code>prompts/cap07.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Synchronizing with Effects</em>, <em>You Might Not Need an Effect</em>, <em>useEffectEvent</em>, <em>React Compiler</em>. MDN: <em>AbortController</em>. Saídas em <code>saidas/c7-*.txt</code>.</p>
+  </div>
+</section>

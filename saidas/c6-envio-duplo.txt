@@ -1,0 +1,23 @@
+Chromium 141.0.7390.37 · API real · rede +800 ms
+
+tela cap06-antes · api base
+  prontuários de Rosa: 2 ['p101', 'p102']
+  a tela diz: Paciente p102 admitido.
+
+tela cap06 sem ref · api base
+  prontuários de Rosa: 2 ['p101', 'p102']
+  a tela diz: Paciente p102 admitido.
+
+tela cap06 · api base
+  prontuários de Rosa: 1 ['p101']
+  a tela diz: Paciente p101 admitido.
+
+tela cap06 · api cap06
+  prontuários de Rosa: 1 ['p101']
+  a tela diz: Paciente p101 admitido.
+
+duas abas, mesmo paciente
+  api base: 2 prontuário(s)
+    aba 2 diz: Paciente p102 admitido.
+  api cap06: 1 prontuário(s)
+    aba 2 diz: Já existe paciente com este CNS.

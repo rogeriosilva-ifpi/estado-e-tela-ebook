@@ -172,8 +172,97 @@ def fig_fluxo():
     return f'<svg viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fluxo de dados de mão única e a comparação que o React faz no set">{"".join(s)}</svg>'
 
 
+def fig_envio():
+    s = []
+    # máquina de estados do envio, em escada vertical
+    estados = [
+        (0, "ocioso", "f-alt s-bord", "f-ink", "formulário editável"),
+        (1, "enviando", "f-warns s-warnl", "f-warn", "botão travado · Enviando…"),
+    ]
+    s.append(r(130, 0, 140, 34, "f-alt s-bord", 17, ' stroke-width="1.1"'))
+    s.append(t(200, 22, "ocioso", 12, "f-ink", 800, anc="middle"))
+    s.append(seta(200, 34, 200, 62))
+    s.append(t(210, 52, "Admitir", 10, "f-mut", 700))
+    s.append(r(130, 62, 140, 34, "f-warns s-warnl", 17, ' stroke-width="1.1"'))
+    s.append(t(200, 84, "enviando", 12, "f-warn", 800, anc="middle"))
+    # três saídas
+    for x, nome, cls, txt, sub in ((0, "inválido", "f-bads s-badl", "f-bad", "400 ou Zod"),
+                                    (140, "erro", "f-bads s-badl", "f-bad", "401 · 403 · 409 · 5xx"),
+                                    (280, "ok", "f-goods s-goodl", "f-good", "201")):
+        s.append(f'<path d="M200 96 L{x+60} 140" fill="none" stroke-width="1.4" class="s-mut"/>')
+        s.append(r(x, 140, 120, 34, cls, 17, ' stroke-width="1.1"'))
+        s.append(t(x + 60, 162, nome, 12, txt, 800, anc="middle"))
+        s.append(t(x + 60, 192, sub, 10, "f-mut", 600, anc="middle", mono=True))
+    s.append(t(0, 222, "Inválido e erro voltam ao formulário com o que foi digitado.", 10.5, "f-soft"))
+    s.append(t(0, 238, "Enviando vem de pendente; os outros, do tipo Resultado.", 10.5, "f-soft"))
+    return f'<svg viewBox="0 0 400 246" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Estados de um envio de formulário">{"".join(s)}</svg>'
+
+
+def fig_barreiras():
+    s = []
+    linhas = [
+        ("CLIQUE", "f-alt s-bord", "f-ink", "dois cliques no mesmo instante", None),
+        ("disabled={pendente}", "f-warns s-warnl", "f-warn", "só depois do próximo render", "aviso visual · passa"),
+        ("useRef no onSubmit", "f-goods s-goodl", "f-good", "no instante do clique", "trava a mesma aba"),
+        ("409 no servidor", "f-goods s-goodl", "f-good", "CNS já existe", "trava qualquer aba"),
+    ]
+    y = 0
+    for i, (titulo, cls, txt, sub, veredito) in enumerate(linhas):
+        s.append(r(0, y, 400, 46, cls, 8, ' stroke-width="1.1"'))
+        s.append(t(14, y + 20, titulo, 11.5, "f-ink", 700, mono=True))
+        s.append(t(14, y + 37, sub, 10.5, "f-soft"))
+        if veredito:
+            s.append(t(386, y + 28, veredito, 10.5, txt, 800, anc="end"))
+        if i < len(linhas) - 1:
+            s.append(seta(200, y + 46, 200, y + 62))
+        y += 62
+    s.append(t(0, y + 8, "Medido no Chromium com a API real: só disabled deixa", 10.5, "f-soft"))
+    s.append(t(0, y + 24, "dois prontuários; o ref segura a aba; o 409 segura o resto.", 10.5, "f-soft"))
+    return f'<svg viewBox="0 0 400 {y+32}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="As barreiras contra o envio duplo">{"".join(s)}</svg>'
+
+
+def fig_efeito():
+    s = []
+    s.append(t(0, 14, "ESTA LÓGICA PRECISA DE UM EFEITO?", 9.5, "f-mut", 800))
+    perguntas = [
+        ("Dá para calcular com props e estado?", "calcule no render", "f-goods s-goodl", "f-good"),
+        ("Acontece por causa de um clique ou envio?", "ponha no handler", "f-goods s-goodl", "f-good"),
+        ("Mantém algo fora do React em dia?", "isso é um efeito", "f-accs s-accl", "f-acc"),
+    ]
+    y = 26
+    for i, (p, r_, cls, txt) in enumerate(perguntas):
+        s.append(r(0, y, 248, 40, "f-card s-bord", 6, ' stroke-width="1"'))
+        s.append(t(12, y + 25, p, 10.5, "f-ink", 700))
+        s.append(f'<line x1="248" y1="{y+20}" x2="262" y2="{y+20}" stroke-width="1.6" class="s-mut"/>'
+                 f'<path d="M256 {y+16} L262 {y+20} L256 {y+24}" fill="none" stroke-width="1.6" class="s-mut"/>')
+        s.append(r(266, y, 134, 40, cls, 6, ' stroke-width="1.1"'))
+        s.append(t(333, y + 25, r_, 10.5, txt, 800, anc="middle"))
+        if i < 2:
+            s.append(t(14, y + 56, "não", 9.5, "f-mut", 700))
+            s.append(f'<line x1="8" y1="{y+40}" x2="8" y2="{y+62}" stroke-width="1.4" class="s-mut"/>')
+        y += 62
+    y += 6
+    s.append(f'<line x1="0" y1="{y}" x2="400" y2="{y}" stroke-dasharray="2 4" stroke-width="1" class="s-bord"/>')
+    y += 22
+    s.append(t(0, y, "O CICLO DE UM EFEITO COM LIMPEZA", 9.5, "f-mut", 800))
+    passos = [("termo = \"ma\"", "setup: pede ?q=ma", "f-infos s-infol"),
+              ("termo = \"mar\"", "limpeza: abort(ma) · setup: pede ?q=mar", "f-infos s-infol"),
+              ("sai da tela", "limpeza: abort(mar)", "f-alt s-bord")]
+    y += 10
+    for a, b, cls in passos:
+        s.append(r(0, y, 400, 34, cls, 6, ' stroke-width="1"'))
+        s.append(t(12, y + 22, a.replace('\\"', '"'), 11, "f-ink", 700, mono=True))
+        s.append(t(140, y + 22, b, 10.5, "f-soft", mono=True))
+        y += 42
+    s.append(t(0, y + 8, "StrictMode roda setup, limpeza e setup na montagem, em dev,", 10.5, "f-soft"))
+    s.append(t(0, y + 24, "para provar que a limpeza desfaz o setup.", 10.5, "f-soft"))
+    return f'<svg viewBox="0 0 400 {y+32}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Quando usar um efeito e o ciclo de setup e limpeza">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
-                    ("arvore", fig_arvore), ("fluxo", fig_fluxo)):
+                    ("arvore", fig_arvore), ("fluxo", fig_fluxo),
+                    ("envio", fig_envio), ("barreiras", fig_barreiras),
+                    ("efeito", fig_efeito)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

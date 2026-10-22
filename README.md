@@ -4,7 +4,7 @@
 aplicação completa, autenticada e testada, construída com agentes de IA
 sem perder o controle do código.**
 
-Manual de campo em produção · lote 1 (capa, introdução e capítulos 1 a 3)
+Manual de campo em produção · lotes 1 a 3 (capa, introdução e capítulos 1 a 7)
 · organizado por Prof. Rogério Silva e Claude Opus 5.5 · 2026 · TEC.1052
 Programação para Internet II · ADS · IFPI
 
@@ -49,6 +49,14 @@ fonte.
 | `medicoes/cap01.py` | `c1-ala.txt` | `bash medicoes/vendor.sh /tmp/v` (React local) |
 | `medicoes/cap02_cookie.py` | `c2-cookie-chromium.txt` | API em :3000 e `npm run dev` |
 | `medicoes/cap03.py` | `c3-renderometro.txt` | `npm run dev` na tag `cap03` |
+| `medicoes/cap04.py` | `c4-renderometro.txt` | nenhum: sobe a tela de cada tag sozinho |
+| `medicoes/cap05.py` | `c5-mutacao.txt` | nenhum |
+| `medicoes/cap06.py` | `c6-envio-duplo.txt` | nenhum: sobe API e tela de cada tag (porta 5173 livre) |
+| `medicoes/cap07.py` | `c7-corrida.txt` | nenhum: idem |
+
+`medicoes/tela.py` cria um `git worktree` de cada tag (tela e API), sobe os
+servidores e encerra tudo no fim. `cap06-so-disabled.patch` é a variante do
+capítulo 6 sem a trava do ref, medida mas não guardada em tag.
 
 `cap02_cookie.py` aceita `firefox` ou `webkit` como argumento
 (`playwright install firefox webkit`).

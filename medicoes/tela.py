@@ -59,17 +59,25 @@ def _porta_livre():
 
 
 @contextlib.contextmanager
-def sessao(tag):
+def sessao(tag, porta=None):
+    """tag pode ser "tag+arquivo.patch": aplica o patch (de medicoes/)."""
+    tag, _, patch = tag.partition("+")
     pasta = Path(tempfile.mkdtemp(prefix=f"tela-{tag}-"))
     subprocess.run(["git", "-C", str(WEB), "worktree", "add", "--detach",
                     str(pasta), tag], check=True, capture_output=True)
+    if patch:
+        subprocess.run(["git", "apply", str(Path(__file__).parent / patch)],
+                       cwd=pasta, check=True)
     (pasta / "node_modules").symlink_to(WEB / "node_modules")
-    porta = _porta_livre()
+    # Com API, a tela precisa ser http://localhost:5173: é a única
+    # origem que a API aceita (CORS_ORIGINS e a defesa contra CSRF).
+    host = "localhost" if porta else "127.0.0.1"
+    porta = porta or _porta_livre()
     vite = subprocess.Popen(
         ["node", str(WEB / "node_modules/vite/bin/vite.js"),
-         "--port", str(porta), "--strictPort", "--host", "127.0.0.1"],
+         "--port", str(porta), "--strictPort", "--host", host],
         cwd=pasta, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    url = f"http://127.0.0.1:{porta}/"
+    url = f"http://{host}:{porta}/"
     try:
         for _ in range(60):
             try:
@@ -79,7 +87,7 @@ def sessao(tag):
                 time.sleep(0.25)
         with sync_playwright() as p:
             nav = p.chromium.launch()
-            pg = nav.new_page()
+            pg = nav.new_context().new_page()
             pg.goto(url)
             pg.wait_for_selector("li")
             pg.evaluate(OBSERVADOR)
@@ -107,3 +115,52 @@ def rodada(pg, rotulo, acao, mostrar=True):
             print(f"  {quem:<16}{fase}")
         print(f"  DOM: +{d['entram']} −{d['saem']} ~{d['trocas']}")
     return regs, d
+
+
+@contextlib.contextmanager
+def sessao_api(tag, usuario="carla@hospital.dev",
+               senha="rede-na-varanda-de-tarde"):
+    """Como sessao(), com a API em :3000 e login feito pela página."""
+    with sessao(tag, porta=5173) as (pg, versao):
+        status = pg.evaluate("""async ([email, senha]) => {
+          const r = await fetch("/api/auth/login", {method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email, senha})});
+          return r.status; }""", [usuario, senha])
+        assert status == 200, f"login {status}"
+        yield pg, versao
+
+
+def pacientes_na_api(pg):
+    return pg.evaluate("""async () =>
+      (await (await fetch("/api/patients")).json())""")
+
+
+API = Path(os.environ.get("ESTADO_API",
+                          Path(__file__).resolve().parents[2] / "api"))
+
+
+@contextlib.contextmanager
+def api(tag):
+    """Sobe a API na tag indicada, em :3000, com banco novo em memória."""
+    pasta = Path(tempfile.mkdtemp(prefix=f"api-{tag}-"))
+    subprocess.run(["git", "-C", str(API), "worktree", "add", "--detach",
+                    str(pasta), tag], check=True, capture_output=True)
+    (pasta / "node_modules").symlink_to(API / "node_modules")
+    proc = subprocess.Popen(
+        ["node", str(API / "node_modules/tsx/dist/cli.mjs"), "src/server.ts"],
+        cwd=pasta, env={**os.environ, "PORT": "3000"},
+        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    try:
+        for _ in range(80):
+            try:
+                urllib.request.urlopen("http://localhost:3000/health", timeout=1)
+                break
+            except OSError:
+                time.sleep(0.25)
+        yield
+    finally:
+        proc.terminate()
+        proc.wait(timeout=10)
+        subprocess.run(["git", "-C", str(API), "worktree", "remove",
+                        "--force", str(pasta)], capture_output=True)

@@ -1,0 +1,12 @@
+--- a/src/features/admissao/FormAdmissao.tsx	2026-10-22 12:06:54.448768534 -0300
++++ b/src/features/admissao/FormAdmissao.tsx	2026-10-22 12:06:54.450021227 -0300
+@@ -26,8 +26,7 @@
+   // Roda antes da action, no mesmo instante
+   // do clique: o ref não espera um render.
+   function travar(e: FormEvent) {
+-    if (emCurso.current) e.preventDefault();
+-    else emCurso.current = true;
++    void e; // variante: sem a trava do ref
+   }
+ 
+   const v = "valores" in res

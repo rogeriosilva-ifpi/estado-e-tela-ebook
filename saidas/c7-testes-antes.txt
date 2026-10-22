@@ -1,0 +1,35 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ × src/features/prontuario/BuscaProntuario.test.tsx > resposta velha não sobrescreve a nova 167ms
+   → expected [ 'Maria Souza', 'João Lima' ] to deeply equal [ 'Maria Souza' ]
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/prontuario/BuscaProntuario.test.tsx > resposta velha não sobrescreve a nova
+AssertionError: expected [ 'Maria Souza', 'João Lima' ] to deeply equal [ 'Maria Souza' ]
+
+- Expected
++ Received
+
+  [
+    "Maria Souza",
++   "João Lima",
+  ]
+
+ ❯ src/features/prontuario/BuscaProntuario.test.tsx:71:8
+     69|
+     70|     expect(nomes())
+     71|       .toEqual(["Maria Souza"]);
+       |        ^
+     72|     expect(screen.getByText(/1 encontrado/))
+     73|       .toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  12:04:25
+   Duration  1.49s (environment 75%, tests 12%, import 11%, transform 1%)
+
