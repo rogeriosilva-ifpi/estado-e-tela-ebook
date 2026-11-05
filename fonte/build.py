@@ -189,9 +189,10 @@ def main():
         corpo = corpo.replace("{{" + chave + "}}", resolver(chave))
 
     # tabela sempre dentro de .tbl-wrap (rola sozinha no celular)
-    soltas = re.findall(r"(?<!<div class=\"tbl-wrap\">)<table", corpo)
+    soltas = len(re.findall(r"<table", corpo)) - len(
+        re.findall(r'<div class="tbl-wrap[^"]*"><table', corpo))
     if soltas:
-        sys.exit(f"{len(soltas)} tabela(s) fora de <div class=\"tbl-wrap\">")
+        sys.exit(f"{soltas} tabela(s) fora de <div class=\"tbl-wrap\">")
 
     def marcar_curto(m):
         b = m.group(0)

@@ -6,7 +6,7 @@ rosto, nenhuma letra. A metáfora-mestra é o monitor de beira-leito.
 """
 from arte_base import (RED, AMB, BG, BLUE, DGREY, DOOR, FLOOR, GR, GR2, GREY,
                        LINE, OR, OR2, PAPER, SKIN, WALL, balcao, cadeado,
-                       cracha, cruz, luz, painel, pessoa, porta, svg)
+                       cracha, cruz, luz, painel, pessoa, porta, robo, svg)
 
 
 def monitor(x, y, w=142, h=94, acesa=1, haste=True):
@@ -591,3 +591,75 @@ def abertura_18():
         c.append(f'<line x1="{x}" y1="{y}" x2="{x}" y2="{y - 20}" stroke="{LINE}" stroke-width="1.5"/>')
     c.append(pessoa(176, 104, BLUE, s=0.5))
     return svg("".join(c), rotulo="Passarela coberta ligando o prédio atual a um prédio novo e maior, ao fundo; uma pessoa atravessa")
+
+
+
+def abertura_19():
+    """Passagem de plantão: a equipe em volta da mesa, o robô auxiliar ao
+    lado, e o quadro de tarefas na parede com doze cartões; onze já
+    estão na coluna de feito, um ainda em andamento."""
+    c = [painel(glow_x=250, glow_y=44)]
+    c.append(cruz(24, 16, 12))
+    # quadro de tarefas: três colunas
+    qx, qy, qw, qh = 186, 14, 200, 84
+    c.append(f'<rect x="{qx}" y="{qy}" width="{qw}" height="{qh}" rx="6" fill="{PAPER}" opacity=".92"/>')
+    for k in (1, 2):
+        x = qx + k * qw / 3
+        c.append(f'<line x1="{x}" y1="{qy+8}" x2="{x}" y2="{qy+qh-8}" stroke="{GREY}" stroke-width="1"/>')
+    cw, ch = 24, 10
+    # coluna "a fazer": vazia; "fazendo": um cartão laranja
+    c.append(f'<rect x="{qx + qw/3 + 21}" y="{qy+12}" width="{cw}" height="{ch}" rx="2" fill="{OR2}"/>')
+    # coluna "feito": onze cartões verdes, em duas pilhas
+    for i in range(11):
+        col, lin = i % 2, i // 2
+        x = qx + 2 * qw / 3 + 6 + col * (cw + 6)
+        y = qy + 8 + lin * (ch + 3)
+        c.append(f'<rect x="{x:.1f}" y="{y}" width="{cw}" height="{ch}" rx="2" fill="{GR}" opacity=".85"/>')
+    # equipe: dois atrás da mesa (a mesa cobre as pernas), um de pé
+    c.append(pessoa(118, FLOOR, BLUE, s=1.05))
+    c.append(pessoa(178, FLOOR, OR2, s=1.05, jaleco=True))
+    c.append(f'<rect x="60" y="118" width="170" height="8" rx="3" fill="{DGREY}"/>')
+    c.append(f'<rect x="64" y="126" width="162" height="34" fill="{WALL}"/>')
+    c.append(pessoa(36, FLOOR, GR2, s=1.1, jaleco=True))
+    # pranchetas e um notebook sobre a mesa
+    c.append(prancheta(92, 96, rot=-6, cor=OR))
+    c.append(f'<rect x="138" y="104" width="30" height="14" rx="2" fill="{DOOR}"/>')
+    c.append(f'<rect x="141" y="106" width="24" height="10" rx="1" fill="#0E1013"/>')
+    c.append(f'<rect x="143" y="109" width="14" height="2" rx="1" fill="{GR2}"/>')
+    c.append(f'<rect x="143" y="113" width="9" height="2" rx="1" fill="{OR2}"/>')
+    # robô auxiliar, de fora da mesa, com crachá de cor própria
+    c.append(robo(318, FLOOR, s=0.68, faixa=BLUE))
+    return svg("".join(c), rotulo="Passagem de plantão: equipe em volta da mesa com pranchetas e um notebook, um robô auxiliar ao lado e, na parede, um quadro de tarefas com onze cartões na coluna de feito e um em andamento")
+
+
+def abertura_20():
+    """O mapa de bolso do hospital, aberto em quatro dobras sobre a mesa,
+    com marcadores coloridos nas alas; ao lado, a caneta e o crachá."""
+    c = [painel(glow_x=200, glow_y=70, piso=False)]
+    c.append(cruz(24, 16, 12))
+    # quatro painéis do mapa, alternando a dobra
+    x0, y0, pw, ph = 70, 30, 66, 136
+    for k in range(4):
+        x = x0 + k * pw
+        tom = PAPER if k % 2 == 0 else SKIN
+        c.append(f'<rect x="{x}" y="{y0 + (4 if k % 2 else 0)}" width="{pw}" height="{ph}" fill="{tom}"/>')
+    # sombra das dobras
+    for k in (1, 3):
+        x = x0 + k * pw
+        c.append(f'<rect x="{x}" y="{y0+4}" width="5" height="{ph}" fill="{GREY}" opacity=".35"/>')
+    # alas: blocos de planta baixa
+    alas = [(80, 44, 46, 30), (80, 84, 46, 40), (146, 50, 46, 56), (212, 44, 50, 34),
+            (212, 90, 50, 46), (278, 50, 46, 30), (278, 92, 46, 54), (146, 118, 46, 30)]
+    for x, y, w, h in alas:
+        c.append(f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="2" fill="none" stroke="{GREY}" stroke-width="1.6"/>')
+    # corredor principal
+    c.append(f'<path d="M78 80 H330" stroke="{BLUE}" stroke-width="3" opacity=".7"/>')
+    c.append(f'<path d="M200 40 V160" stroke="{BLUE}" stroke-width="3" opacity=".5"/>')
+    # marcadores (alfinetes)
+    for x, y, cor in ((102, 60, OR2), (168, 76, GR), (236, 112, OR2), (300, 66, AMB), (168, 132, GR)):
+        c.append(f'<circle cx="{x}" cy="{y}" r="7" fill="{cor}"/>')
+        c.append(f'<circle cx="{x}" cy="{y}" r="2.4" fill="{BG}"/>')
+    # caneta e crachá ao lado
+    c.append(f'<rect x="352" y="60" width="7" height="70" rx="3" fill="{OR}" transform="rotate(14 355 95)"/>')
+    c.append(cracha(36, 120, 26, 36, rot=-12, brilho=False))
+    return svg("".join(c), rotulo="Mapa de bolso do hospital aberto em quatro dobras, com alas, corredores e cinco marcadores coloridos; ao lado, uma caneta e um crachá")

@@ -1,0 +1,7 @@
+$ npm run gate:completo   (tela cap19; API cap19, 12h)
+✔ no dependency violations found (90 modules, 250 dependencies cruised)
+Test Files  8 passed (8)
+Tests  54 passed (54)
+✓ built in 1.03s
+2 passed (3.9s)
+código de saída: 0

@@ -4,7 +4,7 @@
 aplicação completa, autenticada e testada, construída com agentes de IA
 sem perder o controle do código.**
 
-Manual de campo em produção · lotes 1 a 8 (capa, introdução e capítulos 1 a 18)
+Manual de campo · edição completa: introdução e 20 capítulos, 244 páginas
 · organizado por Prof. Rogério Silva e Claude Opus 5.5 · 2026 · TEC.1052
 Programação para Internet II · ADS · IFPI
 
@@ -29,7 +29,13 @@ cd fonte && python3 build.py && cd ..          # index.html
 python3 fonte/pdf.py "$PWD/index.html" "$PWD/Estado-e-Tela.pdf"
 python3 fonte/medir.py Estado-e-Tela.pdf --json # páginas × orçamento
 python3 fonte/build.py                          # de novo: sumário com páginas
+pip install beautifulsoup4 html5lib pillow
+python3 epub.py                                 # Estado-e-Tela.epub (EPUB 3)
 ```
+
+Leia em: [site](https://rogeriosilva-ifpi.github.io/estado-e-tela-ebook/) ·
+[PDF](Estado-e-Tela.pdf) (108 × 192 mm) · [EPUB](Estado-e-Tela.epub)
+(validado com EPUBCheck 5).
 
 O build falha se uma linha de código impressa passar de 46 caracteres,
 se uma tabela estiver fora de `.tbl-wrap` ou se um placeholder não tiver
@@ -72,6 +78,9 @@ fonte.
 | `medicoes/cap17.py hidratacao` | `c17-hidratacao.txt` | idem; o Next roda com `TZ=UTC` |
 | `medicoes/cap17.py fronteira` | `c17-fronteira.txt` | nenhum: só o build com `cap17-cliente-importa-api.patch` |
 | `medicoes/cap18.py` | `c18-mapa.txt` | portas 3000 e 5174 livres |
+| `medicoes/cap19.py` | `c19-passos`, `-depuracao`, `-plantao`, `-a11y`, `-gate` | portas 3000 e 5173 livres; sobe a API `cap19` com `TZ` escolhido (meio-dia e 23h na API) |
+| `medicoes/porta_dos_fundos.py cap19 cap19` | `c19-porta.txt` | nenhum |
+| `medicoes/cookie_navegadores.py` | `c00-cookie-navegadores.txt` | `xvfb-run -a`; WebKitGTK (`webkit2gtk-4.1`, `WebKitWebDriver`) e `pip install selenium` |
 
 `medicoes/tela.py` cria um `git worktree` de cada tag (tela e API), sobe os
 servidores e encerra tudo no fim. `cap06-so-disabled.patch` é a variante do
@@ -82,7 +91,27 @@ As saídas de teste e de lint (`c8-testes-*`, `c8-fronteiras-*`, `c9-tokens-reve
 `npx depcruise src` e `npx oxlint` na tag indicada, sem cores ANSI.
 
 `cap02_cookie.py` aceita `firefox` ou `webkit` como argumento
-(`playwright install firefox webkit`).
+(`playwright install firefox webkit`). A conferência do cookie
+`__Host-sessao` fora do Chromium foi feita com `cookie_navegadores.py`:
+o WebKitGTK recusa o cookie `Secure` em `http://localhost` e aceita em
+`https://localhost` (`npm run dev:https` na tela). O Firefox não foi
+testado: o ambiente de produção do livro não conseguiu baixá-lo.
+
+`c19-passo08.txt` é a saída real de `npx vitest run src/app/atendimentos.test.tsx`
+na tag `cap19-passo08` (os dois vermelhos de propósito).
+
+## Páginas
+
+| Parte | Capítulos | Páginas |
+|---|---|---|
+| Frente | capa, sumário, introdução | 6 |
+| I · A mudança de paradigma | 1 a 3 | 34 |
+| II · Os fundamentos | 4 a 7 | 50 |
+| III · Arquitetura | 8 a 12 | 57 |
+| IV · A aplicação completa | 13 a 16 | 50 |
+| V · Renderização moderna | 17 e 18 | 20 |
+| VI · Entrega e referência | 19 e 20 | 27 |
+| **Total** | | **244** (orçamento 244, teto 250) |
 
 ## Licença
 

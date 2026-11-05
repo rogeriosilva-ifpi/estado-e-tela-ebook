@@ -580,6 +580,44 @@ def fig_renderizacao():
     return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Linhas do tempo de CSR, SSR, SSG e streaming: quando a pessoa vê o conteúdo e quando pode usar">{"".join(s)}</svg>'
 
 
+def fig_passos():
+    fases = [
+        ("PREPARAR", "f-info", [
+            ("01", "contexto", "docs/API.md: atendimentos e prescrições"),
+            ("02", "plano", "PLANO-cap19.md, critérios A1 a A8")]),
+        ("CONSTRUIR", "f-acc", [
+            ("03", "estrutura", "tipos em api/, pasta da feature"),
+            ("04", "componentes", "lista, ficha, formulário; sem dados"),
+            ("05", "serviços", "chamadas e consultas, chaves do cache"),
+            ("06", "rotas", "/atendimentos e /atendimentos/:id"),
+            ("07", "autenticação", "rx:create, autoria; 403 vira aviso")]),
+        ("PROVAR", "f-good", [
+            ("08", "testes", "A1 a A6 pela tela: dois vermelhos"),
+            ("09", "depuração", "a causa, a correção; 54 verdes"),
+            ("10", "revisão", "contexto novo: um achado"),
+            ("11", "aceitação", "jornada E2E contra a API real")]),
+        ("ENTREGAR", "f-warn", [
+            ("12", "documentação", "UI-26, PR com evidência, IA.md")]),
+    ]
+    s = [t(0, 14, "UM COMMIT POR PASSO; O PORTÃO ENTRE ELES", 9.5, "f-mut", 800)]
+    y = 26
+    for fase, cor, passos in fases:
+        s.append(t(0, y + 8, fase, 8.5, cor, 800))
+        y += 11
+        h = len(passos) * 23
+        s.append(r(0, y, 4, h - 4, cor, 2))
+        for k, (n, nome, sub) in enumerate(passos):
+            yy = y + k * 23
+            cls = "f-bads s-badl" if n == "08" else "f-card s-bord"
+            s.append(r(12, yy, 388, 20, cls, 5, ' stroke-width="1"'))
+            s.append(t(22, yy + 14, n, 10, "f-mut", 700, mono=True))
+            s.append(t(46, yy + 14, nome, 10.5, "f-bad" if n == "08" else "f-ink", 800))
+            s.append(t(136, yy + 14, sub, 9.5, "f-soft"))
+        y += h + 4
+    h = y - 2
+    return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Os doze passos da entrega em quatro fases: preparar, construir, provar e entregar">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
                     ("arvore", fig_arvore), ("fluxo", fig_fluxo),
@@ -590,6 +628,7 @@ if __name__ == "__main__":
                     ("fases", fig_fases), ("rotas", fig_rotas),
                     ("remoto", fig_remoto), ("sessao", fig_sessao),
                     ("piramide", fig_piramide),
-                    ("renderizacao", fig_renderizacao)):
+                    ("renderizacao", fig_renderizacao),
+                    ("passos", fig_passos)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

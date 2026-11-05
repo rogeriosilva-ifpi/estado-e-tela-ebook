@@ -1,0 +1,21 @@
+tela cap19-passo08 · recepção abre /atendimentos/e1
+  GET /api/auth/me → 200
+  GET /api/encounters/e1 → 200
+  GET /api/medication-requests?encounterId=e1 → 403
+  na tela:
+    ATENDIMENTO
+    Algo falhou ao abrir esta página.
+    Voltar à busca
+
+tela cap19 · recepção abre /atendimentos/e1
+  GET /api/auth/me → 200
+  GET /api/encounters/e1 → 200
+  GET /api/patients/p1 → 200
+  na tela:
+    Maria Souza
+    Status
+    Aberto
+    Motivo
+    Motivo visível só para o profissional responsável.
+    Prescrições
+    Só quem prescreve vê.

@@ -12,6 +12,10 @@ Silva. Fonte em HTML, saída em site (index.html) e PDF 108 × 192 mm.
 - `python3 fonte/medir.py <pdf> --json` mede páginas por capítulo contra o
   orçamento aprovado (244 p, teto 250) e grava `saidas/paginas.json`,
   que o sumário usa no build seguinte.
+- `python3 epub.py` gera o EPUB 3 a partir de `index.html` e da capa do
+  PDF (bs4, html5lib, pillow, pdftoppm). Valide com EPUBCheck.
+- Tabela longa que pode quebrar entre páginas: `tbl-wrap longa`;
+  compacta: `tbl-wrap denso`.
 
 ## Regras que o build faz cumprir
 

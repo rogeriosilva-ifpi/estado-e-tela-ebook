@@ -1,0 +1,14 @@
+$ git log --oneline --reverse cap16..cap19
+be1fa2f dev:https
+a44800d passo 01 · contexto
+3b988f1 passo 02 · plano
+01d6a23 passo 03 · estrutura
+821c88b passo 04 · componentes
+d8ca558 passo 05 · serviços
+05dc67f passo 06 · rotas
+5d7987a passo 07 · autenticação
+02c39f6 passo 08 · testes
+d1f4584 passo 09 · depuração
+c7bf68e passo 10 · revisão
+fcd4f16 passo 11 · aceitação
+3edd2e0 passo 12 · documentação

@@ -1,0 +1,13 @@
+Chromium 141.0.7390.37
+  /api/auth/me depois do login: 200
+  CNS de Maria na ficha: sim
+  document.cookie: ''
+WebKitGTK 2.52.6
+  /api/auth/me depois do login: 401
+  CNS de Maria na ficha: não
+  document.cookie: ''
+
+WebKitGTK, https (dev:https) 2.52.6
+  /api/auth/me depois do login: 200
+  CNS de Maria na ficha: sim
+  document.cookie: ''

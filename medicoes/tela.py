@@ -142,15 +142,17 @@ API = Path(os.environ.get("ESTADO_API",
 
 
 @contextlib.contextmanager
-def api(tag):
-    """Sobe a API na tag indicada, em :3000, com banco novo em memória."""
+def api(tag, fuso=None):
+    """Sobe a API na tag indicada, em :3000, com banco novo em memória.
+    fuso: TZ do processo da API (o plantão usa a hora local dela)."""
     pasta = Path(tempfile.mkdtemp(prefix=f"api-{tag}-"))
     subprocess.run(["git", "-C", str(API), "worktree", "add", "--detach",
                     str(pasta), tag], check=True, capture_output=True)
     (pasta / "node_modules").symlink_to(API / "node_modules")
     proc = subprocess.Popen(
         ["node", str(API / "node_modules/tsx/dist/cli.mjs"), "src/server.ts"],
-        cwd=pasta, env={**os.environ, "PORT": "3000"},
+        cwd=pasta, env={**os.environ, "PORT": "3000",
+             **({"TZ": fuso} if fuso else {})},
         stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
         for _ in range(80):

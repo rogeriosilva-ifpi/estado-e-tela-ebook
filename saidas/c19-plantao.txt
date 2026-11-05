@@ -1,0 +1,15 @@
+API com TZ=Etc/GMT+7: são 12h na API
+  POST /api/encounters/e1/medication-requests
+    → 201
+  prescrições na ficha:
+    AAS 100 mg · 1x ao dia
+    Dipirona 500 mg · 6/6h se dor
+  campo Medicamento depois: ''
+
+API com TZ=Etc/GMT-4: são 23h na API
+  POST /api/encounters/e1/medication-requests
+    → 403
+  aviso: A API recusou a prescrição: ela confere autoria, status e plantão.
+  prescrições na ficha:
+    AAS 100 mg · 1x ao dia
+  campo Medicamento depois: 'Dipirona 500 mg'

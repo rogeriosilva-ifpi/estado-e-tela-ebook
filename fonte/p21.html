@@ -1,0 +1,199 @@
+<!-- ==================== CAP 20 ==================== -->
+<section class="chapter" id="cap20">
+  <div class="opener">{{ARTE:abertura_20}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte VI · Entrega e referência</div>
+    <div class="num">20</div>
+    <h1>Guia de consulta, régua e glossário</h1>
+    <div class="deck">O livro dobrado no bolso: para abrir no meio de uma tarefa, achar a decisão e voltar ao código.</div>
+  </div>
+
+  <p class="lead">Este capítulo não tem laboratório. Tem a pergunta do livro transformada em tabela, as listas que valem antes de cada entrega, os vinte erros que mais apareceram no caminho e a régua para você se medir.</p>
+
+  <h2><span class="sn">20.1</span>Onde este estado mora?</h2>
+  <p>Faça as perguntas na ordem. A primeira resposta "sim" decide.</p>
+
+  <div class="tbl-wrap denso longa"><table>
+    <tr><th>Pergunta</th><th>Onde mora · cap.</th></tr>
+    <tr><td><b>Dá para calcular</b> a partir de props, de outro estado ou da URL?</td><td>Em lugar nenhum: calcule no render · 6</td></tr>
+    <tr><td><b>O servidor é o dono</b> (pacientes, atendimentos, quem entrou)?</td><td>Cache do TanStack Query, com chave em árvore · 14, 15</td></tr>
+    <tr><td><b>Cabe num link</b> (busca, página, registro aberto)?</td><td>URL: caminho e <code>?q=</code> · 13</td></tr>
+    <tr><td><b>Muitas telas leem</b> e muda pouco (tema, modo discreto)?</td><td>Context com provedor próprio · 11</td></tr>
+    <tr><td><b>Muda em fases</b>, com regras de transição?</td><td><code>useReducer</code>, estado por fase · 12</td></tr>
+    <tr><td><b>Só esta tela usa</b> e some com ela?</td><td><code>useState</code> no componente mais baixo que precisa · 5, 6</td></tr>
+    <tr><td><b>Valor que não desenha</b> (trava, timer, nó do DOM)?</td><td><code>useRef</code> · 6, 7</td></tr>
+  </table></div>
+
+
+  <h2><span class="sn">20.2</span>O ecossistema do livro</h2>
+  <div class="tbl-wrap denso longa"><table>
+    <tr><th>Peça · versão</th><th>Para quê · cap.</th></tr>
+    <tr><td><b>React</b> 19.3.1</td><td>A tela como função do estado · 1 a 12</td></tr>
+    <tr><td><b>Vite</b> 8.3.5 · <b>TypeScript</b> 6.0.3</td><td>Projeto, servidor de desenvolvimento com proxy, build · 2</td></tr>
+    <tr><td><b>oxlint</b> 1.89 · <b>dependency-cruiser</b> 18.7</td><td>Regras de código e fronteiras no portão · 2, 8</td></tr>
+    <tr><td><b>React Router</b> 8.5.1</td><td>Rotas em modo de dados, loaders, middleware · 13, 15</td></tr>
+    <tr><td><b>TanStack Query</b> 5.106</td><td>Estado remoto: cache, invalidação, otimista · 14</td></tr>
+    <tr><td><b>Vitest</b> 5.0.5 · <b>Testing Library</b> 16.3</td><td>Testes pela tela, por papel e rótulo · 3, 16</td></tr>
+    <tr><td><b>MSW</b> 3.0.3</td><td>Rede simulada na fronteira · 16</td></tr>
+    <tr><td><b>Playwright</b> 1.64.1 · <b>axe-core</b></td><td>Jornada E2E, instrumentos, acessibilidade · 9, 16</td></tr>
+    <tr><td><b>React Compiler</b> 1.0</td><td>Memoização automática no build · 16</td></tr>
+    <tr><td><b>Next.js</b> 16.4.5</td><td>Servidor, streaming e cache: o próximo livro · 17, 18</td></tr>
+  </table></div>
+
+  <h2><span class="sn">20.3</span>Vinte erros comuns</h2>
+  <p>Todos apareceram no laboratório, quase sempre em código gerado por agente. Ao lado, a correção e o capítulo que a prova.</p>
+  <div class="tbl-wrap denso longa"><table>
+    <tr><th>Erro</th><th>Correção · cap.</th></tr>
+    <tr><td>Key pelo índice: a anotação pula de paciente</td><td>Key do domínio · 3</td></tr>
+    <tr><td>Componente definido dentro de outro: o estado some</td><td>Definir fora · 4</td></tr>
+    <tr><td>Mutar objeto do estado: a tela não muda</td><td>Objeto novo · 5</td></tr>
+    <tr><td>Lista filtrada guardada em estado</td><td>Calcular no render · 6</td></tr>
+    <tr><td>Envio que sai duas vezes</td><td>Trava com <code>useRef</code>; 409 no servidor · 6</td></tr>
+    <tr><td>Resposta velha sobrescreve a nova</td><td><code>AbortController</code> na limpeza · 7</td></tr>
+    <tr><td>Dependência omitida para parar o laço</td><td>Tirar a causa do laço · 7</td></tr>
+    <tr><td>Feature importando outra feature</td><td>Subir para <code>api/</code> ou <code>compartilhado/</code> · 8</td></tr>
+    <tr><td><code>fetch</code> no componente</td><td>Camada <code>src/api/</code> · 8</td></tr>
+    <tr><td><code>outline: none</code>; <code>&lt;div onClick&gt;</code></td><td>Foco visível; <code>Botao</code> · 9, 10</td></tr>
+    <tr><td>Diálogo numa <code>div</code> sobreposta</td><td><code>Modal</code> com <code>&lt;dialog&gt;</code> · 10</td></tr>
+    <tr><td>Tudo num contexto só</td><td>Um contexto por frequência de mudança · 11</td></tr>
+    <tr><td>Seis <code>useState</code> que mudam juntos</td><td><code>useReducer</code> por fase · 12</td></tr>
+    <tr><td>Busca e página em <code>useState</code></td><td>Na URL · 13</td></tr>
+    <tr><td>Dado do servidor copiado para <code>useState</code></td><td>Ler do cache · 14</td></tr>
+    <tr><td>Usuário ou token no <code>localStorage</code></td><td><code>/api/auth/me</code> no cache · 15</td></tr>
+    <tr><td>Botão escondido tomado por proibição</td><td>403 na API, provado · 15</td></tr>
+    <tr><td>Segredo em <code>VITE_</code></td><td>Fica no servidor · 15</td></tr>
+    <tr><td><code>vi.mock</code> do hook: teste verde, tela quebrada</td><td>MSW na fronteira · 16</td></tr>
+    <tr><td>Teste ajustado até passar</td><td>Reproduzir, achar a causa, corrigir o código · 19</td></tr>
+  </table></div>
+
+  <h2><span class="sn">20.4</span>Listas de verificação</h2>
+  <h3>Antes de começar um projeto</h3>
+  <ul class="checklist">
+    <li>Vite com proxy para a API; o código chama <code>/api/...</code>, nunca o endereço do servidor</li>
+    <li><code>AGENTS.md</code>, <code>INVARIANTES.md</code> e <code>docs/UI.md</code> desde o primeiro commit</li>
+    <li><code>npm run gate</code> com tipos, lint, fronteiras, testes e build</li>
+  </ul>
+
+  <h3>Ao revisar um componente</h3>
+  <ul class="checklist">
+    <li>Key do domínio; nenhum componente definido dentro de outro</li>
+    <li>Nenhum estado que dê para calcular; nenhum dado do servidor em <code>useState</code></li>
+    <li>Cada <code>useEffect</code> sincroniza com algo de fora e tem limpeza</li>
+    <li>Clicável é <code>Botao</code> ou link; foco visível; rótulo em todo campo</li>
+  </ul>
+
+  <h3>Ao integrar uma API</h3>
+  <ul class="checklist">
+    <li>Contrato em <code>docs/API.md</code>, lido do código da API</li>
+    <li><code>fetch</code> só em <code>src/api/</code>; erro vira <code>ErroHttp</code> com o status</li>
+    <li>Chaves em árvore; toda mutação diz o que invalida</li>
+    <li>Testes com o MSW na fronteira e uma jornada contra a API real</li>
+  </ul>
+
+  <h3>Autenticação e rotas</h3>
+  <ul class="checklist">
+    <li>Quem entrou vem de <code>/api/auth/me</code>, no cache; nada no <code>localStorage</code></li>
+    <li>Middleware antes dos loaders; 401 leva ao login e volta; 403 avisa no lugar</li>
+    <li>Botão por permissão; toda ação escondida tem 403 na API (<code>porta-dos-fundos</code>)</li>
+    <li>Loader não pede o que o papel não pode ler</li>
+  </ul>
+
+  <h2><span class="sn">20.5</span>Glossário</h2>
+  <div class="glossario">
+    <p><b>Action.</b> Função passada a <code>&lt;form action&gt;</code>; com <code>useActionState</code>, dá o estado do envio <span class="cap">6</span></p>
+    <p><b>Chave de consulta.</b> Endereço de um dado no cache, em árvore: <code>["pacientes", id]</code> <span class="cap">14</span></p>
+    <p><b>Context.</b> Valor que chega a toda a subárvore sem passar por props <span class="cap">11</span></p>
+    <p><b>CSR, SSR, SSG.</b> Onde e quando o HTML é montado: navegador, servidor a cada pedido, build <span class="cap">17</span></p>
+    <p><b>Efeito.</b> Código que mantém algo fora do React em dia com o estado <span class="cap">7</span></p>
+    <p><b>Estado derivado.</b> Valor calculável; não é estado <span class="cap">6</span></p>
+    <p><b>Hidratação.</b> O React assume o HTML que veio do servidor e liga os eventos <span class="cap">17</span></p>
+    <p><b>Invalidação.</b> Marcar dado do cache como velho, para buscar de novo <span class="cap">14</span></p>
+    <p><b>Key.</b> Identidade de um item entre renders <span class="cap">3</span></p>
+    <p><b>Loader.</b> Função da rota que carrega dados antes de a tela aparecer <span class="cap">13</span></p>
+    <p><b>Middleware.</b> Função da rota que roda antes dos loaders <span class="cap">15</span></p>
+    <p><b>MSW.</b> Responde pedidos HTTP nos testes, na fronteira da rede <span class="cap">16</span></p>
+    <p><b>Otimista.</b> Mostrar o resultado antes da resposta e reverter se falhar <span class="cap">14</span></p>
+    <p><b>Permissão.</b> O que o papel pode fazer em geral, vindo de <code>/api/auth/me</code> <span class="cap">15, 19</span></p>
+    <p><b>Props.</b> Dados que o pai passa ao filho; o filho não altera <span class="cap">5</span></p>
+    <p><b>Reconciliação.</b> Comparar a árvore nova com a anterior por tipo, posição e key <span class="cap">3</span></p>
+    <p><b>Reducer.</b> Função pura (estado, ação) → próximo estado <span class="cap">12</span></p>
+    <p><b>Render.</b> O React chama o componente para saber como a tela deve ficar <span class="cap">3</span></p>
+    <p><b>Server Component.</b> Componente que roda só no servidor e não vai para o bundle <span class="cap">17</span></p>
+    <p><b>Sessão.</b> Quem entrou, guardado no servidor e lembrado por cookie <code>HttpOnly</code> <span class="cap">15</span></p>
+    <p><b>StrictMode.</b> Em desenvolvimento, monta duas vezes para expor efeito sem limpeza <span class="cap">2, 7</span></p>
+    <p><b>Token de design.</b> Variável CSS com cor, espaço ou raio nomeados <span class="cap">9</span></p>
+    <p><b>401 · 403.</b> Ninguém entrou · entrou, mas não pode <span class="cap">15</span></p>
+  </div>
+
+  <h2><span class="sn">20.6</span>A régua do front-end sênior</h2>
+  <p>Marque o item quando tiver a evidência: um teste, um arquivo ou uma medição sua. Vinte e sete marcados (75%) é a meta.</p>
+
+  <div class="regua-grp">A · Modelo mental</div>
+  <ol class="regua">
+    <li><span class="i">01</span><span class="t">Reescreve tela imperativa como função do estado</span><span class="c">1</span></li>
+    <li><span class="i">02</span><span class="t">Distingue gatilho, render e commit, e prova</span><span class="c">3</span></li>
+    <li><span class="i">03</span><span class="t">Prevê quando o estado é preservado ou reiniciado</span><span class="c">3</span></li>
+    <li><span class="i">04</span><span class="t">Escolhe key estável e reproduz o bug do índice</span><span class="c">3</span></li>
+  </ol>
+  <div class="regua-grp">B · Componentes e dados</div>
+  <ol class="regua">
+    <li><span class="i">05</span><span class="t">Divide a tela em componentes e justifica as fronteiras</span><span class="c">4</span></li>
+    <li><span class="i">06</span><span class="t">Mantém o fluxo: props descem, eventos sobem</span><span class="c">5</span></li>
+    <li><span class="i">07</span><span class="t">Calcula o derivado em vez de guardar</span><span class="c">6</span></li>
+    <li><span class="i">08</span><span class="t">Atualiza objetos e listas sem mutação</span><span class="c">5, 6</span></li>
+    <li><span class="i">09</span><span class="t">Formulário com as regras da API e os quatro estados</span><span class="c">6</span></li>
+  </ol>
+  <div class="regua-grp">C · Efeitos</div>
+  <ol class="regua">
+    <li><span class="i">10</span><span class="t">Usa efeito só para sincronizar com o mundo de fora</span><span class="c">7</span></li>
+    <li><span class="i">11</span><span class="t">Efeito com limpeza, provada no StrictMode</span><span class="c">7</span></li>
+    <li><span class="i">12</span><span class="t">Resolve condição de corrida com <code>AbortController</code></span><span class="c">7</span></li>
+    <li><span class="i">13</span><span class="t">Extrai hook personalizado com contrato testado</span><span class="c">7</span></li>
+  </ol>
+  <div class="regua-grp">D · Arquitetura</div>
+  <ol class="regua">
+    <li><span class="i">14</span><span class="t">Organiza por funcionalidade; fronteiras no portão</span><span class="c">8</span></li>
+    <li><span class="i">15</span><span class="t">Tokens e estados visuais sem conflito de estilo</span><span class="c">9</span></li>
+    <li><span class="i">16</span><span class="t">Passa no axe e funciona só com teclado</span><span class="c">9, 16</span></li>
+    <li><span class="i">17</span><span class="t">Projeta a API de um componente reutilizável</span><span class="c">10</span></li>
+    <li><span class="i">18</span><span class="t">Decide entre prop, composição e contexto</span><span class="c">11</span></li>
+    <li><span class="i">19</span><span class="t">Reducer puro, testado sem tela</span><span class="c">12</span></li>
+  </ol>
+  <div class="regua-grp">E · Integração</div>
+  <ol class="regua">
+    <li><span class="i">20</span><span class="t">Layouts aninhados, parâmetros e 404</span><span class="c">13</span></li>
+    <li><span class="i">21</span><span class="t">Guarda busca, filtro e página na URL</span><span class="c">13, 14</span></li>
+    <li><span class="i">22</span><span class="t">Isola o HTTP numa camada com erros tipados</span><span class="c">14</span></li>
+    <li><span class="i">23</span><span class="t">Cache, invalidação e atualização otimista</span><span class="c">14</span></li>
+    <li><span class="i">24</span><span class="t">Sessão por cookie <code>HttpOnly</code>, viva no F5</span><span class="c">15</span></li>
+    <li><span class="i">25</span><span class="t">401 leva ao login e volta; 403 avisa no lugar</span><span class="c">15</span></li>
+    <li><span class="i">26</span><span class="t">Prova que esconder não é proibir: 403</span><span class="c">15</span></li>
+    <li><span class="i">27</span><span class="t">Nenhum segredo em <code>VITE_</code></span><span class="c">15</span></li>
+  </ol>
+  <div class="regua-grp">F · Qualidade</div>
+  <ol class="regua">
+    <li><span class="i">28</span><span class="t">Testa pelo comportamento, não pela implementação</span><span class="c">16</span></li>
+    <li><span class="i">29</span><span class="t">Simula a rede com MSW, nunca o hook</span><span class="c">16</span></li>
+    <li><span class="i">30</span><span class="t">Jornada E2E com Playwright contra a API real</span><span class="c">16</span></li>
+    <li><span class="i">31</span><span class="t">Mede antes de otimizar, com números</span><span class="c">16</span></li>
+  </ol>
+  <div class="regua-grp">G · Renderização moderna</div>
+  <ol class="regua">
+    <li><span class="i">32</span><span class="t">Desenha a fronteira servidor/cliente; explica hidratação</span><span class="c">17</span></li>
+    <li><span class="i">33</span><span class="t">Decide entre SPA e Next.js com critérios</span><span class="c">18</span></li>
+  </ol>
+  <div class="regua-grp">H · IA</div>
+  <ol class="regua">
+    <li><span class="i">34</span><span class="t">Prompt com Done when que uma máquina confere</span><span class="c">todos</span></li>
+    <li><span class="i">35</span><span class="t">Mantém <code>INVARIANTES.md</code> e <code>docs/UI.md</code></span><span class="c">8, 10, 19</span></li>
+    <li><span class="i">36</span><span class="t">Conduz revisão adversarial de código gerado</span><span class="c">7, 19</span></li>
+  </ol>
+
+  <h2><span class="sn">20.7</span>Para onde ir</h2>
+  <p><strong>Next.js:</strong> o próximo livro da série começa onde o capítulo 18 termina. <strong>Agentes:</strong> <em>Desenvolvimento Dirigido por IA</em>, para o ciclo de tarefa, revisão e portões. <strong>O servidor:</strong> <em>Crachá &amp; Porta</em> (sessão e permissões) e <em>Arquitetura em Tempos de IA</em> (fronteiras e camadas). <strong>Documentação oficial:</strong> react.dev, reactrouter.com, tanstack.com/query, testing-library.com, mswjs.io, playwright.dev, vite.dev. <strong>Acessibilidade e segurança:</strong> WCAG 2.2, o guia de padrões da W3C (APG), as OWASP Cheat Sheets de sessão e de XSS, e o MDN.</p>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> todos os itens. <b>Invariantes:</b> UI-00 a UI-26, em <code>INVARIANTES.md</code> da tag <code>cap19</code>. <b>Repositórios:</b> <code>estado-e-tela-web</code>, <code>-api</code>, <code>-next</code> e <code>-ebook</code>.</p>
+    <p><b>Fontes.</b> Versões dos <code>package.json</code> das tags <code>cap19</code> e <code>cap18</code> (Next), 5 nov. 2026.</p>
+  </div>
+</section>

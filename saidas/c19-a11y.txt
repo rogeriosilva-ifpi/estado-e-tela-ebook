@@ -1,0 +1,5 @@
+axe-core · tela cap19 · Dra. Ana
+  /atendimentos     light 0 violação(ões)
+  /atendimentos     dark  0 violação(ões)
+  /atendimentos/e1  light 0 violação(ões)
+  /atendimentos/e1  dark  0 violação(ões)

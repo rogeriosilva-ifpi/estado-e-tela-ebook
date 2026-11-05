@@ -1,0 +1,968 @@
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+ ✓ src/app/atendimentos.test.tsx > A1: o painel lista e leva à ficha 224ms
+ × src/app/atendimentos.test.tsx > A2: quem não é autor vê sem o motivo 1010ms
+   → Unable to find role="article" and name "Atendimento"
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+ × src/app/atendimentos.test.tsx > A3: recepção não vê Prescrever 1009ms
+   → Unable to find role="article" and name "Atendimento"
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+ ✓ src/app/atendimentos.test.tsx > A4: a prescrição aparece na ficha 117ms
+ ✓ src/app/atendimentos.test.tsx > A5: 403 da API vira aviso no lugar 75ms
+ ✓ src/app/atendimentos.test.tsx > A6: finalizar fecha a prescrição 37ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  src/app/atendimentos.test.tsx > A2: quem não é autor vê sem o motivo
+TestingLibraryElementError: Unable to find role="article" and name "Atendimento"
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ ficha src/app/atendimentos.test.tsx:19:28
+     17| afterEach(cleanup);
+     18|
+     19| const ficha = () => screen.findByRole(
+       |                            ^
+     20|   "article", { name: "Atendimento" });
+     21|
+ ❯ src/app/atendimentos.test.tsx:39:21
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+ FAIL  src/app/atendimentos.test.tsx > A3: recepção não vê Prescrever
+TestingLibraryElementError: Unable to find role="article" and name "Atendimento"
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/atendimentos"
+          >
+            Atendimentos
+          </a>
+        </nav>
+        <p>
+          Carla
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Sair
+          </button>
+        </p>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+            Modo discreto (só iniciais)
+          </label>
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Atendimento
+        </h2>
+        <p
+          class="_aviso_26d8ec"
+          data-tom="erro"
+          role="alert"
+        >
+          Algo falhou ao abrir esta página.
+        </p>
+        <a
+          data-discover="true"
+          href="/pacientes"
+        >
+          Voltar à busca
+        </a>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ ficha src/app/atendimentos.test.tsx:19:28
+     17| afterEach(cleanup);
+     18|
+     19| const ficha = () => screen.findByRole(
+       |                            ^
+     20|   "article", { name: "Atendimento" });
+     21|
+ ❯ src/app/atendimentos.test.tsx:49:11
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed (6)
+   Start at  16:33:20
+   Duration  3.37s (tests 75%, environment 13%, transform 7%, import 4%, setup 1%)

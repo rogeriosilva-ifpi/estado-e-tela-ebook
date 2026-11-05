@@ -1,0 +1,233 @@
+<!-- ==================== CAP 19 ==================== -->
+<section class="chapter" id="cap19">
+  <div class="opener">{{ARTE:abertura_19}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte VI · Entrega e referência</div>
+    <div class="num">19</div>
+    <h1>A entrega com agentes, do plano ao PR</h1>
+    <div class="deck">O agente escreve. Você decide o escopo, quebra em passos, exige prova a cada um e assina a entrega.</div>
+  </div>
+
+  <p class="lead">Falta a parte clínica do Mini-Prontuário: o profissional precisa ver os atendimentos dele e prescrever. É a última entrega do livro, feita como se faz no trabalho: um plano aprovado, doze passos com um commit cada, um teste vermelho que conta uma história, uma revisão que acha um defeito e um PR que se lê sem abrir o código.</p>
+
+  <h2><span class="sn">19.1</span>O pedido, e o que é de verdade</h2>
+  <p>O pedido cabe em duas frases. <strong>Painel</strong> em <code>/atendimentos</code>, com os atendimentos que a pessoa pode ver. <strong>Ficha</strong> em <code>/atendimentos/:id</code>, com as prescrições, o formulário de prescrição para quem prescreve e o botão Finalizar para o autor. Nada é simulado na tela: a API <code>cap19</code> é a mesma dos capítulos 14 e 15, com sessão em cookie <code>HttpOnly</code>, permissões por papel e as regras clínicas (só o autor vê o motivo; prescrever exige <code>rx:create</code>, ser o autor, atendimento aberto e plantão). Os dados são fictícios, num banco em memória, e a rede só é simulada nos testes de tela, com o MSW.</p>
+
+  <h2><span class="sn">19.2</span>Doze passos, um commit cada</h2>
+  <p>O tamanho de um passo é o que você consegue revisar com calma: um diff que cabe na cabeça, um portão verde no fim. Entre um passo e outro, a sessão do agente recomeça com o contexto escrito, não com a conversa anterior.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:passos}}</div>
+    <figcaption><b>Fig. 19.1</b> — Os doze passos da entrega em quatro fases. Cada um termina com o portão verde, menos o 08, vermelho de propósito: os testes chegam antes da correção que eles pedem.</figcaption>
+  </figure>
+
+  <p><code>git log cap16..cap19</code> mostra treze commits: os doze passos e, antes deles, <code>dev:https</code>, que arruma o ambiente para o Safari (19.9). O histórico é a primeira evidência do PR. Quem revisa pode fazer <code>git checkout</code> em qualquer passo e encontrar o projeto funcionando, com o portão verde.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A passagem de plantão</h4>
+      <p>A equipe se reúne, olha o quadro e divide o trabalho em cartões pequenos. O robô auxiliar leva e busca, rápido e sem cansar. Cada cartão só muda de coluna com o item conferido, e quem assina o plantão é a pessoa responsável, não o robô.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O robô do hospital não inventa um remédio quando não acha a gaveta. O agente pode inventar uma rota, uma permissão ou um teste que passa por motivo errado, e diz isso com a mesma confiança. E não lembra do plantão anterior: o que ele sabe está nos arquivos que você mandou ler.</p>
+  </div>
+
+  <h2><span class="sn">19.3</span>Preparar: contexto e plano</h2>
+  <p><strong>Passo 01.</strong> O agente lê o código da API, em modo de plano, e escreve em <code>docs/API.md</code> o contrato de atendimentos e prescrições: rotas, permissões, o que só o autor recebe. Ler, não supor: a documentação é o que os passos seguintes usam como verdade. <strong>Passo 02.</strong> O plano, em <code>docs/PLANO-cap19.md</code>, com escopo, fora de escopo, riscos e oito critérios, cada um com o teste ou o instrumento que o verifica:</p>
+
+  <div class="tbl-wrap denso"><table>
+    <tr><th>#</th><th>Critério · como se verifica</th></tr>
+    <tr><td><b>A1</b></td><td>Painel lista os visíveis, com link · teste</td></tr>
+    <tr><td><b>A2</b></td><td>Quem não é autor vê sem o motivo, com aviso · teste</td></tr>
+    <tr><td><b>A3</b></td><td>Prescrever só com <code>rx:create</code> e aberto · teste; <code>porta-dos-fundos</code></td></tr>
+    <tr><td><b>A4</b></td><td>Prescrição aparece sem recarregar · teste; E2E</td></tr>
+    <tr><td><b>A5</b></td><td>403 da API vira aviso no lugar · teste</td></tr>
+    <tr><td><b>A6</b></td><td>Finalizar só para o autor · teste</td></tr>
+    <tr><td><b>A7</b></td><td>Sem violação de acessibilidade · <code>vigia-a11y</code></td></tr>
+    <tr><td><b>A8</b></td><td><code>npm run gate:completo</code> verde · terminal</td></tr>
+  </table></div>
+
+  <p>O plano é o único passo sem código, e o único que só você aprova. Um critério sem verificação ("a tela deve ser intuitiva") não entra: o agente não tem como saber quando terminou, e você também não.</p>
+
+
+  <h2><span class="sn">19.4</span>Construir: estrutura, peças e permissões</h2>
+  <p>Os passos 03 a 07 aplicam o livro inteiro, e cada um termina com o portão verde. Quatro decisões merecem registro no PR:</p>
+
+  <ul>
+    <li><strong>Estrutura (03).</strong> A ficha mostra o nome do paciente, que é dado da feature de prontuário. Feature não importa feature (UI-08): a consulta do paciente subiu para <code>src/api/</code>, e o <code>fronteiras</code> confirmou.</li>
+    <li><strong>Componentes (04).</strong> Lista, ficha e formulário só recebem props. O formulário valida como a API e não se limpa antes da resposta: se a API recusar, o texto fica.</li>
+    <li><strong>Serviços (05).</strong> Prescrição sem atualização otimista. É registro clínico: aparece quando o servidor confirmou com 201, não antes.</li>
+    <li><strong>Rotas (06).</strong> Loader com <code>ensureQueryData</code>, sob o middleware da sessão; 404 vira mensagem.</li>
+  </ul>
+
+  <p>O passo 07 é o mais delicado. A sessão diz o que o papel pode fazer <em>em geral</em>: <code>rx:create</code>. Mas prescrever depende também do contexto (ser o autor, atendimento aberto, estar de plantão), que só a API confere. A tela usa o que sabe e trata o resto como resposta possível:</p>
+
+  {{BLOCO:cap19:src/features/atendimentos/Ficha.tsx|linhas=51-73|reticencias=sim|rotulo=features/atendimentos/Ficha.tsx}}
+
+  <p>Autoria e status a tela conhece (vieram no atendimento); plantão, não. Por isso o botão aparece para a Dra. Ana às 23h, e a API recusa. Esconder o botão por horário seria copiar uma regra do servidor que pode mudar sem a tela saber. Duas linhas de código merecem nota: o <code>key</code> do formulário muda quando a lista cresce, e isso limpa os campos depois do 201 sem efeito nenhum (capítulo 3); e o 403 vira o aviso "A API recusou a prescrição: ela confere autoria, status e plantão.", sem dizer qual regra falhou, porque a API não conta.</p>
+
+  <h2><span class="sn">19.5</span>Provar: os testes antes da correção</h2>
+  <p>No passo 08, o agente escreve os testes de A1 a A6 pela tela, com a API falsa do capítulo 16 aprendendo as regras de atendimentos e prescrições. A recepção (Carla) ganha na API falsa as mesmas permissões que tem na real: lê atendimentos de todos, não lê nem cria prescrição. Dois testes ficam vermelhos:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>saidas/c19-passo08.txt · Medido</span></div>
+<pre>{{SAIDA:c19-passo08.txt|linhas=3-4|destaque=×}}
+…
+{{SAIDA:c19-passo08.txt|linhas=237-237|destaque=×}}
+…
+{{SAIDA:c19-passo08.txt|linhas=966-966|destaque=2 failed}}</pre>
+  </div>
+
+  <p>O commit do passo 08 registra o vermelho, com a tag <code>cap19-passo08</code>. Parece estranho entregar teste falhando; é o contrário. O vermelho é a especificação de um defeito que ninguém tinha visto, e a prova de revert do passo seguinte já está pronta: desfazer a correção leva de volta a este estado.</p>
+
+  <div class="box data">
+    <span class="bt">Armadilha de IA · o atalho para o verde</span>
+    <p>Com teste vermelho, o agente costuma propor o caminho mais curto: dar <code>rx:read</code> à recepção na API falsa, trocar <code>findByRole</code> por algo que sempre acha, ou envolver o loader num <code>try/catch</code> que engole o 403. Todos deixam o portão verde e a tela quebrada para a recepção de verdade. A regra do passo 09: reproduzir no navegador, com a API real, antes de mudar uma linha.</p>
+  </div>
+
+  <h2><span class="sn">19.6</span>Depuração: a recepção derrubava a ficha</h2>
+  <p>Reproduzir é o primeiro passo. O roteiro entra como Carla, abre <code>/atendimentos/e1</code> com a API real e anota a rede e a tela, antes e depois:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap19.py · Medido</span></div>
+<pre>{{SAIDA:c19-depuracao.txt|linhas=1-8|destaque=→ 403;Algo falhou ao abrir esta página.}}
+
+{{SAIDA:c19-depuracao.txt|linhas=10-21|destaque=Motivo visível só para o profissional responsável.;Só quem prescreve vê.}}</pre>
+  </div>
+
+  <p>A causa estava no loader. Ele pedia atendimento e prescrições em paralelo, com <code>Promise.all</code>; a recepção não tem <code>rx:read</code>, a API respondeu 403, a promessa inteira falhou e o erro da rota tomou o lugar da ficha. A tela não estava errada para a Dra. Ana, que tem a permissão. Estava errada para quem não tem, e ninguém tinha testado com esse papel até o passo 08. A correção pergunta antes de pedir:</p>
+
+  {{DIFF:cap19-passo08:cap19:src/features/atendimentos/rota.ts}}
+
+  <p>O segundo vermelho tinha outra causa, achada no mesmo roteiro: a API não manda o motivo para quem não é autor (é dado clínico), e a ficha mostrava o rótulo "Motivo" com nada embaixo. Um vazio não diz se o dado não existe, se falhou ou se é proibido. Agora a ficha diz qual dos três, e "Só quem prescreve vê." ocupa o lugar das prescrições. Uma mudança por vez, cada uma com o teste que a pedia.</p>
+
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-26</span>
+    <p>Permissão diz o que o papel pode fazer em geral; o contexto (autoria, status, plantão) só a API confere. A tela mostra a ação pela permissão e pelas regras que conhece, trata o 403 no lugar e não pede leitura que o papel não tem: o loader confere a permissão antes.</p>
+  </div>
+
+  <h2><span class="sn">19.7</span>Revisão: contexto novo, checklist adversarial</h2>
+  <p>Quem escreveu o código não é um bom revisor dele, pessoa ou agente: lê o que quis escrever. O passo 10 abre uma sessão nova, sem a conversa dos passos anteriores, e entrega o diff inteiro com o checklist. O ideal é outro fabricante, para não repetir os mesmos pontos cegos.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · REVISÃO ADVERSARIAL · PASSO 10</span><button class="copy" type="button" data-copy="p19-rev">Copiar</button></div>
+<pre id="p19-rev">Revise o diff cap16..HEAD contra
+INVARIANTES.md (UI-01 a UI-26).
+Procure: efeito sem limpeza, dado do
+servidor copiado em estado, fetch fora
+de src/api, botão escondido por papel,
+ação escondida que a API aceita,
+vi.mock, localStorage, VITE_,
+dangerouslySetInnerHTML, dependência
+nova, requisito mudado sem justificativa,
+ação irreversível sem confirmação.
+Para cada achado: arquivo:linha, regra,
+como reproduzir, correção mínima.
+Sem achado, diga "nenhum achado".
+Não reescreva o código.</pre>
+  </div>
+
+  <p>Um achado: "Finalizar atendimento" encerrava com um clique, e um atendimento finalizado não aceita mais prescrição. Ganhou o mesmo <code>Modal</code> de confirmação de Inativar (capítulo 10). A dependência nova, <code>@vitejs/plugin-basic-ssl</code>, foi auditada: só em desenvolvimento, com o motivo em 19.9 e a alternativa recusada. O resultado vai para <code>docs/REVISAO-cap19.md</code>, junto com o <code>porta-dos-fundos</code> nas rotas novas:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/porta_dos_fundos.py · Medido</span></div>
+<pre>{{SAIDA:c19-porta.txt|linhas=6-12|destaque=403  ✓}}</pre>
+  </div>
+
+  <p>Neste laboratório, a revisão rodou com o mesmo modelo que escreveu o código, em contexto novo: isso pega descuido, não ponto cego do modelo. O <code>IA.md</code> registra o limite e a recomendação para a próxima entrega, <code>codex review --base main</code> com o mesmo checklist.</p>
+
+  <h2><span class="sn">19.8</span>Aceitação: a jornada, o relógio e o portão</h2>
+  <p>O passo 11 escreve a jornada E2E: a Dra. Ana entra, abre o atendimento, prescreve e finaliza, contra a API real. Rodada depois das 19h, ela recebe 403, e não é defeito: a API decide o plantão pelo relógio dela, e a Dra. Ana atende das 7h às 19h. O roteiro sobe a API num fuso em que é meio-dia, e de novo num em que são 23h:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap19.py · Medido</span></div>
+<pre>{{SAIDA:c19-plantao.txt|linhas=1-7|destaque=→ 201}}
+
+{{SAIDA:c19-plantao.txt|linhas=9-15|destaque=→ 403;A API recusou a prescrição: ela confere autoria, status e plantão.;'Dipirona 500 mg'}}</pre>
+  </div>
+
+  <p>De dia, a prescrição aparece e o formulário se limpa. À noite, o aviso aparece no lugar, nada entra na lista e o texto continua no campo, como o passo 04 pediu. Um teste que depende do relógio passa de dia e falha à noite; a saída é fixar o relógio, não apagar o teste. Com a API ao meio-dia, o portão completo:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap19.py · Medido</span></div>
+<pre>{{SAIDA:c19-gate.txt|destaque=54 passed;2 passed;código de saída: 0}}
+{{SAIDA:c19-a11y.txt|linhas=1-5|destaque=0 violação(ões)}}</pre>
+  </div>
+
+  <h2><span class="sn">19.9</span>O ambiente: o Safari e o cookie</h2>
+  <p>O plano deixou uma conferência para o laboratório: o cookie <code>__Host-sessao</code> exige <code>Secure</code>, e a tela roda em <code>http://localhost</code>. Chromium trata <code>localhost</code> como contexto seguro e aceita. Para conferir o motor do Safari, o roteiro repete o login no WebKitGTK, que é o WebKit com a pilha de rede do GTK:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cookie_navegadores.py · Medido</span></div>
+<pre>{{SAIDA:c00-cookie-navegadores.txt|linhas=1-3}}
+{{SAIDA:c00-cookie-navegadores.txt|linhas=5-7|destaque=401;não}}
+
+{{SAIDA:c00-cookie-navegadores.txt|linhas=10-12|destaque=200;sim}}</pre>
+  </div>
+
+  <p>Em <code>http</code>, o login responde 200, o WebKit descarta o cookie e a sessão some no pedido seguinte. Afrouxar o cookie da API em desenvolvimento faria o laboratório divergir da produção; a escolha foi o inverso, levar a tela para HTTPS local. <code>npm run dev:https</code> sobe o Vite em <code>https://localhost:5173</code> com certificado autoassinado, e a API <code>cap19</code> aceita essa origem. O Firefox ficou sem teste: o ambiente do livro não conseguiu baixá-lo.</p>
+
+  <h2><span class="sn">19.10</span>Documentação e PR</h2>
+  <p>O passo 12 atualiza o que o próximo agente vai ler (<code>INVARIANTES.md</code> com a UI-26, <code>docs/UI.md</code>, README) e escreve o PR em <code>docs/PR-cap19.md</code>. A regra do PR é a do capítulo 16, em ponto maior: cada critério do plano aponta para uma evidência que alguém pode rodar de novo. A1 a A6 são os seis testes, com o número do critério no nome; A3 tem também o <code>porta-dos-fundos</code>; A5, a saída do plantão; A7 e A8, as saídas do portão e do axe.</p>
+
+
+  <p>O <code>IA.md</code> ganha uma entrada: ferramenta e versão, o que foi verificado, o que foi recusado (o cookie afrouxado) e o limite da revisão. O PR diz também como revisar: <code>git log cap16..cap19</code>, depois <code>git checkout cap19-passo08 &amp;&amp; npm test</code> para ver o vermelho que o passo 09 resolve.</p>
+
+  <h2><span class="sn">19.11</span>As três ferramentas</h2>
+  <p>Os prompts dos doze passos estão em <code>prompts/cap19.md</code> e servem às três ferramentas sem mudança. O que muda é como se planeja, revisa e roda sem interação:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Passo</th><th>Claude Code 2.1.318</th><th>Codex CLI 0.166.0</th></tr>
+    <tr><td><b>Contexto</b></td><td><code>CLAUDE.md</code> importa <code>AGENTS.md</code></td><td><code>AGENTS.md</code></td></tr>
+    <tr><td><b>Planejar</b></td><td><code>--permission-mode plan</code></td><td><code>/plan</code> na sessão</td></tr>
+    <tr><td><b>Sem interação</b></td><td><code>claude -p "…"</code></td><td><code>codex exec "…"</code></td></tr>
+    <tr><td><b>Revisar</b></td><td><code>/code-review</code></td><td><code>codex review --base main</code></td></tr>
+  </table></div>
+
+  <p>Comandos conferidos em 5 de novembro de 2026, com <code>--help</code> e nos textos do próprio binário. O agy (Antigravity) não pôde ser instalado no ambiente do livro; pela documentação, lê <code>AGENTS.md</code> e tem <code>/plan</code>, sem modo não interativo documentado. Confira a sua versão antes de seguir a tabela.</p>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA, caps. 8 a 21 e 26</span>
+    <p>O ciclo de oito passos por tarefa, sessão e contexto, revisão adversarial em contexto novo e o checklist de merge estão no <em>Desenvolvimento Dirigido por IA</em>, capítulos 8 a 21. As equivalências completas entre Claude Code, Codex e agy, no capítulo 26.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 19 · PASSO 09</span><button class="copy" type="button" data-copy="p19-agente">Copiar</button></div>
+<pre id="p19-agente"><span class="k">Goal</span>
+Explicar e corrigir os testes A2 e A3,
+vermelhos desde o passo 08.
+
+<span class="k">Context</span>
+@src/app/atendimentos.test.tsx
+@src/features/atendimentos/
+@docs/API.md (permissões por papel)
+
+<span class="k">Constraints</span>
+- reproduzir com a API real primeiro
+- não mexer nos testes nem na API falsa
+- uma mudança por vez
+- 403 não some: vira aviso (UI-22)
+
+<span class="k">Done when</span>
+- causa escrita no commit
+- A1 a A6 verdes; npm run gate verde
+- recepção abre a ficha sem erro</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Rode <code>git checkout cap19-passo08 &amp;&amp; npm test</code>, leia os dois vermelhos e diga a causa antes de abrir o passo 09.</span></li>
+    <li><b>Intermediário</b><span>Refaça a revisão do passo 10 com outra ferramenta. Algum achado novo? Registre no <code>IA.md</code>.</span></li>
+    <li><b>Desafio</b><span>Entregue "abrir atendimento" (fora do escopo deste PR) com os doze passos, começando por um plano aprovado.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 34, 35, 36. <b>Invariantes:</b> UI-26. <b>Tags:</b> <code>cap19-passo08</code>, <code>cap19</code> (tela e API). <b>Instrumentos:</b> <code>cap19.py</code>, <code>porta_dos_fundos.py</code>, <code>cookie_navegadores.py</code>. <b>Prompts:</b> <code>prompts/cap19.md</code>.</p>
+    <p><b>Fontes.</b> Claude Code 2.1.318 e Codex CLI 0.166.0 (<code>--help</code>). MDN: <em>Set-Cookie</em>, <em>Secure contexts</em>. Vite: <code>@vitejs/plugin-basic-ssl</code>. Playwright 1.64: <em>Web server</em>. Saídas em <code>saidas/c19-*.txt</code>.</p>
+  </div>
+</section>
