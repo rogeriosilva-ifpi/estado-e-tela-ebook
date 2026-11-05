@@ -1,0 +1,501 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ❯ src/app/rotas.test.tsx (7 tests | 2 failed) 2419ms
+   × a lista mostra o nome editado 1100ms
+   × trocar de paciente troca o detalhe 1049ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/rotas.test.tsx > a lista mostra o nome editado
+TestingLibraryElementError: Unable to find role="link" and name "João Lima Neto"
+
+Ignored nodes: comments, script, style
+<ul
+  aria-label="Resultados"
+>
+  <li>
+    <a
+      data-discover="true"
+      href="/pacientes/p2?q=jo"
+    >
+      João Lima
+    </a>
+  </li>
+</ul>
+
+Ignored nodes: comments, script, style
+<ul
+  aria-label="Resultados"
+>
+  <li>
+    <a
+      data-discover="true"
+      href="/pacientes/p2?q=jo"
+    >
+      João Lima
+    </a>
+  </li>
+</ul>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:113:34
+    111|       .getByRole("button",
+    112|         { name: "Salvar" }));
+    113|     expect(await within(lista()).findByRole(
+       |                                  ^
+    114|       "link", { name: "João Lima Neto" }))
+    115|       .toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/app/rotas.test.tsx > trocar de paciente troca o detalhe
+TestingLibraryElementError: Unable to find an element with the text: 898009876543210. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Prontuário
+        </h2>
+        <input
+          aria-label="Buscar no prontuário"
+          placeholder="nome do paciente"
+          value="a"
+        />
+        <p>
+          2
+           encontrado(s) para “
+          a
+          ”
+        </p>
+        <ul
+          aria-label="Resultados"
+        >
+          <li>
+            <a
+              data-discover="true"
+              href="/pacientes/p1?q=a"
+            >
+              Maria Souza
+            </a>
+          </li>
+          <li>
+            <a
+              data-discover="true"
+              href="/pacientes/p2?q=a"
+            >
+              João Lima
+            </a>
+          </li>
+        </ul>
+        <article
+          aria-label="Paciente aberto"
+        >
+          <h3>
+            Maria Souza
+          </h3>
+          <dl>
+            <dt>
+              CNS
+            </dt>
+            <dd>
+              898001234567890
+            </dd>
+            <dt>
+              Nascimento
+            </dt>
+            <dd>
+              1958-03-14
+            </dd>
+          </dl>
+          <form>
+            <p>
+              <label
+                for="nome"
+              >
+                Nome
+              </label>
+              <input
+                id="nome"
+                name="nome"
+                type="text"
+                value="Maria Souza"
+              />
+            </p>
+            <p>
+              <label
+                for="telefone"
+              >
+                Telefone
+              </label>
+              <input
+                id="telefone"
+                name="telefone"
+                type="text"
+              />
+            </p>
+            <button
+              class="_botao_6f9bfb _primaria_6f9bfb"
+              type="submit"
+            >
+              Salvar
+            </button>
+          </form>
+          <button
+            class="_botao_6f9bfb _perigo_6f9bfb"
+            type="button"
+          >
+            Inativar
+          </button>
+          <dialog
+            aria-labelledby="_r_2_"
+            class="_modal_bead10"
+          >
+            <h2
+              id="_r_2_"
+            >
+              Inativar Maria Souza?
+            </h2>
+            <p>
+              Sai da busca; o prontuário fica.
+            </p>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Cancelar
+            </button>
+             
+            <button
+              class="_botao_6f9bfb _perigo_6f9bfb"
+              type="button"
+            >
+              Confirmar inativação
+            </button>
+          </dialog>
+        </article>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Prontuário
+        </h2>
+        <input
+          aria-label="Buscar no prontuário"
+          placeholder="nome do paciente"
+          value="a"
+        />
+        <p>
+          2
+           encontrado(s) para “
+          a
+          ”
+        </p>
+        <ul
+          aria-label="Resultados"
+        >
+          <li>
+            <a
+              data-discover="true"
+              href="/pacientes/p1?q=a"
+            >
+              Maria Souza
+            </a>
+          </li>
+          <li>
+            <a
+              data-discover="true"
+              href="/pacientes/p2?q=a"
+            >
+              João Lima
+            </a>
+          </li>
+        </ul>
+        <article
+          aria-label="Paciente aberto"
+        >
+          <h3>
+            Maria Souza
+          </h3>
+          <dl>
+            <dt>
+              CNS
+            </dt>
+            <dd>
+              898001234567890
+            </dd>
+            <dt>
+              Nascimento
+            </dt>
+            <dd>
+              1958-03-14
+            </dd>
+          </dl>
+          <form>
+            <p>
+              <label
+                for="nome"
+              >
+                Nome
+              </label>
+              <input
+                id="nome"
+                name="nome"
+                type="text"
+                value="Maria Souza"
+              />
+            </p>
+            <p>
+              <label
+                for="telefone"
+              >
+                Telefone
+              </label>
+              <input
+                id="telefone"
+                name="telefone"
+                type="text"
+              />
+            </p>
+            <button
+              class="_botao_6f9bfb _primaria_6f9bfb"
+              type="submit"
+            >
+              Salvar
+            </button>
+          </form>
+          <button
+            class="_botao_6f9bfb _perigo_6f9bfb"
+            type="button"
+          >
+            Inativar
+          </button>
+          <dialog
+            aria-labelledby="_r_2_"
+            class="_modal_bead10"
+          >
+            <h2
+              id="_r_2_"
+            >
+              Inativar Maria Souza?
+            </h2>
+            <p>
+              Sai da busca; o prontuário fica.
+            </p>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Cancelar
+            </button>
+             
+            <button
+              class="_botao_6f9bfb _perigo_6f9bfb"
+              type="button"
+            >
+              Confirmar inativação
+            </button>
+          </dialog>
+        </article>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:126:25
+    124|       "898001234567890");
+    125|     await abrirPaciente("João Lima");
+    126|     expect(await screen.findByText(
+       |                         ^
+    127|       "898009876543210")).toBeTruthy();
+    128|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 5 passed (7)
+   Start at  22:22:14
+   Duration  3.10s (tests 80%, environment 14%, import 4%, transform 2%)
+

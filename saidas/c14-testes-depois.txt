@@ -1,0 +1,16 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/app/rotas.test.tsx > modo discreto não mostra nome inteiro 195ms
+ ✓ src/app/rotas.test.tsx > a busca mora na URL 44ms
+ ✓ src/app/rotas.test.tsx > paciente que não existe 18ms
+ ✓ src/app/rotas.test.tsx > rota desconhecida fica no layout 8ms
+ ✓ src/app/rotas.test.tsx > sem login, o detalhe leva ao login 11ms
+ ✓ src/app/rotas.test.tsx > a lista mostra o nome editado 112ms
+ ✓ src/app/rotas.test.tsx > trocar de paciente troca o detalhe 55ms
+
+ Test Files  1 passed (1)
+      Tests  7 passed (7)
+   Start at  22:26:16
+   Duration  1.16s (tests 41%, environment 40%, import 14%, transform 4%)
+

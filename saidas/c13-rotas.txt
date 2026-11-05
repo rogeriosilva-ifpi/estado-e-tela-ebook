@@ -1,0 +1,29 @@
+Chromium 141.0.7390.37 · API cap12 · logado como carla@
+
+tela cap13-antes
+  menu → Prontuário: 1 documento(s) baixado(s); modo discreto desligado
+  abre o 1º resultado: /pacientes/p1
+  Voltar: /pacientes · campo '' · 0 resultado(s)
+  /pacientes/p999: (sem layout) Unexpected Application Error! HTTP 404 ErroHttp: HTTP 404 at
+  /nada-aqui: (sem layout) Unexpected Application Error! 404 Not Found 💿 Hey developer 
+
+tela cap13
+  menu → Prontuário: 0 documento(s) baixado(s); modo discreto ligado
+  abre o 1º resultado: /pacientes/p1
+  Voltar: /pacientes?q=ma · campo 'ma' · 2 resultado(s)
+  /pacientes/p999: PACIENTE Paciente não encontrado. Voltar à busca
+  /nada-aqui: NÃO ENCONTRADA Página não encontrada. Ir para a Ala B
+
+digitar 'maria souza' na busca 20 vezes; quantas perdem tecla
+  sem flushSync,  0 ms entre teclas: 20 de 20 perderam tecla
+  sem flushSync, 50 ms entre teclas: 0 de 20 perderam tecla
+  com flushSync,  0 ms entre teclas: 0 de 20 perderam tecla
+  com flushSync, 50 ms entre teclas: 0 de 20 perderam tecla
+
+build de produção (JS, com gzip)
+  cap13-antes: index 122.3 kB
+  cap13: index 100.3 kB + Assistente 24.0 kB
+
+quem responde GET /pacientes/p1 com o build
+  python -m http.server: 404
+  vite preview: 200

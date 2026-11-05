@@ -1,0 +1,13 @@
+diff --git a/src/features/prontuario/Busca.tsx b/src/features/prontuario/Busca.tsx
+index 3edaf10..79a9ba1 100644
+--- a/src/features/prontuario/Busca.tsx
++++ b/src/features/prontuario/Busca.tsx
+@@ -23,7 +23,7 @@ export function BuscaProntuario() {
+   // lê a URL, perderia teclas.
+   const setTermo = (t: string) =>
+     setParams(t ? { q: t } : {},
+-      { replace: true, flushSync: true });
++      { replace: true });
+   const exibir = useExibirNome();
+   const { achados, aviso } =
+     useBuscaPacientes(termo);

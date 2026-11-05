@@ -431,6 +431,68 @@ def fig_fases():
     return f'<svg viewBox="0 0 400 272" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fases editando, enviando e admitido do assistente e as ações aceitas em cada uma">{"".join(s)}</svg>'
 
 
+def fig_rotas():
+    s = [t(0, 14, "A URL É ESTADO", 9.5, "f-mut", 800)]
+    partes = [("/pacientes", 0, 92, "f-accs s-accl", "f-acc", "rota"),
+              ("/p2", 92, 34, "f-goods s-goodl", "f-good", "useParams"),
+              ("?q=jo&pagina=1", 126, 120, "f-infos s-infol", "f-info", "useSearchParams")]
+    for txt, x, w, cls, tc, quem in partes:
+        s.append(r(x, 22, w, 26, cls, 4, ' stroke-width="1"'))
+        s.append(t(x + w / 2, 40, txt, 10.5, tc, 800, mono=True, anc="middle"))
+        s.append(t(x + w / 2, 62, quem, 9, "f-soft", anc="middle"))
+    s.append(t(254, 40, "→ busca, página e", 9.5, "f-soft"))
+    s.append(t(254, 54, "paciente num link", 9.5, "f-soft"))
+    y = 86
+    s.append(t(0, y, "A ÁRVORE DE ROTAS", 9.5, "f-mut", 800))
+    s.append(caixa(0, y + 8, 400, 30, "f-accs s-accl", "/  Layout: cabeçalho, menu e &lt;Outlet/&gt;", None, "f-acc"))
+    s.append(caixa(18, y + 46, 382, 30, "f-bads s-badl", "(sem caminho)  ErrorBoundary: ErroDeRota", None, "f-bad"))
+    filhos = [("index", "Ala B"),
+              ("pacientes", "Busca · ?q= na URL"),
+              ("pacientes/:id", "Detalhe · loader"),
+              ("admissao", "lazy: import()"),
+              ("entrar", "FormLogin · ?volta="),
+              ("*", "Página não encontrada")]
+    for k, (cam, comp) in enumerate(filhos):
+        yy = y + 96 + k * 26
+        x = 36 if not cam.startswith("  ") else 70
+        s.append(f'<path d="M{x-10} {yy-26+14} V{yy+9} H{x}" fill="none" stroke-width="1.2" class="s-mut"/>')
+        s.append(r(x, yy, 400 - x, 20, "f-card s-bord", 4, ' stroke-width="1"'))
+        s.append(t(x + 8, yy + 14, cam.strip(), 10, "f-ink", 800, mono=True))
+        s.append(t(392, yy + 14, comp, 9.5, "f-soft", anc="end"))
+    yy = y + 96 + 6 * 26
+    return f'<svg viewBox="0 0 400 {yy+4}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Anatomia da URL e árvore de rotas do Mini-Prontuário">{"".join(s)}</svg>'
+
+
+def fig_remoto():
+    s = [t(0, 14, "LER", 9.5, "f-mut", 800)]
+    degraus = [("componente", "useBusca(q, página)", "f-card s-bord", "f-ink"),
+               ("cache · QueryClient", "chave → dado, fresco por 30 s", "f-accs s-accl", "f-acc"),
+               ("api/pacientes.ts", "buscarPacientes() → pedir()", "f-infos s-infol", "f-info"),
+               ("API", "GET /api/patients?q=&pagina=", "f-alt s-bord", "f-ink")]
+    for k, (nome, sub, cls, tc) in enumerate(degraus):
+        y = 22 + k * 40
+        x = k * 22
+        s.append(r(x, y, 400 - x, 32, cls, 6, ' stroke-width="1.1"'))
+        s.append(t(x + 10, y + 14, nome, 10.5, tc, 800, mono=True))
+        s.append(t(x + 10, y + 27, sub, 9.5, "f-soft", mono=True))
+        if k < 3:
+            s.append(seta(x + 30, y + 32, x + 30, y + 40))
+    s.append(t(392, 76, "fresco: responde sem rede", 9, "f-good", 700, anc="end"))
+    y = 196
+    s.append(t(0, y, "MUDAR (EDITAR O NOME)", 9.5, "f-mut", 800))
+    passos = [("1 onMutate", "guarda o anterior e muda o cache", "f-goods s-goodl", "f-good"),
+              ("2 mutationFn", "PATCH /api/patients/:id", "f-infos s-infol", "f-info"),
+              ("3a onError", "devolve o anterior ao cache", "f-bads s-badl", "f-bad"),
+              ("3b onSettled", "invalida [\"pacientes\"]: todos buscam de novo", "f-accs s-accl", "f-acc")]
+    for k, (nome, sub, cls, tc) in enumerate(passos):
+        yy = y + 10 + k * 34
+        s.append(r(0, yy, 400, 28, cls, 5, ' stroke-width="1"'))
+        s.append(t(10, yy + 18, nome, 10, tc, 800, mono=True))
+        s.append(t(118, yy + 18, sub, 9.5, "f-soft"))
+    yy = y + 10 + 4 * 34
+    return f'<svg viewBox="0 0 400 {yy+2}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Leitura passando pelo cache e mutação otimista com reversão e invalidação">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
                     ("arvore", fig_arvore), ("fluxo", fig_fluxo),
@@ -438,6 +500,7 @@ if __name__ == "__main__":
                     ("efeito", fig_efeito), ("camadas", fig_camadas),
                     ("erros", fig_erros), ("tokens", fig_tokens),
                     ("catalogo", fig_catalogo), ("contextos", fig_contextos),
-                    ("fases", fig_fases)):
+                    ("fases", fig_fases), ("rotas", fig_rotas),
+                    ("remoto", fig_remoto)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

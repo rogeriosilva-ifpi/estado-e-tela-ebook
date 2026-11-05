@@ -1,0 +1,19 @@
+Chromium 141.0.7390.37 · API cap14 · logado como carla@
+
+tela cap14-antes
+  URL /pacientes/p2?q=a · CNS no detalhe: Maria
+  salvou: p1 na API = 'João Lima Neto' · p2 na API = 'João Lima'
+  lista: Maria Souza, João Lima, Ana Clara Reis, Pedro Alves, Luzia Freitas
+  inativou o aberto · lista: Maria Souza, João Lima, Ana Clara Reis, Pedro Alves, Luzia Freitas
+  Ala B e Voltar: 2 busca(s) à rede
+
+tela cap14
+  URL /pacientes/p2?q=a · CNS no detalhe: João
+  salvou: p1 na API = 'Maria Souza' · p2 na API = 'João Lima Neto'
+  lista: Maria Souza, João Lima Neto, Ana Clara Reis, Pedro Alves, Luzia Freitas
+  inativou o aberto · lista: Maria Souza, Ana Clara Reis, Pedro Alves, Luzia Freitas, Raimundo Nonato
+  Ala B e Voltar: 0 busca(s) à rede
+
+  edição otimista, servidor lento que responde 500
+    título antes: 'Ana Clara Reis' · logo após Salvar: 'Ana C. Reis'
+    depois do 500: 'Ana Clara Reis' · aviso: 'Não foi salvo; o nome voltou ao anterior.'

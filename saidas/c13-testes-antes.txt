@@ -1,0 +1,351 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ❯ src/app/rotas.test.tsx (5 tests | 4 failed) 3233ms
+   × a busca mora na URL 19ms
+   × paciente que não existe 1011ms
+   × rota desconhecida fica no layout 1006ms
+   × sem login, o detalhe leva ao login 1004ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/rotas.test.tsx > a busca mora na URL
+AssertionError: expected '' to be 'ma' // Object.is equality
+
+- Expected
++ Received
+
+- ma
+
+ ❯ src/app/rotas.test.tsx:54:6
+     52|     "Buscar no prontuário");
+     53|   expect((campo as HTMLInputElement).value)
+     54|     .toBe("ma");
+       |      ^
+     55|   const link = await screen.findByRole("link",
+     56|     { name: "Maria Souza" });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  src/app/rotas.test.tsx > paciente que não existe
+TestingLibraryElementError: Unable to find an element with the text: Paciente não encontrado.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <h2>
+      Unexpected Application Error!
+    </h2>
+    <h3
+      style="font-style: italic;"
+    >
+      HTTP 404
+    </h3>
+    <pre
+      style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
+    >
+      ErroHttp: HTTP 404
+    at pedir (/home/claude/estado-e-tela/web/src/api/cliente.ts:41:11)
+    at async file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2589:14
+    at async callLoaderOrAction (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2636:19)
+    at async Promise.all (index 0)
+    at async defaultDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2381:3)
+    at async callDataStrategyImpl (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2555:16)
+    at async callDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1170:14)
+    at async callLoadersAndMaybeResolveData (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1209:19)
+    at async handleLoaders (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:797:43)
+    at async startNavigation (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:581:90)
+    </pre>
+    <p>
+      💿 Hey developer 👋
+    </p>
+    <p>
+      You can provide a way better UX than this when your app throws errors by providing your own 
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        ErrorBoundary
+      </code>
+       or
+       
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        errorElement
+      </code>
+       prop on your route.
+    </p>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <h2>
+      Unexpected Application Error!
+    </h2>
+    <h3
+      style="font-style: italic;"
+    >
+      HTTP 404
+    </h3>
+    <pre
+      style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
+    >
+      ErroHttp: HTTP 404
+    at pedir (/home/claude/estado-e-tela/web/src/api/cliente.ts:41:11)
+    at async file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2589:14
+    at async callLoaderOrAction (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2636:19)
+    at async Promise.all (index 0)
+    at async defaultDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2381:3)
+    at async callDataStrategyImpl (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2555:16)
+    at async callDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1170:14)
+    at async callLoadersAndMaybeResolveData (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1209:19)
+    at async handleLoaders (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:797:43)
+    at async startNavigation (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:581:90)
+    </pre>
+    <p>
+      💿 Hey developer 👋
+    </p>
+    <p>
+      You can provide a way better UX than this when your app throws errors by providing your own 
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        ErrorBoundary
+      </code>
+       or
+       
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        errorElement
+      </code>
+       prop on your route.
+    </p>
+  </div>
+</body>
+ ❯ pedir src/api/cliente.ts:41:11
+     39|     ? await r.json() : await r.text();
+     40|   if (!r.ok) {
+     41|     throw new ErroHttp(r.status, corpo);
+       |           ^
+     42|   }
+     43|   // o tipo T é promessa, não verificação
+ ❯ node_modules/react-router/dist/development/lib/router/router.js:2589:14
+ ❯ callLoaderOrAction node_modules/react-router/dist/development/lib/router/router.js:2636:19
+ ❯ defaultDataStrategy node_modules/react-router/dist/development/lib/router/router.js:2381:3
+ ❯ callDataStrategyImpl node_modules/react-router/dist/development/lib/router/router.js:2555:16
+ ❯ callDataStrategy node_modules/react-router/dist/development/lib/router/router.js:1170:14
+ ❯ callLoadersAndMaybeResolveData node_modules/react-router/dist/development/lib/router/router.js:1209:19
+ ❯ handleLoaders node_modules/react-router/dist/development/lib/router/router.js:797:43
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:64:23
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  src/app/rotas.test.tsx > rota desconhecida fica no layout
+TestingLibraryElementError: Unable to find an element with the text: Página não encontrada.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <h2>
+      Unexpected Application Error!
+    </h2>
+    <h3
+      style="font-style: italic;"
+    >
+      404 Not Found
+    </h3>
+    <p>
+      💿 Hey developer 👋
+    </p>
+    <p>
+      You can provide a way better UX than this when your app throws errors by providing your own 
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        ErrorBoundary
+      </code>
+       or
+       
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        errorElement
+      </code>
+       prop on your route.
+    </p>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <h2>
+      Unexpected Application Error!
+    </h2>
+    <h3
+      style="font-style: italic;"
+    >
+      404 Not Found
+    </h3>
+    <p>
+      💿 Hey developer 👋
+    </p>
+    <p>
+      You can provide a way better UX than this when your app throws errors by providing your own 
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        ErrorBoundary
+      </code>
+       or
+       
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        errorElement
+      </code>
+       prop on your route.
+    </p>
+  </div>
+</body>
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:73:25
+     71|   async () => {
+     72|     abrir("/nada-aqui");
+     73|     expect(await screen.findByText(
+       |                         ^
+     74|       "Página não encontrada.")).toBeTruthy();
+     75|     expect(screen.getByRole("navigation"))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  src/app/rotas.test.tsx > sem login, o detalhe leva ao login
+TestingLibraryElementError: Unable to find a label with the text of: E-mail
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <h2>
+      Unexpected Application Error!
+    </h2>
+    <h3
+      style="font-style: italic;"
+    >
+      HTTP 401
+    </h3>
+    <pre
+      style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
+    >
+      ErroHttp: HTTP 401
+    at pedir (/home/claude/estado-e-tela/web/src/api/cliente.ts:41:11)
+    at async file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2589:14
+    at async callLoaderOrAction (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2636:19)
+    at async Promise.all (index 0)
+    at async defaultDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2381:3)
+    at async callDataStrategyImpl (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2555:16)
+    at async callDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1170:14)
+    at async callLoadersAndMaybeResolveData (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1209:19)
+    at async handleLoaders (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:797:43)
+    at async startNavigation (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:581:90)
+    </pre>
+    <p>
+      💿 Hey developer 👋
+    </p>
+    <p>
+      You can provide a way better UX than this when your app throws errors by providing your own 
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        ErrorBoundary
+      </code>
+       or
+       
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        errorElement
+      </code>
+       prop on your route.
+    </p>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <h2>
+      Unexpected Application Error!
+    </h2>
+    <h3
+      style="font-style: italic;"
+    >
+      HTTP 401
+    </h3>
+    <pre
+      style="padding: 0.5rem; background-color: rgba(200, 200, 200, 0.5);"
+    >
+      ErroHttp: HTTP 401
+    at pedir (/home/claude/estado-e-tela/web/src/api/cliente.ts:41:11)
+    at async file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2589:14
+    at async callLoaderOrAction (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2636:19)
+    at async Promise.all (index 0)
+    at async defaultDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2381:3)
+    at async callDataStrategyImpl (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:2555:16)
+    at async callDataStrategy (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1170:14)
+    at async callLoadersAndMaybeResolveData (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:1209:19)
+    at async handleLoaders (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:797:43)
+    at async startNavigation (file:///home/claude/estado-e-tela/web/node_modules/react-router/dist/development/lib/router/router.js:581:90)
+    </pre>
+    <p>
+      💿 Hey developer 👋
+    </p>
+    <p>
+      You can provide a way better UX than this when your app throws errors by providing your own 
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        ErrorBoundary
+      </code>
+       or
+       
+      <code
+        style="padding: 2px 4px; background-color: rgba(200, 200, 200, 0.5);"
+      >
+        errorElement
+      </code>
+       prop on your route.
+    </p>
+  </div>
+</body>
+ ❯ pedir src/api/cliente.ts:41:11
+     39|     ? await r.json() : await r.text();
+     40|   if (!r.ok) {
+     41|     throw new ErroHttp(r.status, corpo);
+       |           ^
+     42|   }
+     43|   // o tipo T é promessa, não verificação
+ ❯ node_modules/react-router/dist/development/lib/router/router.js:2589:14
+ ❯ callLoaderOrAction node_modules/react-router/dist/development/lib/router/router.js:2636:19
+ ❯ defaultDataStrategy node_modules/react-router/dist/development/lib/router/router.js:2381:3
+ ❯ callDataStrategyImpl node_modules/react-router/dist/development/lib/router/router.js:2555:16
+ ❯ callDataStrategy node_modules/react-router/dist/development/lib/router/router.js:1170:14
+ ❯ callLoadersAndMaybeResolveData node_modules/react-router/dist/development/lib/router/router.js:1209:19
+ ❯ handleLoaders node_modules/react-router/dist/development/lib/router/router.js:797:43
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:84:25
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  4 failed | 1 passed (5)
+   Start at  22:08:04
+   Duration  3.98s (tests 83%, environment 11%, import 4%, transform 2%)
+

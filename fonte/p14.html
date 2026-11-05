@@ -1,0 +1,134 @@
+<!-- ==================== CAP 13 ==================== -->
+<section class="chapter" id="cap13">
+  <div class="opener">{{ARTE:abertura_13}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte IV · A aplicação completa</div>
+    <div class="num">13</div>
+    <h1>Rotas e navegação</h1>
+    <div class="deck">A URL é estado. O que cabe num link deve morar nela, e o que não está nela some no primeiro recarregar.</div>
+  </div>
+
+  <p class="lead">O Mini-Prontuário ganhou menu: Ala B, Prontuário, Admissão, Entrar. A recepcionista liga o modo discreto, clica em Prontuário e o modo discreto desliga sozinho. Ela busca "ma", abre Maria, clica Voltar, e a busca sumiu.</p>
+
+  <p>Até aqui a aplicação era uma página só. Com várias telas, surgem perguntas novas: como trocar de tela sem recarregar, como guardar onde o usuário está, o que fazer com um endereço que não existe. As respostas passam todas pela URL.</p>
+
+  <h2><span class="sn">13.1</span>Navegar sem recarregar</h2>
+  <p>Num site comum, cada clique em <code>&lt;a href&gt;</code> baixa um documento novo: o JavaScript recomeça do zero, e todo estado do React morre. Numa SPA, o roteador intercepta o clique, troca a URL com a History API (<code>history.pushState</code>), escuta o Voltar (<code>popstate</code>) e desenha a tela da rota nova sem sair da página. Na tag <code>cap13-antes</code>, o agente montou as rotas, mas fez o menu com <code>&lt;a href&gt;</code> e guardou o termo da busca num <code>useState</code>:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap13.py · Medido</span></div>
+<pre>{{SAIDA:c13-rotas.txt|linhas=3-8|destaque=1 documento(s) baixado(s); modo discreto desligado;campo '' · 0 resultado(s);(sem layout)}}</pre>
+  </div>
+
+  <p>Um documento novo a cada clique no menu, e com ele o provedor de exibição do capítulo 11 nasceu de novo. O termo da busca morava num componente que desmontou ao abrir o paciente. E endereço desconhecido mostra a tela de erro padrão do roteador, sem menu.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O endereço do leito</h4>
+      <p>"Ala B, leito 7" leva qualquer colega ao paciente, hoje ou amanhã, a pé ou por telefone. "O paciente que eu estava vendo" não leva ninguém. Uma URL boa é um endereço: diz onde e o quê, e funciona fora da sua cabeça.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O endereço do hospital não fica registrado em lugar nenhum. A URL fica: no histórico do navegador, nos logs do servidor e no cabeçalho <code>Referer</code>. Por isso nela vai o termo da busca e o id do paciente, nunca o CNS nem dado clínico.</p>
+  </div>
+
+  <h2><span class="sn">13.2</span>React Router 8, modo de dados</h2>
+  <p>O React Router tem três modos. No <strong>declarativo</strong>, as rotas são componentes <code>&lt;Route&gt;</code>. No de <strong>dados</strong>, são objetos passados a <code>createBrowserRouter</code>, e cada rota pode ter <code>loader</code>, <code>ErrorBoundary</code> e <code>lazy</code>. O <strong>framework</strong> acrescenta convenção de arquivos e renderização no servidor. Este livro usa o modo de dados. Na versão 8 o pacote é só <code>react-router</code>, e o <code>RouterProvider</code> vem de <code>react-router/dom</code>. O roteador é criado uma vez, fora da árvore do React, no <code>main.tsx</code>.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:rotas}}</div>
+    <figcaption><b>Fig. 13.1</b> — Cada parte da URL tem um leitor. Embaixo, a árvore de rotas da tag <code>cap13</code>: tudo dentro do <code>Layout</code> e de uma rota sem caminho que captura erros.</figcaption>
+  </figure>
+
+  {{BLOCO:cap13:src/app/rotas.tsx|linhas=26-53|rotulo=app/rotas.tsx}}
+
+  <p>O <code>Layout</code> desenha cabeçalho e menu e põe a rota filha no <code>&lt;Outlet/&gt;</code>, dentro de um <code>Painel</code> com o <code>handle.titulo</code> da rota. O menu agora é <code>NavLink</code>, que navega sem recarregar e marca a página atual com <code>aria-current="page"</code>.</p>
+
+  <h2><span class="sn">13.3</span>A busca mora na URL</h2>
+  {{BLOCO:cap13:src/features/prontuario/Busca.tsx|linhas=15-26|rotulo=prontuario/Busca.tsx}}
+
+  <p>Três decisões em doze linhas. O termo é lido da URL, então sobrevive ao Voltar, ao recarregar e a um link enviado. O <code>replace</code> evita que cada tecla vire um passo no histórico. E o <code>flushSync</code> entrou depois de uma medição. No modo de dados, o roteador atualiza o estado dentro de uma transição do React, e um campo controlado pela URL pode ser redesenhado com o valor antigo entre duas teclas:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap13.py · Medido</span></div>
+<pre>{{SAIDA:c13-rotas.txt|linhas=17-21|destaque=20 de 20 perderam tecla}}</pre>
+  </div>
+
+  <p>Sem o <code>flushSync</code>, digitação sem pausa entre teclas, como a de um leitor de código de barras ou de um preenchimento automático, perdeu tecla em todas as tentativas. No ritmo humano, não. O teste em jsdom passa nas duas versões, porque o <code>act</code> do Testing Library esvazia as transições antes da próxima tecla. Esse defeito só o navegador mostra.</p>
+
+  <h2><span class="sn">13.4</span>Loader, erro e redirecionamento</h2>
+  <p>O detalhe do paciente precisa do paciente para existir. Em vez de um efeito que busca depois de desenhar (capítulo 7), a rota tem um <code>loader</code>, que roda antes de a tela aparecer e recebe o <code>signal</code> da navegação:</p>
+
+  {{BLOCO:cap13:src/features/prontuario/detalhe.ts|linhas=10-31|rotulo=prontuario/detalhe.ts}}
+
+  <p>O 401 vira <code>redirect</code> para o login, levando o caminho atual em <code>?volta=</code>. O 404 vira uma resposta que o <code>ErroDeRota</code> mostra dentro do layout. Depois de entrar, o login navega de volta com <code>useNavigate</code>, mas só para caminho interno. Sem esse filtro, <code>?volta=//site-falso.com</code> faria do login um trampolim para fora, um <strong>redirecionamento aberto</strong>:</p>
+
+  {{BLOCO:cap13:src/features/acesso/FormLogin.tsx|linhas=21-26|rotulo=acesso/FormLogin.tsx}}
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap13.py · Medido</span></div>
+<pre>{{SAIDA:c13-rotas.txt|linhas=10-15|destaque=0 documento(s) baixado(s); modo discreto ligado;campo 'ma' · 2 resultado(s)}}</pre>
+  </div>
+
+  <h2><span class="sn">13.5</span>Sob demanda e em produção</h2>
+  <p>A admissão traz o Zod, e só a recepção a abre. Com <code>lazy</code> e um <code>import()</code> de caminho literal, o Vite separa esse código num arquivo próprio, baixado na primeira visita à rota. Um detalhe pegou na montagem: com o caminho guardado numa variável, o Vite não divide nada.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap13.py · Medido</span></div>
+<pre>{{SAIDA:c13-rotas.txt|linhas=23-29|destaque=python -m http.server: 404}}</pre>
+  </div>
+
+  <p>A última linha é a armadilha do primeiro deploy. Em produção, o build é um <code>index.html</code> e uns arquivos estáticos. Quem abre <code>/pacientes/p1</code> direto pede ao servidor um arquivo que não existe. O <code>vite preview</code> devolve o <code>index.html</code> para qualquer caminho desconhecido e o roteador resolve no navegador; um servidor estático simples devolve 404. No servidor de produção, isso se configura uma vez: no nginx, <code>try_files $uri /index.html;</code>.</p>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap13-antes</span><p><code>× a busca mora na URL</code><br><code>× paciente que não existe</code><br><code>× rota desconhecida fica no layout</code><br><code>× sem login, o detalhe leva ao login</code></p></div>
+    <div class="yes"><span class="lb">cap13</span><p><code>✓</code> os quatro, e o modo discreto do capítulo 11, agora aberto pela rota <code>/</code></p></div>
+  </div>
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-17 e UI-18</span>
+    <p><strong>UI-17:</strong> o que cabe num link mora na URL; campo ligado à URL usa <code>replace</code> e <code>flushSync</code>; navegação interna é <code>Link</code>/<code>NavLink</code>. <strong>UI-18:</strong> erro de rota aparece dentro do layout; caminho desconhecido cai no <code>*</code>; o loader traduz 401 em login com <code>?volta=</code> só interno e 404 em mensagem. Verificação: <code>rotas.test.tsx</code> e <code>medicoes/cap13.py</code>.</p>
+  </div>
+
+  <h2><span class="sn">13.6</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Três padrões: <code>&lt;a href&gt;</code> no menu (funciona, recarrega tudo); filtro e página em <code>useState</code> "porque é mais simples"; e <code>window.location.href = "/entrar"</code> dentro de um efeito para redirecionar. Os três passam no portão comum. Peça explicitamente que o estado navegável viva na URL e que o redirecionamento saia do loader.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 13</span><button class="copy" type="button" data-copy="p13-agente">Copiar</button></div>
+<pre id="p13-agente"><span class="k">Goal</span>
+Filtro "só prioridade" na Ala B, que
+sobrevive ao recarregar e ao Voltar.
+
+<span class="k">Context</span>
+@docs/UI.md (Rotas) @src/app/rotas.tsx
+@INVARIANTES.md (UI-17)
+
+<span class="k">Constraints</span>
+- o filtro mora em ?prioridade=1
+- Link/NavLink; nada de &lt;a href&gt; interno
+- nada de useEffect lendo window.location
+
+<span class="k">Done when</span>
+- npm run gate verde
+- teste: abrir /?prioridade=1 já filtra
+- Voltar desfaz o filtro</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Troque o <code>replace: true</code> da busca por <code>false</code>, digite "maria" e conte quantos Voltar levam de volta à Ala B.</span></li>
+    <li><b>Intermediário</b><span>Mostre "Carregando…" durante o loader do detalhe com <code>useNavigation()</code>, só quando a espera passar de 300 ms.</span></li>
+    <li><b>Desafio</b><span>Escreva um teste para <code>destino()</code> com cinco valores maliciosos de <code>?volta=</code>, incluindo <code>/\site.com</code>. Algum passa?</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 20, 21. <b>Invariantes:</b> UI-17, UI-18. <b>Tags:</b> <code>cap13-antes</code>, <code>cap13</code>; variante <code>medicoes/cap13-sem-flushsync.patch</code>; API <code>cap12</code>. <b>Prompts:</b> <code>prompts/cap13.md</code>.</p>
+    <p><b>Fontes.</b> React Router 8.5 (documentação no pacote): <em>Data Mode: Installation, Routing, Route Object</em>; <em>React Transitions</em>; CHANGELOG v8.0.0. MDN: <em>History API</em>, <em>Referer</em>. OWASP: <em>Unvalidated Redirects and Forwards Cheat Sheet</em>. nginx: <em>try_files</em>. Vite: <em>Static Deploy</em>. Saídas em <code>saidas/c13-*.txt</code>.</p>
+  </div>
+</section>

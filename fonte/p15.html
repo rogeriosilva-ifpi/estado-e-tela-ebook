@@ -1,0 +1,148 @@
+<!-- ==================== CAP 14 ==================== -->
+<section class="chapter" id="cap14">
+  <div class="opener">{{ARTE:abertura_14}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte IV · A aplicação completa</div>
+    <div class="num">14</div>
+    <h1>Backend, HTTP e estado remoto</h1>
+    <div class="deck">Os dados do servidor não são seus. Você guarda uma cópia com prazo de validade, e precisa saber quando jogá-la fora.</div>
+  </div>
+
+  <p class="lead">Com João Lima aberto na tela, a recepcionista corrige o nome para "João Lima Neto" e salva. A API registra a mudança. Em Maria Souza.</p>
+
+  <p>Nenhum erro apareceu, nenhum teste antigo falhou. O defeito nasceu do jeito mais comum de lidar com dado do servidor: copiá-lo para um <code>useState</code> e esquecer que a cópia envelhece. Este capítulo estende a API, escreve o contrato e troca a cópia por um cache com regras.</p>
+
+  <h2><span class="sn">14.1</span>A API cresce, o contrato muda</h2>
+  <p>A busca precisava de páginas e a tela precisava editar e inativar. A tag <code>cap14</code> da API, feita com um agente a partir do prompt da seção 14.6, trouxe:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Rota</th><th>O que faz</th></tr>
+    <tr><td><code>GET /api/patients?q=&amp;pagina=&amp;porPagina=</code></td><td>Responde <code>{ itens, total, pagina, porPagina }</code>, sem inativos</td></tr>
+    <tr><td><code>PATCH /api/patients/:id</code></td><td>Muda nome, telefone e responsável; CNS e nascimento, não (400)</td></tr>
+    <tr><td><code>POST /api/patients/:id/inativar</code></td><td>Tira da busca sem apagar o prontuário</td></tr>
+  </table></div>
+
+  <p>A busca deixou de devolver um array e passou a devolver um envelope com o total. Isso é mudança de contrato, e a suíte herdada do <em>Crachá &amp; Porta</em> provou: um agente de laboratório que lia a lista como array quebrou, e o teste dele falhou na hora. Do lado da tela, o contrato agora mora em dois lugares que mudam juntos: <code>docs/API.md</code>, para gente e agente lerem, e <code>src/api/pacientes.ts</code>, com os tipos e as funções que chamam <code>pedir()</code>. Nenhum componente monta URL de API.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A prancheta na beira do leito</h4>
+      <p>O prontuário oficial fica no arquivo central. Na beira do leito vai uma prancheta com a cópia do que importa agora, e a hora em que foi tirada. Quando alguém altera o oficial, a cópia da prancheta precisa ser trocada, senão o plantão seguinte age sobre informação velha.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>A enfermagem sabe que a prancheta é cópia. O <code>useState</code> não sabe: guarda o valor como se fosse dele, para sempre. A biblioteca de estado remoto é o que dá à cópia um dono, uma etiqueta (a chave) e um prazo.</p>
+  </div>
+
+  <h2><span class="sn">14.2</span>O erro clássico: cópia em <code>useState</code></h2>
+  <p>Na tag <code>cap14-antes</code>, busca e detalhe viraram mestre-detalhe: <code>/pacientes/:id</code> é rota filha de <code>/pacientes</code>, e a lista continua na tela com o paciente aberto embaixo. O detalhe copia o que o loader trouxe:</p>
+
+  {{BLOCO:cap14-antes:src/features/prontuario/Detalhe.tsx|linhas=21-30|reticencias=sim|rotulo=prontuario/Detalhe.tsx}}
+
+  <p><code>useState(inicial)</code> usa o valor só na montagem. Ao trocar de Maria para João, o roteador reaproveita o mesmo componente e o loader traz João, mas o estado continua sendo Maria. O formulário mostra Maria, e o <code>salvar</code> usa <code>p.id</code>:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap14.py · Medido</span></div>
+<pre>{{SAIDA:c14-remoto.txt|linhas=3-8|destaque=CNS no detalhe: Maria;p1 na API = 'João Lima Neto'}}</pre>
+  </div>
+
+  <p>Três sintomas da mesma causa. A URL diz João, e a edição e a inativação caem em Maria. A lista, que tem a sua própria cópia, não vê nada do que mudou. E cada volta à busca refaz o pedido, porque ninguém sabe que o dado ainda está bom. Dois testes novos descrevem o comportamento certo e falham:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c14-testes-antes.txt|linhas=4-6}}</pre>
+  </div>
+
+  <h2><span class="sn">14.3</span>Um cache com dono: TanStack Query</h2>
+  <p>Estado remoto tem problemas que estado local não tem: tem outro dono, envelhece, é pedido por vários componentes ao mesmo tempo, precisa ser buscado de novo depois de uma mudança. O TanStack Query (5.106) resolve isso com um cache único, o <code>QueryClient</code>, onde cada dado tem uma <strong>chave</strong>.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:remoto}}</div>
+    <figcaption><b>Fig. 14.1</b> — Em cima, a leitura: o componente pede pela chave, e o cache decide se vai à rede. Embaixo, a edição, em três momentos.</figcaption>
+  </figure>
+
+  {{BLOCO:cap14:src/api/consultas.ts|linhas=8-18|rotulo=api/consultas.ts}}
+
+  <p>Por 30 segundos o dado é <strong>fresco</strong>: quem pedir a mesma chave recebe do cache, sem rede. Depois fica <strong>velho</strong>: ainda aparece, mas a próxima leitura busca de novo por baixo. Repetir pedido só vale para erro do servidor; um 404 repetido continua 404.</p>
+
+  {{BLOCO:cap14:src/features/prontuario/consultas.ts|linhas=13-31|rotulo=prontuario/consultas.ts}}
+
+  <p>As chaves formam uma árvore. <code>["pacientes", "busca", "jo", 1]</code> e <code>["pacientes", "um", "p2"]</code> têm a mesma raiz, e invalidar <code>["pacientes"]</code> alcança as duas. A <code>consultaPaciente</code> é uma receita usada em dois lugares: o loader da rota chama <code>consultas.ensureQueryData(consultaPaciente(id))</code>, que busca só se o cache não tiver, e o componente lê a mesma chave com <code>useSuspenseQuery</code>. O loader continua traduzindo 401 e 404, como no capítulo 13.</p>
+
+  <p>A busca usa <code>useQuery</code> com <code>placeholderData: keepPreviousData</code>: ao trocar de página, a lista velha fica na tela até a nova chegar, sem piscar vazio. E <code>throwOnError</code> separa o erro esperado (401, 403: aviso) do inesperado, que sobe ao limite do painel (UI-10). O <code>useBuscaPacientes</code> do capítulo 7, com seu <code>AbortController</code>, saiu: o Query entrega o <code>signal</code> e cancela o pedido de uma chave que saiu de uso. O teste da corrida daquele capítulo continua passando.</p>
+
+  <h2><span class="sn">14.4</span>Mudar: otimista, com volta</h2>
+  {{BLOCO:cap14:src/features/prontuario/consultas.ts|linhas=62-84|rotulo=prontuario/consultas.ts}}
+
+  <p>Antes de a requisição sair, <code>onMutate</code> cancela leituras em andamento daquela chave, guarda o valor anterior e escreve o novo no cache: a tela muda na hora. Se o servidor recusar, <code>onError</code> devolve o anterior. Dando certo ou errado, <code>onSettled</code> invalida <code>["pacientes"]</code>, e toda busca aberta pede de novo o que o servidor tem. No detalhe não há mais cópia: o componente lê do cache, e o formulário tem <code>key={p.id}</code>, para outro paciente ganhar outro formulário.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap14.py · Medido</span></div>
+<pre>{{SAIDA:c14-remoto.txt|linhas=10-19|destaque=CNS no detalhe: João;0 busca(s) à rede;depois do 500: 'Ana Clara Reis'}}</pre>
+  </div>
+
+  <p>João é editado em João. A lista mostra o nome novo e perde o inativado. Voltar à busca não vai à rede, porque o dado ainda é fresco. E quando o servidor demora e responde 500, o nome muda na hora e volta sozinho, com o aviso.</p>
+
+  <div class="box warn">
+    <span class="bt">Atenção · quando não ser otimista</span>
+    <p>Otimista serve para mudança que quase sempre dá certo e é fácil de desfazer: um nome, uma prioridade. Prescrição, alta e pagamento esperam a confirmação do servidor antes de aparecer como feitos. Ninguém deve agir sobre uma tela que mostra o que ainda não aconteceu.</p>
+  </div>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap14-antes</span><p><code>× a lista mostra o nome editado</code><br><code>× trocar de paciente troca o detalhe</code></p></div>
+    <div class="yes"><span class="lb">cap14</span><p><code>✓</code> os dois, e os 41 testes anteriores</p></div>
+  </div>
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-19 e UI-20</span>
+    <p><strong>UI-19:</strong> dado do servidor mora no cache do Query, com chave em árvore; nunca em <code>useState</code> nem em contexto; mutação invalida <code>["pacientes"]</code>; otimista guarda o anterior e o devolve no erro. <strong>UI-20:</strong> o contrato mora em <code>docs/API.md</code> e <code>src/api/pacientes.ts</code>, que mudam juntos com os testes.</p>
+  </div>
+
+  <h2><span class="sn">14.5</span>Loader, Query ou os dois?</h2>
+  <p>O loader responde "o que esta rota precisa para existir?" e decide redirecionamento e 404 antes da tela. O Query responde "quanto tempo esta cópia vale, e quem mais a usa?". Juntos, o loader enche o cache e a tela lê dele. Sem o Query, as <code>action</code>s do roteador revalidam os loaders, o que basta a apps com pouco dado compartilhado. O que não se faz é a terceira via: <code>useEffect</code>, <code>fetch</code> e <code>useState</code> em cada tela.</p>
+
+  <h2><span class="sn">14.6</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Mesmo com o Query instalado, o agente costuma copiar <code>data</code> para um <code>useState</code> "para editar" e sincronizar com um efeito (UI-06). Invalida a chave errada, e a lista não muda. E escreve <code>onMutate</code> otimista sem <code>onError</code>: no primeiro 500, a tela mente para sempre. O teste "a lista mostra o nome editado" pega os dois primeiros; o roteiro com 500 pega o terceiro.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 14 (API)</span><button class="copy" type="button" data-copy="p14-agente">Copiar</button></div>
+<pre id="p14-agente"><span class="k">Goal</span>
+Busca paginada com total, edição e
+inativação de paciente na API.
+
+<span class="k">Context</span>
+@src/pacientes/rotas.ts
+@src/acesso/permissoes.ts @tests/
+
+<span class="k">Constraints</span>
+- GET responde { itens, total, pagina,
+  porPagina }; porPagina até 50
+- PATCH só nome, telefone, responsável
+- inativar não apaga; sai da busca
+- permissão nova patient:update
+- mudança de contrato: atualize todo
+  consumidor da lista no repositório
+
+<span class="k">Done when</span>
+- npm test verde, com testes novos
+  de página, edição e inativação</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Mude <code>staleTime</code> para 0 e rode <code>cap14.py</code>. Quantas buscas o Voltar faz agora?</span></li>
+    <li><b>Intermediário</b><span>Torne a inativação otimista na lista, com volta no erro. Prove com um 500.</span></li>
+    <li><b>Desafio</b><span>Antecipe a próxima página com <code>prefetchQuery</code> e meça o tempo até ela aparecer.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 21, 22, 23. <b>Invariantes:</b> UI-19, UI-20. <b>Tags:</b> <code>cap14-antes</code>, <code>cap14</code> (tela e API). <b>Prompts:</b> <code>prompts/cap14.md</code>.</p>
+    <p><b>Fontes.</b> TanStack Query v5: <em>Query Keys</em>, <em>Important Defaults</em>, <em>Optimistic Updates</em>, <em>Query Invalidation</em>, <em>Paginated Queries</em>, <em>queryOptions</em>, <em>ensureQueryData</em>. react.dev: <em>You Might Not Need an Effect</em>. React Router 8: <em>Data Loading</em>. Saídas em <code>saidas/c14-*.txt</code>.</p>
+  </div>
+</section>

@@ -435,3 +435,55 @@ def abertura_12():
     c.append(f'<line x1="352" y1="92" x2="368" y2="104" stroke="{RED}" stroke-width="3"/>')
     c.append(pessoa(190, FLOOR, GR, 0.8, jaleco=True))
     return svg("".join(c), rotulo="Porta do centro cirúrgico com a luz acesa e um quadro de três fases, duas marcadas; uma seta de volta aparece cortada")
+
+
+def abertura_13():
+    """Corredor com placas de endereço sobre as portas e, na parede, o mapa
+    'você está aqui' com um alfinete: o endereço leva qualquer um ao leito."""
+    c = [painel(glow_x=300, glow_y=50)]
+    c.append(cruz(18, 16, 12))
+    # mapa da ala na parede
+    c.append(f'<rect x="28" y="40" width="120" height="86" rx="6" fill="{WALL}" stroke="{LINE}" stroke-width="2"/>')
+    for k in range(3):
+        for j in range(2):
+            c.append(f'<rect x="{38+k*36}" y="{50+j*36}" width="30" height="28" rx="3" fill="{DGREY}"/>')
+    c.append(f'<rect x="38" y="80" width="102" height="4" rx="2" fill="{LINE}"/>')
+    c.append(f'<circle cx="118" cy="98" r="7" fill="{OR}"/>')
+    c.append(f'<circle cx="118" cy="98" r="3" fill="{PAPER}"/>')
+    c.append(f'<path d="M118 105 L118 114" stroke="{OR}" stroke-width="2.5"/>')
+    # portas com placas numeradas por barras (sem texto)
+    for k, x in enumerate((176, 246, 316)):
+        c.append(f'<rect x="{x}" y="70" width="52" height="90" rx="2" fill="{DOOR}" stroke="{LINE}" stroke-width="2"/>')
+        c.append(f'<rect x="{x+6}" y="52" width="40" height="13" rx="3" fill="{BLUE if k != 2 else OR2}"/>')
+        for n in range(k + 1):
+            c.append(f'<rect x="{x+12+n*7}" y="55" width="4" height="7" rx="1" fill="{BG}"/>')
+    c.append(luz(342, 90, OR2, 4))
+    c.append(pessoa(286, FLOOR, GR, 0.85, jaleco=True))
+    c.append(f'<path d="M298 128 q20 -10 30 -36" fill="none" stroke="{OR2}" stroke-width="2" stroke-dasharray="3 4"/>')
+    return svg("".join(c), rotulo="Corredor com placas de endereço sobre as portas e um mapa com alfinete; uma pessoa segue a placa até a terceira porta")
+
+
+def abertura_14():
+    """Arquivo central com pastas à esquerda; à direita, a prancheta na beira
+    do leito com um relógio: a cópia vale por um tempo."""
+    c = [painel(glow_x=120, glow_y=50)]
+    c.append(cruz(362, 16, 12))
+    # estante do arquivo central
+    c.append(f'<rect x="30" y="40" width="130" height="120" rx="4" fill="{DOOR}" stroke="{LINE}" stroke-width="2"/>')
+    for j in range(3):
+        y = 50 + j * 36
+        c.append(f'<rect x="36" y="{y+28}" width="118" height="4" fill="{LINE}"/>')
+        for k in range(8):
+            cor = (AMB, BLUE, GR2, PAPER)[(k + j) % 4]
+            c.append(f'<rect x="{40+k*14}" y="{y+2}" width="10" height="26" rx="1" fill="{cor}" opacity=".75"/>')
+    # seta de ida e de volta entre arquivo e prancheta
+    c.append(f'<path d="M168 86 L232 86" stroke="{GREY}" stroke-width="2"/>'
+             f'<path d="M226 81 L233 86 L226 91" fill="none" stroke="{GREY}" stroke-width="2"/>')
+    c.append(f'<path d="M232 108 L168 108" stroke="{OR2}" stroke-width="2" stroke-dasharray="4 4"/>'
+             f'<path d="M174 103 L167 108 L174 113" fill="none" stroke="{OR2}" stroke-width="2"/>')
+    # prancheta com relógio
+    c.append(f'<g transform="translate(262 52) scale(2.6)">{prancheta(0, 0, rot=-6)}</g>')
+    c.append(f'<circle cx="338" cy="58" r="16" fill="{WALL}" stroke="{AMB}" stroke-width="2.5"/>')
+    c.append(f'<path d="M338 58 L338 47 M338 58 L346 62" stroke="{AMB}" stroke-width="2.5" stroke-linecap="round"/>')
+    c.append(leito(244, 120))
+    return svg("".join(c), rotulo="Arquivo central com pastas e, ao lado, uma prancheta com relógio; setas de ida e volta entre os dois")
