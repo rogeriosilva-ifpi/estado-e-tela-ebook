@@ -1,0 +1,910 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ❯ src/app/App.test.tsx (1 test | 1 failed) 336ms
+   × modo discreto não mostra nome inteiro 335ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/App.test.tsx > modo discreto não mostra nome inteiro
+TestingLibraryElementError: Unable to find an accessible element with the role "dialog" and name "Dar alta a M. S.?"
+
+Here are the accessible roles:
+
+  main:
+
+  Name "":
+  <main />
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  <header />
+
+  --------------------------------------------------
+  heading:
+
+  Name "Mini-Prontuário · Ala B":
+  <h1 />
+
+  Name "Entrar":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Admissão":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Busca no prontuário":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Resumo":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Pacientes":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Detalhe":
+  <h2
+    class="_titulo_a43c40"
+  />
+
+  Name "Dar alta a Maria Souza?":
+  <h2
+    id="_r_0_"
+  />
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  Name "":
+  <p />
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  <strong />
+
+  --------------------------------------------------
+  button:
+
+  Name "Verificar API":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Entrar":
+  <button
+    class="_botao_6f9bfb _primaria_6f9bfb"
+    type="submit"
+  />
+
+  Name "Admitir":
+  <button
+    class="_botao_6f9bfb _primaria_6f9bfb"
+    type="submit"
+  />
+
+  Name "M. S.":
+  <button
+    class="_botao_6f9bfb _texto_6f9bfb"
+    type="button"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Alta":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "J. L.":
+  <button
+    class="_botao_6f9bfb _texto_6f9bfb"
+    type="button"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Alta":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "A. C. R.":
+  <button
+    class="_botao_6f9bfb _texto_6f9bfb"
+    type="button"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="true"
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Alta":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "P. A.":
+  <button
+    class="_botao_6f9bfb _texto_6f9bfb"
+    type="button"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Alta":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "L. F.":
+  <button
+    class="_botao_6f9bfb _texto_6f9bfb"
+    type="button"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Alta":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "R. N.":
+  <button
+    class="_botao_6f9bfb _texto_6f9bfb"
+    type="button"
+  />
+
+  Name "Prioridade":
+  <button
+    aria-pressed="false"
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Alta":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Cancelar":
+  <button
+    class="_botao_6f9bfb _secundaria_6f9bfb"
+    type="button"
+  />
+
+  Name "Confirmar alta":
+  <button
+    class="_botao_6f9bfb _perigo_6f9bfb"
+    type="button"
+  />
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Modo discreto (só iniciais)":
+  <input
+    type="checkbox"
+  />
+
+  --------------------------------------------------
+  combobox:
+
+  Name "Tema":
+  <select
+    aria-label="Tema"
+  />
+
+  --------------------------------------------------
+  option:
+
+  Name "Sistema":
+  <option
+    value="sistema"
+  />
+
+  Name "Claro":
+  <option
+    value="claro"
+  />
+
+  Name "Escuro":
+  <option
+    value="escuro"
+  />
+
+  --------------------------------------------------
+  textbox:
+
+  Name "E-mail":
+  <input
+    type="email"
+    value=""
+  />
+
+  Name "Nome":
+  <input
+    id="nome"
+    name="nome"
+    type="text"
+  />
+
+  Name "CNS":
+  <input
+    id="cns"
+    name="cns"
+    type="text"
+  />
+
+  Name "Buscar no prontuário":
+  <input
+    aria-label="Buscar no prontuário"
+    placeholder="nome do paciente"
+    value=""
+  />
+
+  Name "Buscar paciente":
+  <input
+    aria-label="Buscar paciente"
+    placeholder="buscar"
+    value=""
+  />
+
+  Name "Anotação de M. S.":
+  <input
+    aria-label="Anotação de M. S."
+    placeholder="anotação"
+  />
+
+  Name "Anotação de J. L.":
+  <input
+    aria-label="Anotação de J. L."
+    placeholder="anotação"
+  />
+
+  Name "Anotação de A. C. R.":
+  <input
+    aria-label="Anotação de A. C. R."
+    placeholder="anotação"
+  />
+
+  Name "Anotação de P. A.":
+  <input
+    aria-label="Anotação de P. A."
+    placeholder="anotação"
+  />
+
+  Name "Anotação de L. F.":
+  <input
+    aria-label="Anotação de L. F."
+    placeholder="anotação"
+  />
+
+  Name "Anotação de R. N.":
+  <input
+    aria-label="Anotação de R. N."
+    placeholder="anotação"
+  />
+
+  --------------------------------------------------
+  list:
+
+  Name "Resultados":
+  <ul
+    aria-label="Resultados"
+  />
+
+  Name "":
+  <ul
+    class="_lista_5a772b"
+  />
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  Name "":
+  <li
+    class="_cartao_03f8eb"
+  />
+
+  --------------------------------------------------
+  dialog:
+
+  Name "Dar alta a Maria Souza?":
+  <dialog
+    aria-labelledby="_r_0_"
+    class="_modal_bead10"
+    open=""
+  />
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário · Ala B
+        </h1>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Admissão
+        </h2>
+        <form
+          action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+          novalidate=""
+        >
+          <p>
+            <label
+              for="nome"
+            >
+              Nome
+            </label>
+            <input
+              id="nome"
+              name="nome"
+              type="text"
+            />
+          </p>
+          <p>
+            <label
+              for="cns"
+            >
+              CNS
+            </label>
+            <input
+              id="cns"
+              name="cns"
+              type="text"
+            />
+          </p>
+          <p>
+            <label
+              for="nascimento"
+            >
+              Nascimento
+            </label>
+            <input
+              id="nascimento"
+              name="nascimento"
+              type="date"
+            />
+          </p>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Admitir
+          </button>
+        </form>
+      </section>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Busca no prontuário
+        </h2>
+        <input
+          aria-label="Buscar no prontuário"
+          placeholder="nome do paciente"
+          value=""
+        />
+        <p>
+          0
+           encontrado(s) para “
+          ”
+        </p>
+        <ul
+          aria-label="Resultados"
+        />
+      </section>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Resumo
+        </h2>
+        <p>
+          6
+           pacientes · alto risco: 
+          2
+          · médio: 
+          2
+          · baixo: 
+          2
+        </p>
+      </section>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Pacientes
+        </h2>
+        <input
+          aria-label="Buscar paciente"
+          placeholder="buscar"
+          value=""
+        />
+        <ul
+          class="_lista_5a772b"
+        >
+          <li
+            class="_cartao_03f8eb"
+          >
+            <button
+              class="_botao_6f9bfb _texto_6f9bfb"
+              type="button"
+            >
+              M. S.
+            </button>
+            <span
+              class="_leito_03f8eb"
+            >
+              leito 
+              101
+            </span>
+            <span
+              class="_selo_dc3256"
+              data-risco="alto"
+            >
+              alto
+            </span>
+            <input
+              aria-label="Anotação de M. S."
+              placeholder="anotação"
+            />
+            <button
+              aria-pressed="false"
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Prioridade
+            </button>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Alta
+            </button>
+          </li>
+          <li
+            class="_cartao_03f8eb"
+          >
+            <button
+              class="_botao_6f9bfb _texto_6f9bfb"
+              type="button"
+            >
+              J. L.
+            </button>
+            <span
+              class="_leito_03f8eb"
+            >
+              leito 
+              102
+            </span>
+            <span
+              class="_selo_dc3256"
+              data-risco="baixo"
+            >
+              baixo
+            </span>
+            <input
+              aria-label="Anotação de J. L."
+              placeholder="anotação"
+            />
+            <button
+              aria-pressed="false"
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Prioridade
+            </button>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Alta
+            </button>
+          </li>
+          <li
+            class="_cartao_03f8eb"
+          >
+            <button
+              class="_botao_6f9bfb _texto_6f9bfb"
+              type="button"
+            >
+              A. C. R.
+            </button>
+            <span
+              class="_leito_03f8eb"
+            >
+              leito 
+              103
+            </span>
+            <span
+              class="_selo_dc3256"
+              data-risco="alto"
+            >
+              alto
+            </span>
+            <span
+              aria-label="prioridade"
+            >
+              ★
+            </span>
+            <input
+              aria-label="Anotação de A. C. R."
+              placeholder="anotação"
+            />
+            <button
+              aria-pressed="true"
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Prioridade
+            </button>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Alta
+            </button>
+          </li>
+          <li
+            class="_cartao_03f8eb"
+          >
+            <button
+              class="_botao_6f9bfb _texto_6f9bfb"
+              type="button"
+            >
+              P. A.
+            </button>
+            <span
+              class="_leito_03f8eb"
+            >
+              leito 
+              104
+            </span>
+            <span
+              class="_selo_dc3256"
+              data-risco="médio"
+            >
+              médio
+            </span>
+            <input
+              aria-label="Anotação de P. A."
+              placeholder="anotação"
+            />
+            <button
+              aria-pressed="false"
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Prioridade
+            </button>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Alta
+            </button>
+          </li>
+          <li
+            class="_cartao_03f8eb"
+          >
+            <button
+              class="_botao_6f9bfb _texto_6f9bfb"
+              type="button"
+            >
+              L. F.
+            </button>
+            <span
+              class="_leito_03f8eb"
+            >
+              leito 
+              105
+            </span>
+            <span
+              class="_selo_dc3256"
+              data-risco="baixo"
+            >
+              baixo
+            </span>
+            <input
+              aria-label="Anotação de L. F."
+              placeholder="anotação"
+            />
+            <button
+              aria-pressed="false"
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Prioridade
+            </button>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Alta
+            </button>
+          </li>
+          <li
+            class="_cartao_03f8eb"
+          >
+            <button
+              class="_botao_6f9bfb _texto_6f9bfb"
+              type="button"
+            >
+              R. N.
+            </button>
+            <span
+              class="_leito_03f8eb"
+            >
+              leito 
+              106
+            </span>
+            <span
+              class="_selo_dc3256"
+              data-risco="médio"
+            >
+              médio
+            </span>
+            <input
+              aria-label="Anotação de R. N."
+              placeholder="anotação"
+            />
+            <button
+              aria-pressed="false"
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Prioridade
+            </button>
+            <button
+              class="_botao_6f9bfb _secundaria_6f9bfb"
+              type="button"
+            >
+              Alta
+            </button>
+          </li>
+        </ul>
+      </section>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Detalhe
+        </h2>
+        <p>
+          Selecione um paciente.
+        </p>
+      </section>
+      <dialog
+        aria-labelledby="_r_0_"
+        class="_modal_bead10"
+        open=""
+      >
+        <h2
+          id="_r_0_"
+        >
+          Dar alta a Maria Souza?
+        </h2>
+        <p>
+          O paciente sai da lista da Ala B.
+        </p>
+        <button
+          class="_botao_6f9bfb _secundaria_6f9bfb"
+          type="button"
+        >
+          Cancelar
+        </button>
+         
+        <button
+          class="_botao_6f9bfb _perigo_6f9bfb"
+          type="button"
+        >
+          Confirmar alta
+        </button>
+      </dialog>
+    </main>
+  </div>
+</body>
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/app/App.test.tsx:25:19
+     23|     await userEvent.click(within(cartao)
+     24|       .getByRole("button", { name: "Alta" }));
+     25|     expect(screen.getByRole("dialog",
+       |                   ^
+     26|       { name: "Dar alta a M. S.?" }))
+     27|       .toBeTruthy();
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed (1)
+   Start at  21:23:04
+   Duration  1.06s (environment 45%, tests 35%, import 14%, transform 6%, setup 1%)
+

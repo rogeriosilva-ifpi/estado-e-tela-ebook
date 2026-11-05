@@ -1,0 +1,133 @@
+<!-- ==================== CAP 12 ==================== -->
+<section class="chapter" id="cap12">
+  <div class="opener">{{ARTE:abertura_12}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte III · Arquitetura</div>
+    <div class="num">12</div>
+    <h1>Reducer e transições de estado</h1>
+    <div class="deck">Quando o próximo estado depende de regras, escreva as regras num lugar só, e torne impossível o estado que não pode existir.</div>
+  </div>
+
+  <p class="lead">A admissão ganhou três passos: identificação, contato, confirmação. Na recepção, com a rede lenta, a atendente clica Admitir e, enquanto espera, clica Voltar para conferir o telefone. A tela diz "Paciente admitido" e, ao mesmo tempo, pede para corrigir o CNS.</p>
+
+  <p>Nenhuma linha está errada sozinha: o defeito está entre elas, em estados que deveriam mudar juntos e mudam em lugares diferentes.</p>
+
+  <h2><span class="sn">12.1</span>Seis estados que mudam juntos</h2>
+  <p>Na tag <code>cap12-antes</code>, o assistente guarda o passo, os dados, os erros, se está enviando, o aviso e o id admitido, cada um no seu <code>useState</code>:</p>
+
+  {{BLOCO:cap12-antes:src/features/admissao/Assistente.tsx|linhas=23-34|reticencias=sim|rotulo=admissao/Assistente.tsx}}
+
+  <p>Seis variáveis permitem dezenas de combinações, e só algumas fazem sentido. "Enviando no passo 2" não faz. "Admitido e editando" também não. O código não impede nenhuma delas. O agente que escreveu desabilitou o botão Admitir durante o envio e esqueceu o Voltar; "Nova admissão" zera passo e dados e esquece o aviso de admitido. Com a API real e o POST retido até o roteiro mandar:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap12.py · Medido</span></div>
+<pre>{{SAIDA:c12-voltar.txt|linhas=3-10|destaque=Passo 2 de 3 · Contato;Já existe paciente com este CNS.}}</pre>
+  </div>
+
+  <p>Um prontuário na API e a tela no passo 2 com "admitido" à vista. Quem segue o fluxo recebe o 409 do capítulo 6 ao lado do aviso de sucesso: o servidor segurou o dado; a tela perdeu o fio.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A lista de verificação de cirurgia segura</h4>
+      <p>A lista da OMS divide a cirurgia em três momentos: antes da anestesia, antes da incisão e antes de o paciente sair da sala. Só se passa ao seguinte com o anterior conferido. Com a luz de "em cirurgia" acesa, ninguém volta à conferência da anestesia. Quem conduz a lista não decide caso a caso: segue a regra escrita para cada fase.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>Na sala, a equipe pode julgar uma exceção. O reducer, não: é função pura, sem rede, sem relógio. Por isso é previsível e testável sem tela, e tudo o que acontece no mundo chega a ele de fora, como ação.</p>
+  </div>
+
+  <h2><span class="sn">12.2</span>Estado por fase, regras num lugar só</h2>
+  <p>A primeira mudança não é de API, é de forma. Em vez de seis variáveis soltas, o estado é uma <strong>união discriminada</strong>: cada fase guarda só o que faz sentido nela.</p>
+
+  {{BLOCO:cap12:src/features/admissao/assistente.ts|linhas=7-24|rotulo=admissao/assistente.ts}}
+
+  <p>"Enviando no passo 2" deixou de ser um bug possível: a fase <code>enviando</code> nem tem passo. As ações também são uma união, pelo campo <code>tipo</code>, e a <code>Resposta</code> do servidor entra nela sem conversão. O <strong>reducer</strong> recebe o estado atual e uma ação e devolve o próximo estado:</p>
+
+  {{BLOCO:cap12:src/features/admissao/assistente.ts|linhas=40-63|rotulo=admissao/assistente.ts}}
+
+  <p>Aqui mora a diferença entre <strong>evento</strong> e <strong>transição</strong>. A tela despacha o evento "voltar" sempre que o botão é clicado; quem decide se isso muda alguma coisa é o reducer. Na fase <code>enviando</code>, voltar devolve o mesmo estado. O TypeScript estreita <code>e</code> em cada <code>case</code>: dentro de <code>"enviando"</code>, <code>e.passo</code> nem compila.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:fases}}</div>
+    <figcaption><b>Fig. 12.1</b> — As três fases e o que cada uma aceita. A resposta do servidor só tem efeito na fase <code>enviando</code>.</figcaption>
+  </figure>
+
+  <h2><span class="sn">12.3</span>A tela despacha e desenha</h2>
+  {{BLOCO:cap12:src/features/admissao/Assistente.tsx|linhas=26-39|rotulo=admissao/Assistente.tsx}}
+
+  <p><code>useReducer(reducer, arg, init)</code> chama <code>init</code> só na montagem: o rascunho é lido uma vez, sem efeito que copie estado. O efeito que sobra sincroniza com um sistema externo, o <code>sessionStorage</code> (e não o <code>localStorage</code>: na recepção o computador é compartilhado, e o rascunho com CNS some quando a aba fecha).</p>
+
+  {{BLOCO:cap12:src/features/admissao/Assistente.tsx|linhas=68-80|rotulo=admissao/Assistente.tsx}}
+
+  <p>A trava do <code>useRef</code> (UI-04) continua, porque dois cliques no mesmo instante leem o mesmo estado, e a <code>startTransition</code> leva erro inesperado ao limite do painel (UI-10). <code>despachar(await admitir(dados))</code> é toda a ponte entre rede e tela. O Voltar desabilitado é derivado da fase, não um sétimo estado.</p>
+
+  <h2><span class="sn">12.4</span>Testar sem tela</h2>
+  <p>Um reducer é uma função. Seu teste não monta componente, não clica, não espera: aplica ações e compara.</p>
+
+  {{BLOCO:cap12:src/features/admissao/assistente.test.ts|linhas=8-15|rotulo=admissao/assistente.test.ts}}
+
+  <p>Os quatro testes do reducer rodam em milissegundos e cobrem as regras; os cinco testes da admissão do capítulo 6 continuam passando no assistente. A mesma medição, na tag <code>cap12</code>:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap12.py · Medido</span></div>
+<pre>{{SAIDA:c12-voltar.txt|linhas=12-16}}</pre>
+  </div>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap12-antes</span><p><code>× voltar durante o envio não sai</code><br><code>&nbsp;&nbsp;da confirmação</code><br><code>× nova admissão começa limpa</code></p></div>
+    <div class="yes"><span class="lb">cap12</span><p><code>✓ voltar durante o envio não sai</code><br><code>&nbsp;&nbsp;da confirmação</code><br><code>✓ nova admissão começa limpa</code></p></div>
+  </div>
+
+  <h2><span class="sn">12.5</span>Quando usar, e até onde vai</h2>
+  <p><code>useState</code> basta para um valor isolado: o termo da busca, o modal aberto. Reducer começa a valer quando vários valores mudam juntos ou quando a pergunta é "nesta fase, isto vale?". Combinado com o capítulo 11, o <code>despachar</code> devolvido pelo <code>useReducer</code> é estável e cabe num contexto de ações: componentes distantes despacham eventos sem renderizar quando o estado muda.</p>
+
+  <p>O nativo tem limites: dado do servidor é outro problema (capítulo 14); muito estado compartilhado mudando com frequência pede assinatura seletiva, que Context não tem; e uma linha do tempo de ações pede ferramentas como as do Redux Toolkit, que usa a mesma ideia deste capítulo: estado, ação, função pura.</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-16</span>
+    <p>Fluxo com fases e regras de transição mora num reducer puro, com o estado em união discriminada por fase. Ação fora da fase é ignorada pelo reducer, não só pelo botão. Verificação: <code>assistente.test.ts</code> (sem tela) e <code>Assistente.test.tsx</code>.</p>
+  </div>
+
+  <h2><span class="sn">12.6</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Diante do Voltar no envio, o agente acrescenta um booleano e um <code>useEffect</code> que "corrige" o passo: estado sincronizado à mão, contra a UI-06. No reducer, às vezes chama <code>fetch</code> ou muta o estado recebido; o teste sem tela denuncia as duas coisas.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 12</span><button class="copy" type="button" data-copy="p12-agente">Copiar</button></div>
+<pre id="p12-agente"><span class="k">Goal</span>
+Na confirmação, "Editar contato" leva
+direto ao passo 2.
+
+<span class="k">Context</span>
+@src/features/admissao/assistente.ts
+@INVARIANTES.md (UI-06, UI-16)
+
+<span class="k">Constraints</span>
+- nova ação na união Acao; o reducer
+  decide; nada de setState solto
+- fora de "editando", a ação é ignorada
+- reducer puro: sem fetch, sem mutação
+
+<span class="k">Done when</span>
+- npm run gate verde
+- teste do reducer: editar contato
+  durante o envio devolve o mesmo estado</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Teste "campo no envio é ignorado". Por que já passa?</span></li>
+    <li><b>Intermediário</b><span>Ponha o <code>despachar</code> num contexto de ações e faça o <code>Resumo</code> despachar "editar".</span></li>
+    <li><b>Desafio</b><span>Reescreva o reducer como tabela <code>fase → tipo → função</code>, com <code>satisfies</code> exigindo cada par.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 19. <b>Invariante:</b> UI-16. <b>Tags:</b> <code>cap12-antes</code>, <code>cap12</code> (tela) e <code>cap12</code> (API). <b>Prompts:</b> <code>prompts/cap12.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>useReducer</em>, <em>Extracting State Logic into a Reducer</em>, <em>Scaling Up with Reducer and Context</em>. TypeScript: <em>Narrowing</em>. OMS: <em>Surgical Safety Checklist</em>. Saídas em <code>saidas/c12-*.txt</code>.</p>
+  </div>
+</section>

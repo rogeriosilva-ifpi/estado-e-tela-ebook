@@ -375,12 +375,69 @@ def fig_catalogo():
     return f'<svg viewBox="0 0 400 {y-14}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Componentes de domínio compõem o catálogo, que embrulha o HTML nativo">{"".join(s)}</svg>'
 
 
+def fig_contextos():
+    s = [t(0, 14, "UM CANAL POR ASSUNTO", 9.5, "f-mut", 800)]
+    s.append(caixa(110, 22, 180, 36, "f-accs s-accl", "ProvedorExibicao", "guarda discreto e tema", "f-acc"))
+    canais = [("DiscretoContext", 60, "s-good", "f-good"),
+              ("TemaContext", 200, "s-infol", "f-info"),
+              ("AcoesContext", 340, "s-mut", "f-mut")]
+    for nome, x, sc, fc in canais:
+        s.append(f'<line x1="200" y1="58" x2="{x}" y2="84" stroke-width="1.6" class="{sc}"/>')
+        s.append(t(x, 96, nome, 9.5, fc, 800, mono=True, anc="middle"))
+        s.append(f'<line x1="{x}" y1="102" x2="{x}" y2="122" stroke-width="2" stroke-dasharray="3 3" class="{sc}"/>')
+    s.append(caixa(0, 124, 120, 62, "f-goods s-goodl", "useExibirNome", "6 cartões, detalhe,", "f-good"))
+    s.append(t(60, 178, "alta, busca", 9, "f-soft", anc="middle"))
+    s.append(caixa(140, 124, 120, 62, "f-infos s-infol", "useTema", "o seletor de tema", "f-info"))
+    s.append(caixa(280, 124, 120, 62, "f-card s-bord", "useAcoesExibicao", "o seletor (só age)", "f-ink"))
+    y = 212
+    s.append(t(0, y, "TEMA → ESCURO: QUEM RENDERIZA", 9.5, "f-mut", 800))
+    linhas = [("props a partir do App", "6 de 6", "f-bad"),
+              ("contexto único", "6 de 6", "f-bad"),
+              ("três contextos", "0 de 6", "f-good")]
+    for k, (rot, n, cls) in enumerate(linhas):
+        yy = y + 22 + k * 22
+        s.append(r(0, yy - 15, 400, 20, "f-card s-bord", 4, ' stroke-width="1"'))
+        s.append(t(8, yy, rot, 10, "f-ink", 700))
+        s.append(t(392, yy, n + " cartões", 10, cls, 800, mono=True, anc="end"))
+    return f'<svg viewBox="0 0 400 {y+80}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Provedor com três contextos e seus consumidores; cartões renderizados ao trocar o tema">{"".join(s)}</svg>'
+
+
+def fig_fases():
+    s = [t(0, 14, "FASES DO ASSISTENTE E O QUE CADA UMA ACEITA", 9.5, "f-mut", 800)]
+    s.append(r(0, 24, 400, 92, "f-accs s-accl", 8, ' stroke-width="1.1"'))
+    s.append(t(12, 42, "EDITANDO", 9.5, "f-acc", 800))
+    s.append(t(388, 42, "campo · avancar · voltar", 9.5, "f-soft", mono=True, anc="end"))
+    passos = ["identificação", "contato", "confirmação"]
+    for k, nome in enumerate(passos):
+        x = 12 + k * 128
+        s.append(caixa(x, 52, 118, 30, "f-card s-bord", nome, None, "f-ink", False))
+        if k < 2:
+            s.append(seta(x + 118, 62, x + 128, 62))
+            s.append(f'<path d="M{x+128} 76 L{x+118} 76" fill="none" stroke-width="1.4" class="s-mut"/>'
+                     f'<path d="M{x+122} 72 L{x+118} 76 L{x+122} 80" fill="none" stroke-width="1.4" class="s-mut"/>')
+    s.append(t(200, 106, "avançar valida o passo; voltar não valida", 9.5, "f-soft", anc="middle"))
+    s.append(seta(330, 116, 330, 140))
+    s.append(t(338, 132, "enviar", 9.5, "f-mut", 700, mono=True))
+    s.append(caixa(230, 142, 170, 40, "f-infos s-infol", "ENVIANDO", "ignora voltar, enviar, campo", "f-info", False))
+    s.append('<path d="M230 162 L120 162 L120 118" fill="none" stroke-width="1.4" class="s-mut"/>'
+             '<path d="M116 124 L120 118 L124 124" fill="none" stroke-width="1.4" class="s-mut"/>')
+    s.append(t(128, 156, "recusado · falhou", 9.5, "f-mut", 700, mono=True))
+    s.append(seta(315, 182, 315, 214))
+    s.append(t(307, 202, "admitido", 9.5, "f-mut", 700, mono=True, anc="end"))
+    s.append(caixa(230, 216, 170, 40, "f-goods s-goodl", "ADMITIDO", "só aceita recomeçar", "f-good", False))
+    s.append(t(0, 234, "Cada fase guarda só o que", 10, "f-soft"))
+    s.append(t(0, 250, "faz sentido nela. Ação fora", 10, "f-soft"))
+    s.append(t(0, 266, "da fase volta o mesmo estado.", 10, "f-soft"))
+    return f'<svg viewBox="0 0 400 272" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fases editando, enviando e admitido do assistente e as ações aceitas em cada uma">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
                     ("arvore", fig_arvore), ("fluxo", fig_fluxo),
                     ("envio", fig_envio), ("barreiras", fig_barreiras),
                     ("efeito", fig_efeito), ("camadas", fig_camadas),
                     ("erros", fig_erros), ("tokens", fig_tokens),
-                    ("catalogo", fig_catalogo)):
+                    ("catalogo", fig_catalogo), ("contextos", fig_contextos),
+                    ("fases", fig_fases)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

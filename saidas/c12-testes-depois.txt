@@ -1,0 +1,24 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/admissao/Assistente.test.tsx > valida antes de enviar 127ms
+ ✓ src/features/admissao/Assistente.test.tsx > não envia duas vezes 184ms
+ ✓ src/features/admissao/Assistente.test.tsx > dois cliques no mesmo instante 134ms
+ ✓ src/features/admissao/Assistente.test.tsx > mostra o que o servidor recusou 130ms
+ ✓ src/features/admissao/Assistente.test.tsx > CNS repetido no servidor 138ms
+ ✓ src/features/admissao/Assistente.test.tsx > rascunho sobrevive a recarregar 22ms
+ ✓ src/features/admissao/Assistente.test.tsx > voltar durante o envio não sai da confirmação 141ms
+ ✓ src/features/admissao/Assistente.test.tsx > nova admissão começa limpa 130ms
+ ✓ src/features/admissao/assistente.test.ts > assistente de admissão > avançar valida só o passo atual 2ms
+ ✓ src/features/admissao/assistente.test.ts > assistente de admissão > enviando ignora voltar e enviar 0ms
+ ✓ src/features/admissao/assistente.test.ts > assistente de admissão > 409 volta à identificação 0ms
+ ✓ src/features/admissao/assistente.test.ts > assistente de admissão > recomeçar depois de admitir zera 0ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  21:30:51
+   Duration  2.22s (tests 49%, environment 42%, import 7%, transform 1%)
+
+    Isolate  2 workers spawned · ~503ms startup each (spawn + environment, per file)
+             at least ~503ms faster with isolate: false — reuses workers across files instead of one per file
+

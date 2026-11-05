@@ -1,0 +1,10 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/app/App.test.tsx > modo discreto não mostra nome inteiro 190ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  21:22:54
+   Duration  903ms (environment 54%, tests 23%, import 15%, transform 6%, setup 1%)
+

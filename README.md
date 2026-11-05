@@ -4,7 +4,7 @@
 aplicação completa, autenticada e testada, construída com agentes de IA
 sem perder o controle do código.**
 
-Manual de campo em produção · lotes 1 a 4 (capa, introdução e capítulos 1 a 10)
+Manual de campo em produção · lotes 1 a 5 (capa, introdução e capítulos 1 a 12)
 · organizado por Prof. Rogério Silva e Claude Opus 5.5 · 2026 · TEC.1052
 Programação para Internet II · ADS · IFPI
 
@@ -57,6 +57,8 @@ fonte.
 | `medicoes/vigia_a11y.py TAG…` | `c9-vigia.txt` | `cd medicoes && npm install` (axe-core) |
 | `medicoes/cap09.py` | `c9-comparacao.txt` | idem; faz `npm ci` em cada tag (precisa de rede para o registro npm) |
 | `medicoes/cap10.py` | `c10-teclado.txt` | nenhum |
+| `medicoes/cap11.py` | `c11-renders.txt` | nenhum; aplica `cap11-contexto-unico.patch` na variante |
+| `medicoes/cap12.py` | `c12-voltar.txt` | nenhum: sobe a API `cap12` (porta 5173 livre) |
 
 `medicoes/tela.py` cria um `git worktree` de cada tag (tela e API), sobe os
 servidores e encerra tudo no fim. `cap06-so-disabled.patch` é a variante do

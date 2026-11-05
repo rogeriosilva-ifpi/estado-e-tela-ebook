@@ -1,0 +1,16 @@
+Chromium 141.0.7390.37 · modo dev
+
+== props a partir do App
+  tema → Escuro          6 de 6 cartões renderizaram
+  modo discreto ligado   6 de 6 cartões renderizaram
+  primeiro cartão: M. S.
+
+== contexto único
+  tema → Escuro          6 de 6 cartões renderizaram
+  modo discreto ligado   6 de 6 cartões renderizaram
+  primeiro cartão: M. S.
+
+== três contextos
+  tema → Escuro          0 de 6 cartões renderizaram
+  modo discreto ligado   6 de 6 cartões renderizaram
+  primeiro cartão: M. S.

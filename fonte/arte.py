@@ -372,3 +372,66 @@ def abertura_10():
              f'<line x1="266" y1="120" x2="290" y2="126" stroke="{GR2}" stroke-width="3"/>'
              f'<circle cx="300" cy="128" r="9" fill="{GR2}"/></g>')
     return svg("".join(c), rotulo="Maleta de instrumentos aberta, cada peça no seu encaixe; um estetoscópio fora, ao lado do encaixe vazio com a sua forma")
+
+
+def ondas(x, y, cor, n=3, abre=1):
+    """Arcos de som saindo de um alto-falante, para a direita (abre=1)."""
+    out = []
+    for k in range(n):
+        r = 8 + k * 7
+        out.append(f'<path d="M{x} {y-r} A{r} {r} 0 0 {1 if abre > 0 else 0} {x} {y+r}" '
+                   f'fill="none" stroke="{cor}" stroke-width="2" opacity="{0.9 - k*0.25:.2f}"/>')
+    return "".join(out)
+
+
+def abertura_11():
+    """Corredor com alto-falantes no teto, um canal por cor; em cada sala,
+    só quem escuta aquele canal acende."""
+    c = [painel(glow_x=200, glow_y=40)]
+    c.append(cruz(18, 16, 12))
+    # teto com três alto-falantes, cada um num canal
+    canais = [(90, GR2), (200, BLUE), (310, OR2)]
+    for x, cor in canais:
+        c.append(f'<rect x="{x-9}" y="26" width="18" height="12" rx="3" fill="{DGREY}"/>')
+        c.append(f'<circle cx="{x}" cy="32" r="4" fill="{cor}"/>')
+        c.append(f'<g transform="rotate(90 {x} 40)">{ondas(x, 40, cor)}</g>')
+    # salas embaixo, com uma pessoa e um receptor de canal cada
+    salas = [(40, GR2, True), (110, BLUE, False), (180, BLUE, True),
+             (250, GR2, False), (320, OR2, True)]
+    for x, cor, ouvindo in salas:
+        c.append(f'<rect x="{x}" y="96" width="56" height="64" rx="3" fill="{DOOR}" stroke="{LINE}" stroke-width="2"/>')
+        c.append(pessoa(x + 28, FLOOR, GR if ouvindo else DGREY, 0.62, jaleco=ouvindo))
+        c.append(f'<rect x="{x+40}" y="104" width="10" height="7" rx="2" fill="{cor if ouvindo else DGREY}"/>')
+        if ouvindo:
+            c.append(luz(x + 45, 100, cor, 3))
+    return svg("".join(c), rotulo="Corredor com alto-falantes de três cores no teto; em cada sala só acende quem escuta o canal da sua cor")
+
+
+def abertura_12():
+    """Porta do centro cirúrgico com a luz de cirurgia acesa e, ao lado, o
+    quadro das três fases da lista de verificação: duas marcadas, uma por vir."""
+    c = [painel(glow_x=110, glow_y=60)]
+    c.append(cruz(362, 16, 12))
+    # porta dupla do centro cirúrgico
+    c.append(f'<rect x="40" y="52" width="130" height="108" rx="3" fill="{DOOR}" stroke="{LINE}" stroke-width="3"/>')
+    c.append(f'<line x1="105" y1="52" x2="105" y2="160" stroke="{LINE}" stroke-width="3"/>')
+    for x in (62, 120):
+        c.append(f'<rect x="{x}" y="72" width="26" height="20" rx="3" fill="{BG}" opacity=".7"/>')
+    c.append(f'<rect x="80" y="34" width="50" height="12" rx="4" fill="{RED}"/>')
+    c.append(f'<circle cx="105" cy="40" r="16" fill="{RED}" opacity=".18"/>')
+    # quadro com as três fases
+    c.append(f'<rect x="210" y="40" width="160" height="110" rx="6" fill="{WALL}" stroke="{LINE}" stroke-width="2"/>')
+    for k, (feita, cor) in enumerate(((True, GR2), (True, GR2), (False, AMB))):
+        y = 58 + k * 30
+        c.append(f'<rect x="224" y="{y}" width="18" height="18" rx="4" fill="{BG}" stroke="{cor}" stroke-width="2"/>')
+        if feita:
+            c.append(f'<path d="M228 {y+9} l4 4 l7 -9" fill="none" stroke="{cor}" stroke-width="2.5"/>')
+        for j, w in enumerate((90, 60)):
+            c.append(f'<rect x="252" y="{y+3+j*8}" width="{w}" height="4" rx="2" fill="{DGREY if feita else LINE}"/>')
+        if k < 2:
+            c.append(f'<line x1="233" y1="{y+19}" x2="233" y2="{y+29}" stroke="{GR2}" stroke-width="2"/>')
+    # seta de volta, cortada: com a luz acesa não se volta
+    c.append(f'<path d="M360 138 q14 -40 0 -80" fill="none" stroke="{DGREY}" stroke-width="2" stroke-dasharray="3 4"/>')
+    c.append(f'<line x1="352" y1="92" x2="368" y2="104" stroke="{RED}" stroke-width="3"/>')
+    c.append(pessoa(190, FLOOR, GR, 0.8, jaleco=True))
+    return svg("".join(c), rotulo="Porta do centro cirúrgico com a luz acesa e um quadro de três fases, duas marcadas; uma seta de volta aparece cortada")

@@ -1,0 +1,16 @@
+Chromium 141.0.7390.37 · API cap12 · POST retido
+
+tela cap12-antes
+  Voltar durante o envio: clicado
+  a tela mostra: Passo 2 de 3 · Contato
+  aviso: Paciente p101 admitido.
+  prontuários de Rosa na API: 1
+  segue o fluxo e admite de novo: Passo 1 de 3 · Identificação
+  aviso: Paciente p101 admitido.
+  aviso: Já existe paciente com este CNS.
+
+tela cap12
+  Voltar durante o envio: desabilitado
+  a tela mostra: (fim do assistente)
+  aviso: Paciente p101 admitido.
+  prontuários de Rosa na API: 1

@@ -1,0 +1,100 @@
+diff --git a/src/compartilhado/exibicao/Provedor.tsx b/src/compartilhado/exibicao/Provedor.tsx
+index 5a66263..dcbf84f 100644
+--- a/src/compartilhado/exibicao/Provedor.tsx
++++ b/src/compartilhado/exibicao/Provedor.tsx
+@@ -1,9 +1,8 @@
+-import { useEffect, useMemo, useState }
++import { useEffect, useState }
+   from "react";
+ import type { ReactNode } from "react";
+ import {
+-  AcoesContext, DiscretoContext, TemaContext,
+-  type Tema,
++  ExibicaoContext, type Tema,
+ } from "./contextos.ts";
+ 
+ // Guarda as preferências e as entrega por
+@@ -26,18 +25,11 @@ export function ProvedorExibicao(
+       : tema === "escuro" ? "dark" : "";
+   }, [tema]);
+ 
+-  // Os setters do useState são estáveis; o
+-  // objeto que os junta precisa ser também.
+-  const acoes = useMemo(
+-    () => ({ setDiscreto, setTema }), []);
+-
+   return (
+-    <AcoesContext value={acoes}>
+-      <TemaContext value={tema}>
+-        <DiscretoContext value={discreto}>
+-          {children}
+-        </DiscretoContext>
+-      </TemaContext>
+-    </AcoesContext>
++    <ExibicaoContext value={{
++      discreto, tema, setDiscreto, setTema,
++    }}>
++      {children}
++    </ExibicaoContext>
+   );
+ }
+diff --git a/src/compartilhado/exibicao/contextos.ts b/src/compartilhado/exibicao/contextos.ts
+index 6fd55ec..ac8044d 100644
+--- a/src/compartilhado/exibicao/contextos.ts
++++ b/src/compartilhado/exibicao/contextos.ts
+@@ -4,38 +4,38 @@ import { iniciais } from "../nome.ts";
+ export type Tema = "sistema" | "claro"
+   | "escuro";
+ 
+-interface Acoes {
++interface Exibicao {
++  discreto: boolean;
++  tema: Tema;
+   setDiscreto: (v: boolean) => void;
+   setTema: (t: Tema) => void;
+ }
+ 
+-// Um contexto por assunto: quem lê o modo
+-// discreto não renderiza quando o tema muda;
+-// quem só age não renderiza nunca.
+-export const DiscretoContext =
+-  createContext(false);
+-export const TemaContext =
+-  createContext<Tema>("sistema");
+-export const AcoesContext =
+-  createContext<Acoes | null>(null);
++// Um contexto só, com tudo dentro.
++export const ExibicaoContext =
++  createContext<Exibicao>({
++    discreto: false, tema: "sistema",
++    setDiscreto: () => {}, setTema: () => {},
++  });
++
++function useExibicao() {
++  return use(ExibicaoContext);
++}
+ 
+ export function useExibirNome() {
+-  const discreto = use(DiscretoContext);
++  const { discreto } = useExibicao();
+   return (nome: string) =>
+     discreto ? iniciais(nome) : nome;
+ }
+ 
+ export function useDiscreto() {
+-  return use(DiscretoContext);
++  return useExibicao().discreto;
+ }
+ 
+ export function useTema() {
+-  return use(TemaContext);
++  return useExibicao().tema;
+ }
+ 
+ export function useAcoesExibicao() {
+-  const acoes = use(AcoesContext);
+-  if (!acoes) throw new Error(
+-    "Use dentro de <ProvedorExibicao>.");
+-  return acoes;
++  return useExibicao();
+ }

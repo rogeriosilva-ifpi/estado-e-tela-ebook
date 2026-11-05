@@ -1,0 +1,129 @@
+<!-- ==================== CAP 11 ==================== -->
+<section class="chapter" id="cap11">
+  <div class="opener">{{ARTE:abertura_11}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte III · Arquitetura</div>
+    <div class="num">11</div>
+    <h1>Prop drilling e Context</h1>
+    <div class="deck">Passar de mão em mão é explícito e bom. Até deixar de ser. Então abra um canal, um por assunto.</div>
+  </div>
+
+  <p class="lead">A tela da Ala B vai para a TV do corredor, à vista de visitantes. A coordenação pede um modo discreto: iniciais no lugar do nome, em todo lugar. "M. S." em vez de "Maria Souza".</p>
+
+  <p>O modo discreto é uma preferência que quase toda a tela lê: os cartões, o detalhe, a confirmação de alta e a busca, em duas features diferentes. Junto vem o tema (sistema, claro ou escuro), que só o seletor lê. Onde guardar esse estado, e como ele chega a quem precisa?</p>
+
+  <h2><span class="sn">11.1</span>Passar de mão em mão</h2>
+  <p>A primeira resposta é a do capítulo 5: o estado sobe ao ancestral comum, o <code>App</code>, e desce por props. Na tag <code>cap11-antes</code>, <code>discreto</code> vai do <code>App</code> à <code>Ala</code>, à <code>ListaPacientes</code> e ao <code>CartaoPaciente</code>; a <code>Ala</code> e a lista não usam o valor, só o repassam. Isso é o <strong>prop drilling</strong>.</p>
+
+  {{BLOCO:cap11-antes:src/features/pacientes/Ala.tsx|linhas=62-69|reticencias=sim|rotulo=pacientes/Ala.tsx}}
+
+  <p>Props explícitas são boas: quem lê o código vê de onde vem cada valor. O custo aparece quando o caminho fica longo. Nove testes da Ala e da busca passaram a escrever <code>discreto={false}</code> só para compilar. E um caminho foi esquecido, como o teste mostra:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c11-testes-antes.txt|linhas=4-10|destaque=Dar alta a M. S.?}}</pre>
+  </div>
+
+  <p>A confirmação de alta, irmã da lista, não recebeu a prop e anuncia "Dar alta a Maria Souza?" na TV do corredor. É o mesmo erro do capítulo 1: um lugar a mais para lembrar.</p>
+
+  <div class="box tip">
+    <span class="bt">Primeira saída: composição</span>
+    <p>Quando o intermediário só repassa, às vezes basta passar o elemento pronto como <code>children</code>, como o <code>Painel</code> do capítulo 4: quem monta a peça já tem o valor. Aqui não basta, porque quatro consumidores em duas features precisam do mesmo valor.</p>
+  </div>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>Os canais do intercomunicador</h4>
+      <p>No hospital, um aviso não passa de mão em mão: sai pelo alto-falante. Cada equipe escuta o seu canal. A limpeza não reage ao "código azul", e a UTI não para pelo aviso da cozinha.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O rádio deixa cada um ignorar a parte do aviso que não lhe diz respeito. O Context, não: todo componente que lê um contexto renderiza quando o valor dele muda, por qualquer motivo. Por isso cada assunto ganha o seu próprio canal.</p>
+  </div>
+
+  <h2><span class="sn">11.2</span>Context: criar, prover, ler</h2>
+  <p>Um contexto tem três partes. <code>createContext</code> cria o canal com um valor padrão. Um provedor, acima na árvore, diz o valor atual; no React 19, o próprio contexto é o provedor (<code>&lt;TemaContext value={tema}&gt;</code>), sem <code>.Provider</code>. E quem precisa lê com <code>use(Contexto)</code>, que, ao contrário de <code>useContext</code>, pode ser chamado dentro de <code>if</code> e de laços.</p>
+
+  {{BLOCO:cap11:src/compartilhado/exibicao/contextos.ts|linhas=12-26|reticencias=sim|rotulo=exibicao/contextos.ts}}
+
+  <p>O padrão <code>false</code> do canal discreto tem uma consequência boa: um componente renderizado sem provedor, como nos testes de unidade, recebe "nome completo" e funciona. Os nove testes voltaram a <code>&lt;Ala /&gt;</code>. Já as ações não têm padrão útil: <code>useAcoesExibicao()</code> lança erro fora do provedor, para o engano aparecer cedo.</p>
+
+  {{BLOCO:cap11:src/compartilhado/exibicao/Provedor.tsx|linhas=29-42|reticencias=sim|rotulo=exibicao/Provedor.tsx}}
+
+  <p>O provedor guarda os dois <code>useState</code> e recebe a tela inteira como <code>children</code>. O <code>App</code> perdeu o estado: virou só composição. Todo nome de paciente passa por <code>useExibirNome()</code>, inclusive o da confirmação de alta, e o teste volta a passar.</p>
+
+  <h2><span class="sn">11.3</span>O custo de cada leitura</h2>
+  <p>A documentação é direta: quando o <code>value</code> de um provedor muda, segundo <code>Object.is</code>, o React renderiza de novo todos os componentes abaixo que leem aquele contexto, e <code>memo</code> não impede. O Renderômetro do capítulo 3 envolve cada cartão da Ala. Trocamos o tema e depois ligamos o modo discreto em três versões:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap11.py · Medido</span></div>
+<pre>{{SAIDA:c11-renders.txt|linhas=3-16|destaque=0 de 6 cartões renderizaram}}</pre>
+  </div>
+
+  <figure>
+    <div class="fig-frame">{{FIG:contextos}}</div>
+    <figcaption><b>Fig. 11.1</b> — Três canais saindo do mesmo provedor. Os cartões escutam só o discreto; trocar o tema não os alcança.</figcaption>
+  </figure>
+
+  <p>Com props, o estado está no <code>App</code>: trocar o tema renderiza o <code>App</code> e tudo abaixo, seis cartões que nem olham o tema. Com um contexto só, cujo valor é um objeto <code>{ discreto, tema, setDiscreto, setTema }</code> recriado a cada render do provedor, trocar o tema muda a identidade do objeto e todos os leitores renderizam de novo. Com três contextos, a troca de tema só muda o <code>TemaContext</code>, que nenhum cartão lê: zero. Ligar o modo discreto renderiza os seis nas três versões, como deve, porque o nome mudou.</p>
+
+  <p>Dois detalhes fazem o zero. O provedor recebe <code>children</code>: os elementos da tela foram criados pelo <code>App</code>, que não renderizou de novo, e o React pula quem não lê o contexto que mudou. E o objeto de ações é estável (<code>useMemo</code> sobre setters que já são estáveis), então quem só age nunca renderiza por causa dele.</p>
+
+  <h2><span class="sn">11.4</span>O que vai para contexto, e o que não vai</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Estado</th><th>Onde mora</th></tr>
+    <tr><td>Campo digitado, modal aberto</td><td>No componente (capítulo 6)</td></tr>
+    <tr><td>Preferência de exibição, usuário logado</td><td>Context, um por assunto</td></tr>
+    <tr><td>Pacientes, atendimentos</td><td>Cache do servidor (capítulo 14), nunca em contexto</td></tr>
+    <tr><td>Paciente aberto, busca, página</td><td>URL (capítulo 13)</td></tr>
+  </table></div>
+
+  <p>Context não é "estado global" para tudo: dado do servidor num contexto envelhece sem aviso, e valor que muda a cada tecla renderiza todos os leitores a cada tecla. Estado que vive fora do React (store em módulo, <code>localStorage</code> entre abas) se assina com <code>useSyncExternalStore</code>. Zustand, Redux Toolkit e Jotai são stores externas prontas, com assinatura seletiva; valem a dependência quando muito estado compartilhado muda com frequência. Aqui, ainda não. O teste do modo discreto, que falhava em 11.1, passa no <code>cap11</code>.</p>
+
+  <div class="box rule">
+    <span class="bt">Regra · UI-15</span>
+    <p>Estado que muitas features leem mora num provedor em <code>compartilhado/</code> que recebe a tela como <code>children</code>: um contexto por assunto, ações num contexto estável. Nome de paciente passa por <code>useExibirNome()</code>. Dado do servidor nunca vai para contexto. Verificação: <code>App.test.tsx</code> e <code>medicoes/cap11.py</code>.</p>
+  </div>
+
+  <h2><span class="sn">11.5</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Pedido "evite prop drilling", o agente cria um <code>AppContext</code> com tudo dentro, valor como objeto literal, e às vezes põe a lista de pacientes do servidor junto. Funciona, e cada tecla em qualquer campo renderiza a tela inteira. Quando alguém reclama da lentidão, ele espalha <code>memo</code>, que não resolve: leitor de contexto renderiza mesmo assim. Peça um contexto por assunto e um número medido.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 11</span><button class="copy" type="button" data-copy="p11-agente">Copiar</button></div>
+<pre id="p11-agente"><span class="k">Goal</span>
+Preferência "densidade compacta" para a
+lista da Ala.
+
+<span class="k">Context</span>
+@docs/UI.md (Estado compartilhado)
+@src/compartilhado/exibicao/
+
+<span class="k">Constraints</span>
+- contexto próprio; não mexa nos outros
+- ações no AcoesContext, valor estável
+- nada de memo como remendo
+
+<span class="k">Done when</span>
+- npm run gate verde
+- cap11.py: trocar o tema continua
+  com 0 de 6 cartões renderizados</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Tire o <code>useMemo</code> do objeto de ações e rode <code>cap11.py</code>. O número muda? Explique pelo que os cartões leem.</span></li>
+    <li><b>Intermediário</b><span>Guarde as preferências no <code>localStorage</code> e leia na primeira renderização, sem efeito que copie estado (UI-06).</span></li>
+    <li><b>Desafio</b><span>Sincronize o modo discreto entre duas abas com <code>useSyncExternalStore</code> e o evento <code>storage</code>. Prove com duas páginas no Playwright.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 18. <b>Invariante:</b> UI-15. <b>Tags:</b> <code>cap11-antes</code>, <code>cap11</code>; variante <code>medicoes/cap11-contexto-unico.patch</code>. <b>Prompts:</b> <code>prompts/cap11.md</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>createContext</em>, <em>useContext</em> (<em>Caveats</em>), <em>use</em>, <em>useSyncExternalStore</em>, <em>Passing Data Deeply with Context</em>, <em>React 19</em> (<em>&lt;Context&gt; as a provider</em>). Saídas em <code>saidas/c11-*.txt</code>.</p>
+  </div>
+</section>

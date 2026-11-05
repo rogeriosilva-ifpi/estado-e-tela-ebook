@@ -1,0 +1,58 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ❯ src/features/admissao/Assistente.test.tsx (8 tests | 2 failed) 992ms
+   × voltar durante o envio não sai da confirmação 135ms
+   × nova admissão começa limpa 135ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/features/admissao/Assistente.test.tsx > voltar durante o envio não sai da confirmação
+AssertionError: expected 'Passo 2 de 3 · Contato' to contain 'Confirmação'
+
+Expected: "Confirmação"
+Received: "Passo 2 de 3 · Contato"
+
+ ❯ src/features/admissao/Assistente.test.tsx:136:19
+    134|   await admitir();
+    135|   await userEvent.click(botao("Voltar"));
+    136|   expect(passo()).toContain("Confirmação");
+       |                   ^
+    137|   s.ok();
+    138| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+ FAIL  src/features/admissao/Assistente.test.tsx > nova admissão começa limpa
+AssertionError: expected <p class="_aviso_26d8ec" …(2)></p> to be null
+
+- Expected:
+null
+
++ Received:
+<p
+  class="_aviso_26d8ec"
+  data-tom="info"
+  role="status"
+>
+  Paciente 
+  p101
+   admitido.
+</p>
+
+ ❯ src/features/admissao/Assistente.test.tsx:152:8
+    150|         { name: "Nova admissão" }));
+    151|     expect(screen.queryByText(/admitido/))
+    152|       .toBeNull();
+       |        ^
+    153|     expect(passo())
+    154|       .toContain("Identificação");
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 6 passed (8)
+   Start at  21:27:32
+   Duration  1.67s (tests 62%, environment 27%, import 8%, transform 3%)
+
