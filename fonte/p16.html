@@ -17,7 +17,7 @@
     <tr><th>Onde</th><th>Um script da página lê?</th></tr>
     <tr><td><b>Cookie HttpOnly</b> (este livro)</td><td>Não: o JavaScript nem enxerga o cookie. CSRF fica com <code>SameSite</code> e <code>Origin</code>, já na API</td></tr>
     <tr><td><b>Token em memória</b></td><td>Enquanto a página está aberta; some ao recarregar. Com JWT, um backend da tela (BFF) guarda o token e entrega um cookie</td></tr>
-    <tr><td><b>Token em <code>localStorage</code></b></td><td>Sim, qualquer script, até alguém apagar</td></tr>
+    <tr><td><b>Token no <code style="overflow-wrap:normal">localStorage</code></b></td><td>Sim, qualquer script, até alguém apagar</td></tr>
   </table></div>
 
   <h2><span class="sn">15.2</span>O erro clássico: a tela que acredita no navegador</h2>

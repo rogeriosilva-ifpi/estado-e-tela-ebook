@@ -508,3 +508,30 @@ def abertura_15():
         c.append(f'<line x1="{x0}" y1="150" x2="{x0+40}" y2="40" stroke="{PAPER}" stroke-width="2" opacity=".14"/>')
     c.append(f'<rect x="214" y="92" width="170" height="3" fill="{LINE}"/>')
     return svg("".join(c), rotulo="Porta de ala com leitor de crachá e uma pessoa aproximando o crachá; atrás de uma parede de vidro, outra porta trancada com cadeado")
+
+
+def abertura_16():
+    """Sala de simulação: o manequim no leito, o monitor ligado nele, a
+    lista de verificação com marcas verdes e o cronômetro correndo."""
+    c = [painel(glow_x=210, glow_y=50)]
+    c.append(cruz(24, 16, 12))
+    c.append(monitor(34, 34, w=112, h=74, acesa=0))
+    c.append(leito(150, 130))
+    # cabeça do manequim no travesseiro, com o alvo de teste
+    cx, cy, r = 166, 121, 8
+    c.append(f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="{AMB}"/>')
+    c.append(f'<path d="M{cx} {cy-r} A{r} {r} 0 0 1 {cx+r} {cy} L{cx} {cy} Z" fill="{BG}"/>')
+    c.append(f'<path d="M{cx} {cy+r} A{r} {r} 0 0 1 {cx-r} {cy} L{cx} {cy} Z" fill="{BG}"/>')
+    c.append(f'<path d="M146 70 C 158 92, 160 104, 164 114" fill="none" stroke="{GREY}" stroke-width="1.4"/>')
+    # lista de verificação com três marcas
+    c.append(f'<rect x="300" y="34" width="70" height="92" rx="6" fill="{PAPER}"/>')
+    c.append(f'<rect x="324" y="28" width="22" height="10" rx="3" fill="{GREY}"/>')
+    for k in range(3):
+        y = 52 + k * 24
+        c.append(f'<path d="M310 {y} l5 5 l9 -10" fill="none" stroke="{GR}" stroke-width="3" stroke-linecap="round"/>')
+        c.append(f'<rect x="330" y="{y-3}" width="{30 - 6*k}" height="4" rx="2" fill="{GREY}"/>')
+    # cronômetro
+    c.append(f'<rect x="241" y="40" width="10" height="7" rx="2" fill="{GREY}"/>')
+    c.append(f'<circle cx="246" cy="70" r="22" fill="{WALL}" stroke="{OR2}" stroke-width="3"/>')
+    c.append(f'<path d="M246 70 L246 54 M246 70 L256 76" stroke="{OR2}" stroke-width="3" stroke-linecap="round"/>')
+    return svg("".join(c), rotulo="Sala de simulação com manequim no leito, monitor ligado, lista de verificação com marcas verdes e um cronômetro")

@@ -517,6 +517,31 @@ def fig_sessao():
     return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Middleware antes do loader; 401 e 403 com a tela aberta">{"".join(s)}</svg>'
 
 
+def fig_piramide():
+    s = [t(0, 14, "ONDE CADA TESTE CORTA O SISTEMA", 9.5, "f-mut", 800)]
+    camadas = [
+        ("E2E · Playwright", "navegador, API e banco reais", 196, "f-accs s-accl", "f-acc"),
+        ("aplicação + MSW", "rotas, cache, fetch de verdade; rede falsa", 262, "f-infos s-infol", "f-info"),
+        ("componente", "o que a pessoa vê e faz, por papel e rótulo", 328, "f-goods s-goodl", "f-good"),
+        ("unidade", "reducer, tokens: regras puras, sem tela", 394, "f-alt s-bord", "f-ink"),
+    ]
+    for k, (nome, sub, w, cls, tc) in enumerate(camadas):
+        y = 24 + k * 40
+        x = (400 - w) / 2
+        s.append(r(x, y, w, 34, cls, 6, ' stroke-width="1.1"'))
+        s.append(t(200, y + 14, nome, 10.5, tc, 800, mono=True, anc="middle"))
+        s.append(t(200, y + 27, sub, 9, "f-soft", anc="middle"))
+    y = 24 + 4 * 40 + 4
+    s.append(t(0, y + 4, "↑ mais lento, mais perto do usuário", 9.5, "f-soft"))
+    s.append(t(400, y + 4, "mais rápido, mais preciso ↓", 9.5, "f-soft", anc="end"))
+    y += 14
+    s.append(r(0, y, 400, 38, "f-bads s-badl", 6, ' stroke-width="1.1"'))
+    s.append(t(10, y + 15, "vi.mock do hook", 10.5, "f-bad", 800, mono=True))
+    s.append(t(10, y + 30, "corta acima do HTTP: o teste passa com a rede quebrada", 9.5, "f-soft"))
+    h = y + 40
+    return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pirâmide de testes: unidade, componente, aplicação com MSW e E2E; o mock do hook corta no lugar errado">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
                     ("arvore", fig_arvore), ("fluxo", fig_fluxo),
@@ -525,6 +550,7 @@ if __name__ == "__main__":
                     ("erros", fig_erros), ("tokens", fig_tokens),
                     ("catalogo", fig_catalogo), ("contextos", fig_contextos),
                     ("fases", fig_fases), ("rotas", fig_rotas),
-                    ("remoto", fig_remoto), ("sessao", fig_sessao)):
+                    ("remoto", fig_remoto), ("sessao", fig_sessao),
+                    ("piramide", fig_piramide)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

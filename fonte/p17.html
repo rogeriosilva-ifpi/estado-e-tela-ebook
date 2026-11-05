@@ -1,0 +1,165 @@
+<!-- ==================== CAP 16 ==================== -->
+<section class="chapter" id="cap16">
+  <div class="opener">{{ARTE:abertura_16}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte IV · A aplicação completa</div>
+    <div class="num">16</div>
+    <h1>Testes, depuração e desempenho</h1>
+    <div class="deck">Teste o que o usuário vê, simulando só o que está fora da aplicação. E meça antes de otimizar.</div>
+  </div>
+
+  <p class="lead">A recepção avisa: a página 2 da busca mostra os mesmos pacientes da página 1. A suíte tem 48 testes verdes, e um deles se chama "Próxima pede a página 2".</p>
+
+  <h2><span class="sn">16.1</span>O teste que mente</h2>
+  <p>Na tag <code>cap16-antes</code>, um agente recebeu dois pedidos: testar a paginação "rápido e isolado" e "padronizar os parâmetros em inglês, como as rotas". Ele trocou <code>pagina</code> e <code>porPagina</code> por <code>page</code> e <code>perPage</code> em <code>api/pacientes.ts</code> e escreveu o teste isolando o componente:</p>
+
+  {{BLOCO:cap16-antes:src/features/prontuario/Paginacao.test.tsx|linhas=14-20|rotulo=prontuario/Paginacao.test.tsx}}
+
+  <p>O hook falso devolve cinco pacientes e um total de sete. O teste clica em Próxima e confere <code>expect(useBusca).toHaveBeenLastCalledWith("a", 2)</code>:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · Medido</span></div>
+<pre>{{SAIDA:c16-mock-antes.txt|linhas=4|destaque=✓}}</pre>
+  </div>
+
+  <p>Verde, e verdadeiro: o componente pede mesmo a página 2. O defeito está um andar abaixo. A API lê <code>pagina</code> e ignora o que não conhece; com <code>page=2</code>, devolve a primeira página, com dez itens. O <code>vi.mock</code> trocou justamente o pedaço que quebrou. O teste prova que o componente chama o hook como o teste espera, não que a pessoa vê a página 2.</p>
+
+  <h2><span class="sn">16.2</span>Onde cada teste corta</h2>
+  <p>Todo teste troca alguma parte do sistema por uma versão controlada. Se o corte fica dentro da aplicação, a parte trocada deixa de ser testada. Se fica fora, na rede, todo o código da tela roda como em produção.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:piramide}}</div>
+    <figcaption><b>Fig. 16.1</b> — Quatro cortes. Quanto mais alto, mais do sistema real entra, e mais lento fica. O mock do hook corta dentro da aplicação.</figcaption>
+  </figure>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap16.py · Medido</span></div>
+<pre>{{SAIDA:c16-piramide.txt|linhas=1-4}}
+{{SAIDA:c16-e2e.txt|linhas=32}}  ← E2E, 1 jornada</pre>
+  </div>
+
+  <p>Os testes de unidade (reducer, tokens) cobrem regra pura em centésimos de segundo. Os de componente leem a tela como a pessoa: <code>getByRole</code>, <code>getByLabelText</code>, <code>userEvent</code>; nunca classe CSS ou estado interno. Os de aplicação montam as rotas de verdade com a rede simulada. A jornada E2E é uma só, a mais lenta, e a única que passa pelo navegador, pela sessão e pelo banco. O Vitest também tem um modo navegador, mais fiel e mais lento que o jsdom.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O manequim de simulação</h4>
+      <p>No laboratório de simulação, a equipe treina parada cardíaca num manequim que responde: a pressão cai se a compressão é fraca. Ninguém treinaria num boneco que diz "ótimo" a tudo. O mock do hook é esse boneco: responde o que o teste mandou.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O manequim é fabricado a partir de fisiologia conhecida. A rede falsa é escrita por você, e pode divergir da API real sem aviso. Por isso ela imita o contrato de <code>docs/API.md</code> e existe ao menos uma jornada contra a API de verdade.</p>
+  </div>
+
+  <h2><span class="sn">16.3</span>A rede simulada na fronteira: MSW</h2>
+  <p>A <code>apiFalsa</code> dos capítulos 14 e 15 já simulava na fronteira, trocando o <code>fetch</code> global. Na tag <code>cap16</code>, ela passa a ser escrita com o MSW 3, que intercepta o pedido depois que ele sai da aplicação e descreve cada rota como a API a define. A interface não mudou: nenhum teste antigo foi tocado.</p>
+
+  {{BLOCO:cap16:src/teste/api.ts|linhas=60-70|reticencias=sim|rotulo=teste/api.ts}}
+
+  <p>O handler lê <code>pagina</code> e <code>porPagina</code> e ignora o resto, como a API. O servidor do MSW sobe com <code>onUnhandledFrame: "error"</code>: pedido que nenhum teste descreveu falha, em vez de passar em silêncio. O teste novo não conhece hook nenhum:</p>
+
+  {{BLOCO:cap16:src/app/rotas.test.tsx|linhas=187-204|rotulo=app/rotas.test.tsx}}
+
+  <div class="term">
+    <div class="term-bar"><span>terminal · cap16-antes com o teste novo · Medido</span></div>
+<pre>{{SAIDA:c16-testes-antes.txt|linhas=4-5|destaque=× Próxima mostra a página 2}}
+{{SAIDA:c16-testes-antes.txt|linhas=10|destaque=but got 7}}</pre>
+  </div>
+
+  <p>Sete links na primeira página: a API falsa, como a real, não entendeu <code>perPage</code>. Com os nomes de volta, passa. O <code>Paginacao.test.tsx</code> saiu do projeto.</p>
+
+  <h2><span class="sn">16.4</span>A jornada E2E, com a API real</h2>
+  <p>Simular a rede deixa de fora o servidor, a sessão em cookie e o navegador. Uma jornada no Playwright 1.64, contra a API <code>cap15</code> em <code>:3000</code>, cobre isso: entrar, buscar, ir à página 2, editar o telefone, recarregar para provar que o valor veio do servidor, e sair.</p>
+
+  {{BLOCO:cap16:e2e/jornada.spec.ts|linhas=9-23|reticencias=sim|rotulo=e2e/jornada.spec.ts}}
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap16.py e2e · Medido</span></div>
+<pre>{{SAIDA:c16-e2e.txt|linhas=1|destaque=cap16-antes}}
+{{SAIDA:c16-e2e.txt|linhas=5-8|destaque=Received: 6}}
+…
+{{SAIDA:c16-e2e.txt|linhas=29-32|destaque=1 passed}}</pre>
+  </div>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap16-antes</span><p><code>✓ Próxima pede a página 2</code> (mock)<br><code>× Próxima mostra a página 2</code> (MSW)<br><code>× jornada E2E</code> (API real)</p></div>
+    <div class="yes"><span class="lb">cap16</span><p><code>✓</code> os 48 do Vitest e a jornada</p></div>
+  </div>
+
+  <h2><span class="sn">16.5</span>Depurar sem adivinhar</h2>
+  <p>O React DevTools mostra árvore, props e estado, e seu Profiler grava quem renderizou e por quê. No painel Performance do Chrome, as <em>React Performance Tracks</em> (React 19.2) põem o trabalho do React na linha do tempo da rede e da pintura. O Renderômetro do capítulo 3 mede em roteiro. A ordem não muda: reproduzir, medir, mudar uma coisa, medir de novo.</p>
+
+  <h2><span class="sn">16.6</span>Desempenho: o compilador, medido</h2>
+  <p>O React Compiler 1.0 memoiza componentes e hooks no build: em vez de escrever <code>useMemo</code> e <code>useCallback</code> à mão, você deixa o compilador decidir. No Vite 8 ele entra pelo Babel:</p>
+
+  {{BLOCO:cap16:vite.config.ts|linhas=11-17|rotulo=vite.config.ts}}
+
+  <p>A documentação do React recomenda o compilador em código novo. Ainda assim, ligar sem medir é otimizar por fé. O roteiro põe o Renderômetro também no Resumo e no Detalhe da Ala B e repete três interações:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap16.py compilador · Medido</span></div>
+<pre>{{SAIDA:c16-compilador.txt|linhas=3-8}}
+{{SAIDA:c16-compilador.txt|linhas=10-15|destaque=6/6 · nenhum;renders no total: 20}}</pre>
+  </div>
+
+  <p>Com o compilador, cada painel só renderiza quando muda o que ele lê. Os seis cartões continuam renderizando: nascem de um <code>map</code> sobre a lista filtrada, e cada render da lista cria elementos novos. O compilador memoiza valores e JSX dentro de um componente; não pula um componente que recebeu elemento novo. O custo:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/raio_x.py · Medido</span></div>
+<pre>{{SAIDA:c16-bundle.txt|linhas=1-8|destaque=build em 1.2 s;117.9 kB gzip}}</pre>
+  </div>
+
+  <p>São 3,9 kB a mais compactados (cerca de 3%) e o build três vezes mais lento, por causa do Babel; o plugin do Vite tem um compilador nativo em Rust, ainda experimental. O compilador ficou: tira <code>useMemo</code> da cabeça de quem escreve, inclusive do agente. Mas a decisão saiu de três números, não de um anúncio.</p>
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-24 e UI-25</span>
+    <p><strong>UI-24:</strong> teste simula a rede no MSW e lê a tela por papel e rótulo; nunca <code>vi.mock</code> de módulo da aplicação; pedido sem handler é erro; a jornada E2E roda contra a API real antes de toda entrega. <strong>UI-25:</strong> memoização é do compilador; <code>useMemo</code>, <code>useCallback</code> e <code>memo</code> só com número do Renderômetro antes e depois.</p>
+  </div>
+
+  <div class="box ponte">
+    <span class="bt">Ponte · Dev de IA</span>
+    <p><code>npm run gate</code> roda a cada mudança; <code>npm run gate:completo</code> acrescenta a jornada E2E, antes do merge. Níveis de portão e checklist de merge: <em>Dev de IA</em>, capítulos 22 e 23.</p>
+  </div>
+
+  <h2><span class="sn">16.7</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Diante de um teste vermelho, o agente tende a consertar o teste: <code>vi.mock</code>, <code>expect</code> mais frouxo, <code>setTimeout</code>. E espalha <code>useMemo</code> "por precaução". O <code>grep</code> da UI-24 pega o primeiro; a revisão pede o número do segundo.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 16</span><button class="copy" type="button" data-copy="p16-agente">Copiar</button></div>
+<pre id="p16-agente"><span class="k">Goal</span>
+A suíte pega HTTP quebrado: rede no MSW,
+paginação testada pela tela, jornada
+E2E contra a API real.
+
+<span class="k">Context</span>
+@src/teste/ @src/app/rotas.test.tsx
+@docs/API.md @INVARIANTES.md (UI-24)
+
+<span class="k">Constraints</span>
+- nada de vi.mock de módulo do app
+- apiFalsa com a mesma interface
+- pedido sem handler é erro
+- consultas por papel e rótulo
+
+<span class="k">Done when</span>
+- npm run gate:completo verde
+- o teste novo FALHA no cap16-antes</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>No <code>cap16-antes</code>, troque o <code>vi.mock</code> pela <code>apiFalsa</code> no <code>Paginacao.test.tsx</code>. O que precisou mudar no <code>expect</code>?</span></li>
+    <li><b>Intermediário</b><span>Escreva uma jornada E2E para a sessão que cai: encerre a sessão por <code>/api/auth/logout-all</code> e confira a volta ao paciente.</span></li>
+    <li><b>Desafio</b><span>Ponha <code>memo</code> no <code>CartaoPaciente</code> e rode <code>cap16.py compilador</code>, com e sem o compilador. Explique os quatro números.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 16, 28 a 31. <b>Invariantes:</b> UI-24, UI-25. <b>Tags:</b> <code>cap16-antes</code>, <code>cap16</code>; API <code>cap15</code>. <b>Prompts:</b> <code>prompts/cap16.md</code>. <b>Instrumentos:</b> <code>cap16.py</code>, <code>raio_x.py</code>.</p>
+    <p><b>Fontes.</b> MSW 3: <em>setupServer</em>. Testing Library: <em>Guiding Principles</em>. Vitest 5: <em>Browser Mode</em>. Playwright 1.64: <em>webServer</em>. react.dev: <em>React Compiler</em>, <em>Performance Tracks</em>. @vitejs/plugin-react 6 (README). Saídas em <code>saidas/c16-*.txt</code>.</p>
+  </div>
+</section>

@@ -1,0 +1,4 @@
+tag cap16 · Vitest 5 · jsdom
+  unidade, sem tela        18 testes   0.01 s
+  componente, rede à mão   18 testes   1.87 s
+  aplicação + MSW          12 testes   0.92 s

@@ -1,0 +1,37 @@
+diff --git a/src/features/pacientes/Ala.tsx b/src/features/pacientes/Ala.tsx
+index 4dd7619..c1736f8 100644
+--- a/src/features/pacientes/Ala.tsx
++++ b/src/features/pacientes/Ala.tsx
+@@ -11,6 +11,8 @@ import { ListaPacientes }
+ import { PainelDetalhe }
+   from "./PainelDetalhe.tsx";
+ import { ResumoAla } from "./ResumoAla.tsx";
++import { Renderometro }
++  from "../../lab/Renderometro.tsx";
+ 
+ // Coordena: guarda o estado, calcula o que
+ // é derivado e compõe a tela com as peças.
+@@ -47,7 +49,9 @@ export function Ala() {
+   return (
+     <>
+       <Painel titulo="Resumo">
+-        <ResumoAla pacientes={pacientes} />
++        <Renderometro id="ResumoAla">
++          <ResumoAla pacientes={pacientes} />
++        </Renderometro>
+       </Painel>
+       <Painel titulo="Pacientes">
+         <BarraBusca
+@@ -67,8 +71,10 @@ export function Ala() {
+         )}
+       </Painel>
+       <Painel titulo="Detalhe">
+-        <PainelDetalhe
+-          paciente={selecionado} />
++        <Renderometro id="PainelDetalhe">
++          <PainelDetalhe
++            paciente={selecionado} />
++        </Renderometro>
+       </Painel>
+       <ConfirmaAlta
+         nome={saindo?.nome}

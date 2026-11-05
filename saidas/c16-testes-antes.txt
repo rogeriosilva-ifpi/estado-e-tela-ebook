@@ -1,0 +1,33 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ❯ src/app/rotas.test.tsx (12 tests | 1 failed) 827ms
+   × Próxima mostra a página 2 30ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/rotas.test.tsx > Próxima mostra a página 2
+AssertionError: expected [ <a …(2)></a>, <a …(2)></a>, …(5) ] to have a length of 5 but got 7
+
+- Expected
++ Received
+
+- 5
++ 7
+
+ ❯ src/app/rotas.test.tsx:197:25
+    195|   const links = async () => within(
+    196|     await lista()).findAllByRole("link");
+    197|   expect(await links()).toHaveLength(5);
+       |                         ^
+    198|   await userEvent.click(await screen
+    199|     .findByRole("button",
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 11 passed (12)
+   Start at  23:17:14
+   Duration  2.52s (transform 41%, tests 34%, environment 17%, import 7%, setup 1%)
+

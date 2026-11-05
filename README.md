@@ -4,7 +4,7 @@
 aplicação completa, autenticada e testada, construída com agentes de IA
 sem perder o controle do código.**
 
-Manual de campo em produção · lotes 1 a 6 (capa, introdução e capítulos 1 a 14)
+Manual de campo em produção · lotes 1 a 7 (capa, introdução e capítulos 1 a 16)
 · organizado por Prof. Rogério Silva e Claude Opus 5.5 · 2026 · TEC.1052
 Programação para Internet II · ADS · IFPI
 
@@ -61,13 +61,19 @@ fonte.
 | `medicoes/cap12.py` | `c12-voltar.txt` | nenhum: sobe a API `cap12` (porta 5173 livre) |
 | `medicoes/cap13.py` | `c13-rotas.txt` | nenhum; aplica `cap13-sem-flushsync.patch` na variante; faz build das tags |
 | `medicoes/cap14.py` | `c14-remoto.txt` | nenhum: sobe a API `cap14` |
+| `medicoes/cap15.py` | `c15-sessao.txt` | nenhum: sobe as APIs `cap14` e `cap15` (porta 5173 livre) |
+| `medicoes/porta_dos_fundos.py TELA API` | `c15-porta-*.txt` | nenhum; sai com código 1 se achar porta dos fundos |
+| `medicoes/cap16.py e2e` | `c16-e2e.txt` | `PW_CHROMIUM` se o Chromium instalado não for o do `@playwright/test` |
+| `medicoes/cap16.py compilador` | `c16-compilador.txt` | nenhum; aplica `cap16-paineis.patch` nas duas tags |
+| `medicoes/cap16.py piramide` | `c16-piramide.txt` | nenhum |
+| `medicoes/raio_x.py TAG…` | `c16-bundle.txt` | nenhum: build de cada tag num worktree |
 
 `medicoes/tela.py` cria um `git worktree` de cada tag (tela e API), sobe os
 servidores e encerra tudo no fim. `cap06-so-disabled.patch` é a variante do
 capítulo 6 sem a trava do ref, medida mas não guardada em tag.
 
 As saídas de teste e de lint (`c8-testes-*`, `c8-fronteiras-*`, `c9-tokens-revert`,
-`c10-testes-*`, `c10-lint-botoes`) são o terminal real do `npx vitest run`,
+`c10-testes-*`, `c10-lint-botoes`, `c15-testes-*`, `c16-mock-antes`, `c16-testes-*`) são o terminal real do `npx vitest run`,
 `npx depcruise src` e `npx oxlint` na tag indicada, sem cores ANSI.
 
 `cap02_cookie.py` aceita `firefox` ou `webkit` como argumento

@@ -1,0 +1,33 @@
+== tela cap16-antes · API cap15 · e2e/jornada.spec.ts
+Running 1 test using 1 worker
+[1/1] e2e/jornada.spec.ts:7:1 › recepção busca, pagina, edita e sai
+  1) e2e/jornada.spec.ts:7:1 › recepção busca, pagina, edita e sai ─────────────────────────────────
+    Error: expect(locator).toHaveCount(expected) failed
+    Locator:  getByRole('list', { name: 'Resultados' }).getByRole('link')
+    Expected: 5
+    Received: 6
+    Timeout:  5000ms
+    Call log:
+      - Expect "toHaveCount" getByRole('list', { name: 'Resultados' }).getByRole('link') with timeout 5000ms
+      - waiting for getByRole('list', { name: 'Resultados' }).getByRole('link')
+        3 × locator resolved to 0 elements
+          - unexpected value "0"
+        11 × locator resolved to 6 elements
+           - unexpected value "6"
+      18 |       { name: "Resultados" })
+      19 |       .getByRole("link");
+    > 20 |     await expect(achados).toHaveCount(5);
+         |                           ^
+      21 |     await page.getByRole("button",
+      22 |       { name: "Próxima" }).click();
+      23 |     await expect(achados).toHaveCount(1);
+        at web/e2e/jornada.spec.ts:20:27
+    Error Context: test-results/jornada-recepção-busca-pagina-edita-e-sai/error-context.md
+  1 failed
+    e2e/jornada.spec.ts:7:1 › recepção busca, pagina, edita e sai ──────────────────────────────────
+
+== tela cap16 · API cap15 · e2e/jornada.spec.ts
+Running 1 test using 1 worker
+[1/1] e2e/jornada.spec.ts:7:1 › recepção busca, pagina, edita e sai
+  1 passed (2.9s)
+

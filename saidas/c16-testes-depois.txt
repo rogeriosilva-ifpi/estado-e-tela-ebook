@@ -1,0 +1,17 @@
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+ ✓ src/app/rotas.test.tsx > modo discreto não mostra nome inteiro 217ms
+ ✓ src/app/rotas.test.tsx > a busca mora na URL 73ms
+ ✓ src/app/rotas.test.tsx > paciente que não existe 27ms
+ ✓ src/app/rotas.test.tsx > rota desconhecida fica no layout 16ms
+ ✓ src/app/rotas.test.tsx > a lista mostra o nome editado 150ms
+ ✓ src/app/rotas.test.tsx > trocar de paciente troca o detalhe 64ms
+ ✓ src/app/rotas.test.tsx > sem sessão, vai ao login sem pedir o paciente 13ms
+ ✓ src/app/rotas.test.tsx > recepção não vê Inativar 20ms
+ ✓ src/app/rotas.test.tsx > sessão que cai no meio do trabalho: login e volta ao paciente 118ms
+ ✓ src/app/rotas.test.tsx > 403 avisa ali mesmo e não leva ao login 59ms
+ ✓ src/app/rotas.test.tsx > sair esquece tudo o que a tela viu 37ms
+ ✓ src/app/rotas.test.tsx > Próxima mostra a página 2 55ms
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  23:17:17
+   Duration  1.60s (tests 56%, environment 28%, import 10%, transform 4%, setup 2%)

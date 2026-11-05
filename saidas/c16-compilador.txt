@@ -1,0 +1,15 @@
+Chromium 141.0.7390.37 · modo dev
+
+== cap16-antes
+  ação                 cartões · painéis
+  digitar "a"          6/6 · Resumo, Detalhe
+  prioridade de Maria  6/6 · Resumo, Detalhe
+  selecionar João      6/6 · Resumo, Detalhe
+  renders no total: 24
+
+== cap16 · React Compiler
+  ação                 cartões · painéis
+  digitar "a"          6/6 · nenhum
+  prioridade de Maria  6/6 · Resumo
+  selecionar João      6/6 · Detalhe
+  renders no total: 20

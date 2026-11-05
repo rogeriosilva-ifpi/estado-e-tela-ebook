@@ -1,0 +1,8 @@
+== cap16-antes · build em 0.4 s (mediana de 3)
+  Assistente.js       83.6 kB    24.4 kB gzip
+  index.js           368.0 kB   114.3 kB gzip
+  total              451.6 kB   138.7 kB gzip
+== cap16 · build em 1.2 s (mediana de 3)
+  Assistente.js       84.4 kB    24.7 kB gzip
+  index.js           376.8 kB   117.9 kB gzip
+  total              461.2 kB   142.6 kB gzip

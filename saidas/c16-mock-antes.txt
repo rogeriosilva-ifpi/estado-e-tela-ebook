@@ -1,0 +1,10 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+ ✓ src/features/prontuario/Paginacao.test.tsx > Próxima pede a página 2 122ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  23:17:13
+   Duration  899ms (environment 56%, tests 15%, import 15%, transform 14%, setup 1%)
+
