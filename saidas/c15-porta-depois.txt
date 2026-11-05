@@ -1,0 +1,7 @@
+porta-dos-fundos · tela cap15 · API cap15
+/pacientes/p3: profissional vê ['Salvar', 'Inativar']; recepcao vê ['Salvar']
+  escondidos de recepcao: ['Inativar']
+  Inativar → POST /api/patients/p3/inativar
+    recepcao, chamando direto: 403  ✓
+nenhuma porta dos fundos
+saída: 0

@@ -1,0 +1,38 @@
+Chromium 141.0.7390.37
+
+tela cap15-antes · API cap14
+  1. sessão encerrada no servidor, recarregar
+     endereço: /pacientes?q=ma
+     cabeçalho: Dra. Ana · botão Sair
+     avisos: Entre para buscar no prontuário.
+  2. sessão cai, Salvar
+     endereço: /pacientes/p2?q=jo
+     cabeçalho: Dra. Ana · botão Sair
+     avisos: Não foi salvo; o nome voltou ao anterior.; Entre para buscar no prontuário.
+  3. sem sessão, abrir /pacientes/p1
+     endereço: /entrar?volta=%2Fpacientes%2Fp1
+     pedidos à API: GET /api/patients/p1
+  4. Ana logada; um script da página lê
+     document.cookie: ''
+     localStorage['usuario']:
+       {"id":"u2","nome":"Dra. Ana","email":"ana@hospital.dev","papel":"profissional"}
+     Carla troca o papel no localStorage e recarrega:
+     botão Inativar: 0 → 1
+     na API: Pedro Alves · ativo: False
+
+tela cap15 · API cap15
+  1. sessão encerrada no servidor, recarregar
+     endereço: /entrar?volta=%2Fpacientes%3Fq%3Dma
+     cabeçalho: ninguém · link Entrar
+     avisos: —
+  2. sessão cai, Salvar
+     endereço: /entrar?volta=%2Fpacientes%2Fp2%3Fq%3Djo
+     cabeçalho: ninguém · link Entrar
+     avisos: —
+     entra de novo: /pacientes/p2?q=jo · CNS de João na tela: sim
+  3. sem sessão, abrir /pacientes/p1
+     endereço: /entrar?volta=%2Fpacientes%2Fp1
+     pedidos à API: GET /api/auth/me
+  4. Ana logada; um script da página lê
+     document.cookie: ''
+     localStorage: vazio

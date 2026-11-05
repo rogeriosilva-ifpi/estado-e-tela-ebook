@@ -1,0 +1,47 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+stdout | src/app/rotas.test.tsx > modo discreto não mostra nome inteiro
+[render] Maria Souza · mount · 1.20 ms
+[render] João Lima · mount · 0.47 ms
+[render] Ana Clara Reis · mount · 0.61 ms
+[render] Pedro Alves · mount · 0.41 ms
+[render] Luzia Freitas · mount · 0.34 ms
+[render] Raimundo Nonato · mount · 0.38 ms
+
+stdout | src/app/rotas.test.tsx > modo discreto não mostra nome inteiro
+[render] Maria Souza · update · 0.19 ms
+[render] João Lima · update · 0.11 ms
+[render] Ana Clara Reis · update · 0.17 ms
+[render] Pedro Alves · update · 0.14 ms
+[render] Luzia Freitas · update · 0.14 ms
+[render] Raimundo Nonato · update · 0.18 ms
+
+stdout | src/app/rotas.test.tsx > modo discreto não mostra nome inteiro
+[render] Maria Souza · update · 0.14 ms
+[render] João Lima · update · 0.10 ms
+[render] Ana Clara Reis · update · 0.11 ms
+[render] Pedro Alves · update · 0.09 ms
+[render] Luzia Freitas · update · 0.12 ms
+[render] Raimundo Nonato · update · 0.10 ms
+
+stderr | src/app/rotas.test.tsx > a busca mora na URL
+No `HydrateFallback` element provided to render during initial hydration
+
+ ✓ src/app/rotas.test.tsx > modo discreto não mostra nome inteiro 197ms
+ ✓ src/app/rotas.test.tsx > a busca mora na URL 40ms
+ ✓ src/app/rotas.test.tsx > paciente que não existe 14ms
+ ✓ src/app/rotas.test.tsx > rota desconhecida fica no layout 10ms
+ ✓ src/app/rotas.test.tsx > a lista mostra o nome editado 123ms
+ ✓ src/app/rotas.test.tsx > trocar de paciente troca o detalhe 53ms
+ ✓ src/app/rotas.test.tsx > sem sessão, vai ao login sem pedir o paciente 12ms
+ ✓ src/app/rotas.test.tsx > recepção não vê Inativar 17ms
+ ✓ src/app/rotas.test.tsx > sessão que cai no meio do trabalho: login e volta ao paciente 101ms
+ ✓ src/app/rotas.test.tsx > 403 avisa ali mesmo e não leva ao login 49ms
+ ✓ src/app/rotas.test.tsx > sair esquece tudo o que a tela viu 31ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  23:04:58
+   Duration  1.34s (tests 51%, environment 33%, import 11%, transform 4%)
+

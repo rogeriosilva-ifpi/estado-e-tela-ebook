@@ -5,8 +5,8 @@ Mesmo mundo e mesmo traço do Crachá & Porta (arte_base.py): um hospital
 rosto, nenhuma letra. A metáfora-mestra é o monitor de beira-leito.
 """
 from arte_base import (RED, AMB, BG, BLUE, DGREY, DOOR, FLOOR, GR, GR2, GREY,
-                       LINE, OR, OR2, PAPER, SKIN, WALL, cruz, luz, painel,
-                       pessoa, svg)
+                       LINE, OR, OR2, PAPER, SKIN, WALL, cadeado, cracha, cruz,
+                       luz, painel, pessoa, porta, svg)
 
 
 def monitor(x, y, w=142, h=94, acesa=1, haste=True):
@@ -487,3 +487,24 @@ def abertura_14():
     c.append(f'<path d="M338 58 L338 47 M338 58 L346 62" stroke="{AMB}" stroke-width="2.5" stroke-linecap="round"/>')
     c.append(leito(244, 120))
     return svg("".join(c), rotulo="Arquivo central com pastas e, ao lado, uma prancheta com relógio; setas de ida e volta entre os dois")
+
+
+def abertura_15():
+    """Porta de ala com leitor de crachá; a recepcionista aproxima o crachá.
+    Atrás do vidro, a porta real, trancada com cadeado: esconder não é
+    proibir."""
+    c = [painel(glow_x=280, glow_y=60)]
+    c.append(cruz(24, 18, 12))
+    # porta da frente, com leitor e luz vermelha
+    c.append(porta(70, FLOOR, 62, 112, cor_luz=RED, fechadura="leitor"))
+    c.append(pessoa(170, FLOOR, BLUE, s=1.0))
+    c.append(cracha(150, 92, w=16, h=22, rot=-14, brilho=True, faixa=BLUE))
+    # parede de vidro e, atrás, a porta real trancada
+    c.append(f'<rect x="214" y="30" width="170" height="130" rx="3" fill="{DOOR}" stroke="{LINE}" stroke-width="3"/>')
+    c.append(porta(268, 152, 60, 100, cor_luz=GR2))
+    c.append(cadeado(282, 104, s=1.0, cor=GR2))
+    c.append(f'<rect x="214" y="30" width="170" height="130" rx="3" fill="{BLUE}" opacity=".10"/>')
+    for x0 in (230, 250, 330):
+        c.append(f'<line x1="{x0}" y1="150" x2="{x0+40}" y2="40" stroke="{PAPER}" stroke-width="2" opacity=".14"/>')
+    c.append(f'<rect x="214" y="92" width="170" height="3" fill="{LINE}"/>')
+    return svg("".join(c), rotulo="Porta de ala com leitor de crachá e uma pessoa aproximando o crachá; atrás de uma parede de vidro, outra porta trancada com cadeado")

@@ -1,0 +1,164 @@
+<!-- ==================== CAP 15 ==================== -->
+<section class="chapter" id="cap15">
+  <div class="opener">{{ARTE:abertura_15}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte IV · A aplicação completa</div>
+    <div class="num">15</div>
+    <h1>Autenticação, sessão e autorização na interface</h1>
+    <div class="deck">Quem entrou, quem diz é o servidor. A interface esconde o que você não pode fazer; só o servidor proíbe.</div>
+  </div>
+
+  <p class="lead">A recepção pediu login na tela. O agente entregou numa tarde: entrar, sair, rotas protegidas e o botão Inativar escondido de quem é da recepção. Passou no portão. Na manhã seguinte, Carla abriu as ferramentas do navegador, trocou uma palavra e inativou um paciente.</p>
+
+  <h2><span class="sn">15.1</span>Autenticar e autorizar, vistos da tela</h2>
+  <p><strong>Autenticar</strong> é saber quem é; <strong>autorizar</strong> é decidir o que essa pessoa pode fazer. No <em>Crachá &amp; Porta</em>, as duas coisas foram construídas no servidor: senha com argon2, sessão no banco, cookie <code>__Host-sessao</code> com <code>HttpOnly</code> e <code>SameSite=Lax</code>, checagem de <code>Origin</code> contra CSRF e uma permissão exigida em cada rota. A tela não reimplementa nada disso: o navegador manda o cookie sozinho a cada <code>fetch</code> para a mesma origem, e ela pergunta e obedece. A primeira decisão é onde a credencial fica:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Onde</th><th>Um script da página lê?</th></tr>
+    <tr><td><b>Cookie HttpOnly</b> (este livro)</td><td>Não: o JavaScript nem enxerga o cookie. CSRF fica com <code>SameSite</code> e <code>Origin</code>, já na API</td></tr>
+    <tr><td><b>Token em memória</b></td><td>Enquanto a página está aberta; some ao recarregar. Com JWT, um backend da tela (BFF) guarda o token e entrega um cookie</td></tr>
+    <tr><td><b>Token em <code>localStorage</code></b></td><td>Sim, qualquer script, até alguém apagar</td></tr>
+  </table></div>
+
+  <h2><span class="sn">15.2</span>O erro clássico: a tela que acredita no navegador</h2>
+  <p>Na tag <code>cap15-antes</code>, o agente guardou o usuário do login no <code>localStorage</code>. Uma guarda em componente, <code>Protegida</code>, redireciona quem não tem nada guardado, e o detalhe esconde Inativar quando o papel guardado é <code>"recepcao"</code>:</p>
+
+  {{BLOCO:cap15-antes:src/compartilhado/sessao.ts|linhas=9-15|rotulo=compartilhado/sessao.ts}}
+
+  <p>A tela passa a ter uma opinião sobre quem entrou, e o servidor, outra. Elas divergem quando a sessão acaba no servidor: expirou, o papel mudou, ou a pessoa clicou "sair de todos os dispositivos" em outro computador. O roteiro faz Ana entrar e, de outro navegador, encerra todas as sessões dela:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap15.py · Medido</span></div>
+<pre>{{SAIDA:c15-sessao.txt|linhas=3-11|destaque=Dra. Ana · botão Sair;Entre para buscar no prontuário.;Não foi salvo; o nome voltou ao anterior.}}
+{{SAIDA:c15-sessao.txt|linhas=15-21|destaque=botão Inativar: 0 → 1;ativo: False}}</pre>
+  </div>
+
+  <p>O cabeçalho diz que Ana está logada; a busca pede que ela entre; o Salvar desfaz a edição sem dizer por quê. E o <code>localStorage</code> é de qualquer script, inclusive do console: o cookie não aparece em <code>document.cookie</code>, o usuário guardado aparece inteiro. Carla mudou o próprio papel ali, o botão apareceu e a API <code>cap14</code> aceitou. São dois defeitos: a tela acreditou num dado que o usuário controla, e a API não proibia o que a tela escondia.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>O adesivo e o crachá</h4>
+      <p>Na portaria, o visitante recebe um adesivo onde ele mesmo escreve o nome. Ajuda a enfermagem a chamá-lo, e só. A porta da UTI lê o crachá que a recepção emitiu. Quem escreve "médico" no adesivo continua do lado de fora.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>O segurança pode olhar o crachá. A tela não: o cookie é <code>HttpOnly</code>. Ela não confere nada; pergunta ao servidor quem entrou e acredita só na resposta.</p>
+  </div>
+
+  <h2><span class="sn">15.3</span>Quem entrou, segundo o servidor</h2>
+  <p>Na tag <code>cap15</code> da API, <code>/api/auth/me</code> passou a devolver também as permissões do papel. A tela pergunta ali, e a resposta é dado do servidor como qualquer outro: mora no cache do capítulo 14, numa chave própria.</p>
+
+  {{BLOCO:cap15:src/api/sessao.ts|linhas=35-43|rotulo=api/sessao.ts}}
+
+  <p><code>obterSessao</code> transforma o 401 de <code>/api/auth/me</code> em <code>null</code>: ali, 401 é "ninguém entrou". Com <code>staleTime: Infinity</code>, o cache não pergunta de novo sozinho; login, sair e 401 mexem nele de propósito. Os componentes leem com <code>useSessao()</code> e <code>usePode("patient:deactivate")</code>, dois hooks de cinco linhas sobre essa consulta. A tabela do capítulo 11 pôs "usuário logado" em Context; agora dá para ser preciso: é dado do servidor, e o cache já é o provedor. O <code>localStorage</code> sumiu do projeto.</p>
+
+  <h2><span class="sn">15.4</span>Middleware: decidir antes do loader</h2>
+  <p>A guarda em componente tem outro defeito. No modo de dados, o loader roda antes de a tela desenhar, e quem abre <code>/pacientes/p1</code> sem sessão dispara o pedido do paciente antes de ser redirecionado:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap15.py · Medido</span></div>
+<pre>{{SAIDA:c15-sessao.txt|linhas=12-14|destaque=GET /api/patients/p1}}
+…
+{{SAIDA:c15-sessao.txt|linhas=33-35|destaque=GET /api/auth/me}}</pre>
+  </div>
+
+  <p>O React Router 8 tem <strong>middleware</strong> no modo de dados: uma função da rota que roda antes dos loaders das filhas, a cada navegação. As rotas protegidas ficam sob uma rota sem caminho com <code>middleware: [exigirSessao]</code> e <code>handle: { protegida: true }</code>:</p>
+
+  {{BLOCO:cap15:src/app/protecao.ts|linhas=16-28|rotulo=app/protecao.ts}}
+
+  <p>Na primeira navegação, <code>ensureQueryData</code> pergunta ao servidor; nas seguintes, responde do cache. Recarregar zera o cache e a pergunta volta ao servidor: a sessão sobrevive ao F5 sem nada guardado no navegador.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:sessao}}</div>
+    <figcaption><b>Fig. 15.1</b> — O middleware decide antes do loader. Com a tela aberta, 401 e 403 têm destinos diferentes.</figcaption>
+  </figure>
+
+  <h2><span class="sn">15.5</span>401 e 403 não são o mesmo erro</h2>
+  <p>O middleware só roda na navegação. Se a sessão acaba com a tela parada, a próxima consulta ou mutação recebe 401. O cache tem um ponto só para isso:</p>
+
+  {{BLOCO:cap15:src/api/consultas.ts|linhas=7-26|rotulo=api/consultas.ts}}
+
+  <p><code>se401</code> fica no <code>onError</code> do <code>QueryCache</code> e no <code>onSettled</code> do <code>MutationCache</code>, que roda depois de a edição otimista devolver o nome anterior. Gravar <code>null</code> avisa o <code>Layout</code>, que conhece a rota atual: se ela tem <code>handle.protegida</code>, ele devolve <code>&lt;Navigate to={paraLogin(local)} /&gt;</code>.</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap15.py · Medido</span></div>
+<pre>{{SAIDA:c15-sessao.txt|linhas=23-32|destaque=/entrar?volta=%2Fpacientes%3Fq%3Dma;entra de novo: /pacientes/p2?q=jo}}</pre>
+  </div>
+
+  <p>Ana perde a edição não salva, mas não o lugar: entra de novo e volta para João, com a busca na URL. O 403 é outra história. A pessoa está logada e não tem permissão; no login, entraria de novo para receber o mesmo 403. Por isso 403 vira aviso no lugar, como já acontecia na busca (UI-10), e um teste prova que a URL não muda.</p>
+
+  <div class="box warn">
+    <span class="bt">Atenção · o laço que o teste pegou</span>
+    <p>Na primeira versão, o 401 também apagava os pacientes do cache. O teste travou: o detalhe, ainda montado, pedia o paciente de novo, recebia 401, o cache apagava, e assim até o processo cair. Só se limpa o cache depois de sair das rotas que o leem. Por isso <code>esquecerSessao()</code> roda no Sair depois de navegar para <code>/entrar</code>, e o login começa com <code>clear()</code>.</p>
+  </div>
+
+  <h2><span class="sn">15.6</span>Esconder não é proibir</h2>
+  <p>Inativar agora some por permissão, não por papel: <code>usePode("patient:deactivate")</code>. Mudou a matriz no servidor, a tela acompanha sem deploy. Mas quem proíbe é a rota. O instrumento <code>porta-dos-fundos</code> testa a tela por fora: entra como profissional e como recepção, anota os botões que só o profissional vê, intercepta o pedido de cada um e o repete com a sessão da recepção:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/porta_dos_fundos.py · Medido</span></div>
+<pre>{{SAIDA:c15-porta-antes.txt|linhas=1-6|destaque=200  ✗ esperado 403}}
+…
+{{SAIDA:c15-porta-depois.txt|linhas=4-6|destaque=403  ✓}}</pre>
+  </div>
+
+  <p>A correção não estava na tela. A rota de inativar exigia <code>patient:update</code>, que a recepção tem para editar telefone. A tag <code>cap15</code> da API criou <code>patient:deactivate</code> para admin e profissional, atualizou <code>docs/PERMISSOES.md</code> e a suíte papel × rota, e ganhou o teste "recepção chamando direto recebe 403". Quem escondeu é quem confere.</p>
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap15-antes</span><p><code>× sem sessão, não pede o paciente</code><br><code>× recepção não vê Inativar</code><br><code>× sessão que cai: login e volta</code><br><code>× 403 avisa e não leva ao login</code><br><code>× sair esquece o que a tela viu</code></p></div>
+    <div class="yes"><span class="lb">cap15</span><p><code>✓</code> os cinco, e os seis anteriores</p></div>
+  </div>
+
+  <h2><span class="sn">15.7</span>Segredos e HTML no navegador</h2>
+  <p>Tudo o que o Vite entrega é público. Variável com prefixo <code>VITE_</code> é escrita no bundle no build, e a documentação do Vite avisa que ela não deve conter informação sensível. Chave de serviço fica no servidor, que faz o pedido pela tela. E o React escapa texto: um paciente chamado <code>&lt;img onerror=…&gt;</code> aparece como texto. A brecha é <code>dangerouslySetInnerHTML</code>, que o lint agora recusa (<code>react/no-danger</code>); uma política de conteúdo (CSP) no servidor é a segunda camada.</p>
+
+  <div class="box rule">
+    <span class="bt">Regras · UI-21 a UI-23</span>
+    <p><strong>UI-21:</strong> quem entrou mora no cache, lido de <code>/api/auth/me</code>; nada no <code>localStorage</code>; rota protegida sob <code>exigirSessao</code>; 401 leva ao login com volta; entrar e sair limpam o cache. <strong>UI-22:</strong> botão escondido por permissão, nunca por papel; toda ação escondida tem 403 na API; 403 avisa no lugar. <strong>UI-23:</strong> nada de segredo em <code>VITE_</code> nem de <code>dangerouslySetInnerHTML</code>.</p>
+  </div>
+
+  <h2><span class="sn">15.8</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Pedido de login, o agente costuma entregar usuário ou token no <code>localStorage</code>, permissão conferida pelo nome do papel e um <code>VITE_API_KEY</code> "para desenvolvimento". Tudo passa no portão. O teste da sessão que cai pega o primeiro; o <code>porta-dos-fundos</code>, o segundo; o <code>grep</code> da UI-23, o terceiro.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 15</span><button class="copy" type="button" data-copy="p15-agente">Copiar</button></div>
+<pre id="p15-agente"><span class="k">Goal</span>
+Sessão vinda do servidor; 401 leva ao
+login e volta; Inativar só para quem
+pode.
+
+<span class="k">Context</span>
+@docs/API.md @docs/UI.md
+@INVARIANTES.md (UI-19, UI-21, UI-22)
+
+<span class="k">Constraints</span>
+- quem entrou mora no cache ["sessao"]
+- nada em localStorage
+- middleware nas rotas protegidas
+- botão por permissão, nunca por papel
+- só 401 leva ao login; 403 avisa
+
+<span class="k">Done when</span>
+- npm run gate verde
+- rotas.test.tsx: os cinco de sessão
+- porta_dos_fundos.py: tudo 403</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Logado, rode <code>document.cookie</code> no console. Explique o resultado com um atributo do <code>Set-Cookie</code>.</span></li>
+    <li><b>Intermediário</b><span>Esconda "Admissão" de quem não tem <code>patient:create</code> e proteja a rota com um segundo middleware.</span></li>
+    <li><b>Desafio</b><span>Faça o <code>porta-dos-fundos</code> varrer também <code>/admissao</code>, com um papel novo na API.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 24 a 27. <b>Invariantes:</b> UI-21 a UI-23. <b>Tags:</b> <code>cap15-antes</code>, <code>cap15</code> (tela e API). <b>Prompts:</b> <code>prompts/cap15.md</code>.</p>
+    <p><b>Fontes.</b> React Router 8.5: <em>Middleware</em>. TanStack Query v5: <em>QueryCache</em>, <em>MutationCache</em>. OWASP: <em>Session Management</em>, <em>HTML5 Security</em>. MDN: <em>Set-Cookie</em>. IETF: <em>OAuth 2.0 for Browser-Based Apps</em>. Vite: <em>Env Variables</em>. Saídas em <code>saidas/c15-*.txt</code>.</p>
+  </div>
+</section>

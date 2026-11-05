@@ -493,6 +493,30 @@ def fig_remoto():
     return f'<svg viewBox="0 0 400 {yy+2}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Leitura passando pelo cache e mutação otimista com reversão e invalidação">{"".join(s)}</svg>'
 
 
+def fig_sessao():
+    s = [t(0, 14, "ENTRAR NUMA ROTA PROTEGIDA", 9.5, "f-mut", 800)]
+    s.append(caixa(0, 22, 400, 30, "f-card s-bord", "navegar para /pacientes/p1"))
+    s.append(seta(200, 52, 200, 62))
+    s.append(caixa(0, 64, 400, 40, "f-accs s-accl", "middleware exigirSessao",
+                   'cache ["sessao"] ou GET /api/auth/me', "f-acc"))
+    s.append(seta(100, 104, 100, 116))
+    s.append(seta(300, 104, 300, 116))
+    s.append(caixa(0, 118, 194, 40, "f-bads s-badl", "null", "/entrar?volta=…, sem loader", "f-bad"))
+    s.append(caixa(206, 118, 194, 40, "f-goods s-goodl", "usuário", "loader, depois a tela", "f-good"))
+    y = 186
+    s.append(t(0, y, "QUANDO A API RECUSA, COM A TELA ABERTA", 9.5, "f-mut", 800))
+    s.append(r(0, y + 8, 194, 64, "f-bads s-badl", 6, ' stroke-width="1.1"'))
+    s.append(t(10, y + 26, "401 · sessão acabou", 10.5, "f-bad", 800, mono=True))
+    s.append(t(10, y + 42, 'cache: ["sessao"] = null', 9.5, "f-soft", mono=True))
+    s.append(t(10, y + 58, "Layout leva ao login e volta", 9.5, "f-soft"))
+    s.append(r(206, y + 8, 194, 64, "f-warns s-warnl", 6, ' stroke-width="1.1"'))
+    s.append(t(216, y + 26, "403 · sem permissão", 10.5, "f-warn", 800, mono=True))
+    s.append(t(216, y + 42, "aviso no lugar", 9.5, "f-soft"))
+    s.append(t(216, y + 58, "fica na página; login não ajuda", 9.5, "f-soft"))
+    h = y + 74
+    return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Middleware antes do loader; 401 e 403 com a tela aberta">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
                     ("arvore", fig_arvore), ("fluxo", fig_fluxo),
@@ -501,6 +525,6 @@ if __name__ == "__main__":
                     ("erros", fig_erros), ("tokens", fig_tokens),
                     ("catalogo", fig_catalogo), ("contextos", fig_contextos),
                     ("fases", fig_fases), ("rotas", fig_rotas),
-                    ("remoto", fig_remoto)):
+                    ("remoto", fig_remoto), ("sessao", fig_sessao)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

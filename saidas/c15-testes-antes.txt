@@ -1,0 +1,2073 @@
+
+ RUN  v5.0.5 /home/claude/estado-e-tela/web
+
+stderr | src/app/rotas.test.tsx > paciente que não existe
+No `HydrateFallback` element provided to render during initial hydration
+
+ ❯ src/app/rotas.test.tsx (11 tests | 9 failed) 8278ms
+   × a busca mora na URL 1020ms
+   × paciente que não existe 1009ms
+   × a lista mostra o nome editado 1012ms
+   × trocar de paciente troca o detalhe 1009ms
+   × sem sessão, vai ao login sem pedir o paciente 13ms
+   × recepção não vê Inativar 1005ms
+   × sessão que cai no meio do trabalho: login e volta ao paciente 1004ms
+   × 403 avisa ali mesmo e não leva ao login 1005ms
+   × sair esquece tudo o que a tela viu 1004ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 9 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/app/rotas.test.tsx > a busca mora na URL
+TestingLibraryElementError: Unable to find a label with the text of: Buscar no prontuário
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:42:30
+     40| test("a busca mora na URL", async () => {
+     41|   abrir("/pacientes?q=ma");
+     42|   const campo = await screen.findByLabelText(
+       |                              ^
+     43|     "Buscar no prontuário");
+     44|   expect((campo as HTMLInputElement).value)
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > paciente que não existe
+TestingLibraryElementError: Unable to find an element with the text: Paciente não encontrado.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:54:23
+     52| test("paciente que não existe", async () => {
+     53|   abrir("/pacientes/p999");
+     54|   expect(await screen.findByText(
+       |                       ^
+     55|     "Paciente não encontrado.")).toBeTruthy();
+     56|   expect(screen.getByRole("navigation"))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > a lista mostra o nome editado
+TestingLibraryElementError: Unable to find role="list" and name "Resultados"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ lista src/app/rotas.test.tsx:69:28
+     67|   });
+     68|
+     69| const lista = () => screen.findByRole("list",
+       |                            ^
+     70|   { name: "Resultados" });
+     71| const aberto = () => screen.getByRole(
+ ❯ abrirPaciente src/app/rotas.test.tsx:74:38
+ ❯ src/app/rotas.test.tsx:83:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > trocar de paciente troca o detalhe
+TestingLibraryElementError: Unable to find role="list" and name "Resultados"
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ lista src/app/rotas.test.tsx:69:28
+     67|   });
+     68|
+     69| const lista = () => screen.findByRole("list",
+       |                            ^
+     70|   { name: "Resultados" });
+     71| const aberto = () => screen.getByRole(
+ ❯ abrirPaciente src/app/rotas.test.tsx:74:38
+ ❯ src/app/rotas.test.tsx:100:11
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > sem sessão, vai ao login sem pedir o paciente
+AssertionError: expected [ 'GET /api/patients/p1' ] to not include 'GET /api/patients/p1'
+ ❯ src/app/rotas.test.tsx:119:23
+    117|   expect(router.state.location.search)
+    118|     .toBe("?volta=%2Fpacientes%2Fp1");
+    119|   expect(pedidos).not.toContain(
+       |                       ^
+    120|     "GET /api/patients/p1");
+    121| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > recepção não vê Inativar
+TestingLibraryElementError: Unable to find an element with the text: 898001234567890. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:126:16
+    124|   apiFalsa(SEMENTE, { usuario: CARLA });
+    125|   abrir("/pacientes/p1");
+    126|   await screen.findByText("898001234567890");
+       |                ^
+    127|   expect(within(aberto()).queryByRole(
+    128|     "button", { name: "Inativar" }))
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > sessão que cai no meio do trabalho: login e volta ao paciente
+TestingLibraryElementError: Unable to find an element with the text: 898009876543210. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:136:16
+    134|   const api = apiFalsa(SEMENTE);
+    135|   const router = abrir("/pacientes/p2?q=jo");
+    136|   await screen.findByText("898009876543210");
+       |                ^
+    137|   api.encerrarSessao();
+    138|   await userEvent.click(botao("Salvar"));
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > 403 avisa ali mesmo e não leva ao login
+TestingLibraryElementError: Unable to find an element with the text: 898001234567890. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:160:16
+    158|     { recusar: { [inativar]: 403 } });
+    159|   const router = abrir("/pacientes/p1");
+    160|   await screen.findByText("898001234567890");
+       |                ^
+    161|   await userEvent.click(botao("Inativar"));
+    162|   await userEvent.click(screen.getByRole(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/9]⎯
+
+ FAIL  src/app/rotas.test.tsx > sair esquece tudo o que a tela viu
+TestingLibraryElementError: Unable to find an element with the text: 898001234567890. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+
+Ignored nodes: comments, script, style
+<body>
+  <div>
+    <main>
+      <header>
+        <h1>
+          Mini-Prontuário
+        </h1>
+        <nav
+          aria-label="Principal"
+          class="_menu_b52907"
+        >
+          <a
+            class=""
+            data-discover="true"
+            href="/"
+          >
+            Ala B
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/pacientes"
+          >
+            Prontuário
+          </a>
+          <a
+            class=""
+            data-discover="true"
+            href="/admissao"
+          >
+            Admissão
+          </a>
+          <a
+            aria-current="page"
+            class="active"
+            data-discover="true"
+            href="/entrar"
+          >
+            Entrar
+          </a>
+        </nav>
+        <p>
+          API: 
+          <strong>
+            ocioso
+          </strong>
+           
+          <button
+            class="_botao_6f9bfb _secundaria_6f9bfb"
+            type="button"
+          >
+            Verificar API
+          </button>
+        </p>
+        <p>
+          <label>
+            <input
+              type="checkbox"
+            />
+             
+            Modo discreto (só iniciais)
+          </label>
+           
+          <select
+            aria-label="Tema"
+          >
+            <option
+              value="sistema"
+            >
+              Sistema
+            </option>
+            <option
+              value="claro"
+            >
+              Claro
+            </option>
+            <option
+              value="escuro"
+            >
+              Escuro
+            </option>
+          </select>
+        </p>
+      </header>
+      <section
+        class="_painel_a43c40"
+      >
+        <h2
+          class="_titulo_a43c40"
+        >
+          Entrar
+        </h2>
+        <form>
+          <label>
+            E-mail
+            <input
+              type="email"
+              value=""
+            />
+          </label>
+          <label>
+            Senha
+            <input
+              type="password"
+              value=""
+            />
+          </label>
+          <button
+            class="_botao_6f9bfb _primaria_6f9bfb"
+            type="submit"
+          >
+            Entrar
+          </button>
+        </form>
+      </section>
+    </main>
+  </div>
+</body>
+ ❯ waitForWrapper ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ ../../home/claude/estado-e-tela/web/node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/app/rotas.test.tsx:175:18
+    173|   async () => {
+    174|     abrir("/pacientes/p1");
+    175|     await screen.findByText(
+       |                  ^
+    176|       "898001234567890");
+    177|     await userEvent.click(screen.getByRole(
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[9/9]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  9 failed | 2 passed (11)
+   Start at  23:04:48
+   Duration  9.17s (tests 91%, environment 5%, transform 3%, import 2%)
+
