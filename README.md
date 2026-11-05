@@ -4,9 +4,18 @@
 aplicação completa, autenticada e testada, construída com agentes de IA
 sem perder o controle do código.**
 
-Manual de campo · edição completa: introdução e 20 capítulos, 244 páginas
-· organizado por Prof. Rogério Silva e Claude Opus 5.5 · 2026 · TEC.1052
-Programação para Internet II · ADS · IFPI
+20 capítulos · 244 páginas · 22 figuras · 21 ilustrações
+
+Manual de campo · organizado por Prof. Rogério Silva e Claude Opus 5.5 ·
+2026 · TEC.1052 Programação para Internet II · ADS · IFPI
+
+Parte da [biblioteca de ebooks abertos do Prof. Rogério Silva](https://rogeriosilva-ifpi.github.io/).
+
+## Como ler
+
+- **Site**: https://rogeriosilva-ifpi.github.io/estado-e-tela-ebook/
+- **PDF**: [Estado-e-Tela.pdf](Estado-e-Tela.pdf) (108 × 192 mm, para celular)
+- **EPUB**: [Estado-e-Tela.epub](Estado-e-Tela.epub) (EPUB 3, validado com EPUBCheck)
 
 ## Os quatro repositórios
 
@@ -32,10 +41,6 @@ python3 fonte/build.py                          # de novo: sumário com páginas
 pip install beautifulsoup4 html5lib pillow
 python3 epub.py                                 # Estado-e-Tela.epub (EPUB 3)
 ```
-
-Leia em: [site](https://rogeriosilva-ifpi.github.io/estado-e-tela-ebook/) ·
-[PDF](Estado-e-Tela.pdf) (108 × 192 mm) · [EPUB](Estado-e-Tela.epub)
-(validado com EPUBCheck 5).
 
 O build falha se uma linha de código impressa passar de 46 caracteres,
 se uma tabela estiver fora de `.tbl-wrap` ou se um placeholder não tiver
