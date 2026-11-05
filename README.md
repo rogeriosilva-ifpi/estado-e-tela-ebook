@@ -4,23 +4,24 @@
 aplicação completa, autenticada e testada, construída com agentes de IA
 sem perder o controle do código.**
 
-Manual de campo em produção · lotes 1 a 7 (capa, introdução e capítulos 1 a 16)
+Manual de campo em produção · lotes 1 a 8 (capa, introdução e capítulos 1 a 18)
 · organizado por Prof. Rogério Silva e Claude Opus 5.5 · 2026 · TEC.1052
 Programação para Internet II · ADS · IFPI
 
-## Os três repositórios
+## Os quatro repositórios
 
 | Repositório | O que tem |
 |---|---|
 | `estado-e-tela-ebook` | este livro, os roteiros de medição e as saídas |
 | `estado-e-tela-web` | o Mini-Prontuário em React, uma tag por capítulo |
 | `estado-e-tela-api` | a API (fork da tag `cap16` do Crachá & Porta Express) |
+| `estado-e-tela-next` | o laboratório Next.js dos capítulos 17 e 18 |
 
 ## Montar o livro
 
-O build lê o código direto do repositório da tela, na tag de cada
-capítulo. Clone os três lado a lado com os nomes `ebook`, `web` e `api`
-(ou aponte `ESTADO_WEB` e `ESTADO_API` para outro lugar).
+O build lê o código direto dos repositórios, na tag de cada capítulo.
+Clone os quatro lado a lado com os nomes `ebook`, `web`, `api` e `next`
+(ou aponte `ESTADO_WEB`, `ESTADO_API` e `ESTADO_NEXT` para outro lugar).
 
 ```bash
 pip install playwright pypdf && playwright install chromium
@@ -67,6 +68,10 @@ fonte.
 | `medicoes/cap16.py compilador` | `c16-compilador.txt` | nenhum; aplica `cap16-paineis.patch` nas duas tags |
 | `medicoes/cap16.py piramide` | `c16-piramide.txt` | nenhum |
 | `medicoes/raio_x.py TAG…` | `c16-bundle.txt` | nenhum: build de cada tag num worktree |
+| `medicoes/cap17.py chegada` | `c17-chegada.txt` | portas 3000, 4173 e 5174 livres; `npm install` em `next` |
+| `medicoes/cap17.py hidratacao` | `c17-hidratacao.txt` | idem; o Next roda com `TZ=UTC` |
+| `medicoes/cap17.py fronteira` | `c17-fronteira.txt` | nenhum: só o build com `cap17-cliente-importa-api.patch` |
+| `medicoes/cap18.py` | `c18-mapa.txt` | portas 3000 e 5174 livres |
 
 `medicoes/tela.py` cria um `git worktree` de cada tag (tela e API), sobe os
 servidores e encerra tudo no fim. `cap06-so-disabled.patch` é a variante do

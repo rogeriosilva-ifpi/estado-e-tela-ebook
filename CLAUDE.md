@@ -16,7 +16,7 @@ Silva. Fonte em HTML, saída em site (index.html) e PDF 108 × 192 mm.
 ## Regras que o build faz cumprir
 
 - Código impresso vem do git: `{{BLOCO:tag:caminho|linhas=a-b}}` lê
-  `../web` (ou `api@tag:` para `../api`). Linha > 46 caracteres = erro.
+  `../web` (ou `api@tag:` para `../api`, `next@tag:` para `../next`). Linha > 46 caracteres = erro.
 - `{{DIFF:tagA:tagB:caminho}}` imprime a diferença real entre tags.
 - `{{SAIDA:arquivo|linhas=..|destaque=a;b}}` imprime `saidas/arquivo`.
 - `{{FIG:nome}}` lê `fonte/fig_nome.svg`; `{{ARTE:função}}` chama

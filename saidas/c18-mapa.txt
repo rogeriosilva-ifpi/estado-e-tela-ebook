@@ -1,0 +1,20 @@
+$ next build   (next cap18)
+Route (app)            Revalidate  Expire
+┌ ○ /
+├ ○ /_not-found
+├ ○ /entrar
+├   /pacientes/[id]
+│ └ ◐ /pacientes/[id]
+├ ƒ /saude
+└ ○ /sobre                     1d      1w
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)             prerendered as static content
+◐  (Partial Prerender)  prerendered as static HTML with dynamic server-streamed content
+ƒ  (Dynamic)            server-rendered on demand
+
+GET /pacientes/p1, sem cookie: 307 → /entrar?volta=%2Fpacientes%2Fp1
+GET /pacientes/p1, cookie inventado: 200; o HTML traz o redirecionamento para /entrar?volta=/pacientes/p1
+GET /saude: 200 {"next":"ok","api":"ok"}

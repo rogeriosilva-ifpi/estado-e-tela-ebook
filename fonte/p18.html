@@ -1,0 +1,142 @@
+<!-- ==================== CAP 17 ==================== -->
+<section class="chapter" id="cap17">
+  <div class="opener">{{ARTE:abertura_17}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte V · Renderização moderna</div>
+    <div class="num">17</div>
+    <h1>Servidor, cliente e a fronteira entre eles</h1>
+    <div class="deck">Onde cada pedaço da tela é montado, e o que atravessa a fronteira. Nada atravessa de graça.</div>
+  </div>
+
+  <p class="lead">Até aqui, o servidor mandava um HTML quase vazio, e a tela nascia no navegador. Numa 4G lenta, a recepcionista espera um segundo e meio pelo CNS de Maria. Montada no servidor, a mesma ficha aparece em menos de meio segundo, e cobra o próprio preço.</p>
+
+  <h2><span class="sn">17.1</span>Quatro maneiras de montar a mesma tela</h2>
+  <p><strong>CSR</strong> (no cliente) é o que este livro fez: o navegador baixa o JavaScript, pede os dados e desenha. <strong>SSR</strong> (no servidor) monta o HTML com os dados a cada pedido; o navegador mostra na hora e depois <strong>hidrata</strong>: o React percorre o HTML pronto, liga os eventos e assume a tela. <strong>SSG</strong> monta o HTML no build, uma vez para todos; a geração incremental o refaz de tempos em tempos. O <strong>streaming</strong> manda a casca primeiro e, no mesmo HTML, as partes que dependem de dados, quando ficam prontas.</p>
+
+  <figure>
+    <div class="fig-frame">{{FIG:renderizacao}}</div>
+    <figcaption><b>Fig. 17.1</b> — Quando a pessoa vê e quando pode usar. No CSR, as duas coisas chegam juntas e tarde.</figcaption>
+  </figure>
+
+  <h2><span class="sn">17.2</span>O que chega ao navegador</h2>
+  <p>O laboratório é um repositório novo, <code>estado-e-tela-next</code>: a ficha do paciente em Next.js 16.4, com a mesma API. O roteiro abre <code>/pacientes/p1</code>, com Ana logada, na SPA do capítulo 16 (build de produção) e no Next, numa 4G lenta emulada:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap17.py chegada · Medido</span></div>
+<pre>{{SAIDA:c17-chegada.txt|destaque=CNS no HTML recebido: sim;nenhum;375 ms}}</pre>
+  </div>
+
+  <p>No Next, o CNS vem no HTML e o navegador não fala com a API; quem fala é o servidor do Next, perto dela. Na SPA são três esperas em série: o JavaScript, "quem entrou?", o paciente. Mas o Next mandou <em>mais</em> JavaScript, 141 kB contra 119 kB: Server Components tiram do navegador o código dos <em>seus</em> componentes, não o do framework. E a página da SPA tem a busca ao lado da ficha; o que a medição mostra é a ordem das esperas.</p>
+
+  <div class="analogy">
+    <span class="ico">H+</span>
+    <div>
+      <h4>A cozinha central e a copa do andar</h4>
+      <p>A cozinha central monta a bandeja e a sobe pelo monta-carga. Na copa do andar, a copeira confere a etiqueta com a prescrição e completa o que se faz ali. Se a etiqueta não bate, ela refaz a bandeja. A cozinha é o servidor; a copa, a hidratação.</p>
+    </div>
+  </div>
+
+  <div class="box model">
+    <span class="bt">Onde a analogia para</span>
+    <p>A copeira tolera um item fora de ordem. O React compara texto e atributos exatos: qualquer diferença entre o HTML do servidor e o primeiro render no navegador é erro.</p>
+  </div>
+
+  <h2><span class="sn">17.3</span>Server Components</h2>
+  <p>No Next, páginas e componentes são <strong>Server Components</strong> por padrão. Rodam só no servidor, podem ser <code>async</code>, leem cookie e banco, e mandam ao navegador só o resultado: HTML na primeira carga e um formato serializado (o <em>RSC payload</em>) nas navegações seguintes. A página entrega a casca e põe a ficha num <code>&lt;Suspense&gt;</code>:</p>
+
+  {{BLOCO:next@cap17:app/pacientes/[id]/Ficha.tsx|linhas=12-25|reticencias=sim|rotulo=app/pacientes/[id]/Ficha.tsx}}
+
+  <p>O servidor do Next lê o cookie e o repassa à API: é o BFF do capítulo 15, sem configuração a mais. A API continua decidindo. Server Components são do React, mas exigem um framework ou bundler que os suporte (Next, React Router, Waku, Parcel, o plugin de RSC do Vite). Numa SPA, não existem. E componente cliente não pode ser <code>async</code>. <code>&lt;Suspense&gt;</code>, as diretivas e a hidratação também são do React; casca com buracos em streaming, <code>loading.tsx</code>, <code>"use cache"</code> e rotas por pastas são convenções do Next.</p>
+
+  <h2><span class="sn">17.4</span>'use client' marca uma fronteira</h2>
+  <p>O botão Copiar CNS precisa de estado e de clique, então mora num arquivo que começa com <code>"use client"</code>. A diretiva não marca um componente, marca uma <strong>fronteira</strong> no grafo de módulos: tudo o que esse arquivo importa vai junto para o navegador. Por isso ela fica no ponto mais baixo da árvore. O que atravessa a fronteira são props serializáveis: texto, número, objeto simples, data, JSX já renderizado. Função, não, a não ser uma Server Function (<code>"use server"</code>). Um Server Component pode entrar num componente cliente como <code>children</code>, já renderizado.</p>
+
+  <h2><span class="sn">17.5</span>O erro clássico: hidratação que diverge</h2>
+  <p>Na tag <code>cap17-antes</code>, o agente recebeu "mostre a data de nascimento no formato de quem está vendo" e fez um componente cliente:</p>
+
+  {{BLOCO:next@cap17-antes:app/pacientes/[id]/Nascimento.tsx|rotulo=app/pacientes/[id]/Nascimento.tsx}}
+
+  <p>Componente cliente também roda no servidor, para gerar o HTML da primeira carga. Lá, idioma e fuso são os da máquina; no navegador, os da pessoa. O roteiro põe o servidor em UTC e inglês, como na nuvem, e o navegador em Fortaleza:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap17.py hidratacao · Medido</span></div>
+<pre>{{SAIDA:c17-hidratacao.txt|destaque=3/14/1958;13/03/1958;Minified React error #418;14/03/1958}}</pre>
+  </div>
+
+  <p>O erro 418 do React é "o texto do servidor não bate com o do cliente": o React refaz aquele trecho no navegador, que mostra 13 de março. Dois defeitos: a hidratação divergiu, e o dia está errado, porque <code>new Date("1958-03-14")</code> é meia-noite em UTC, ainda dia 13 em Fortaleza. A correção tira o <code>Date</code> do caminho e devolve a data ao servidor:</p>
+
+  {{BLOCO:next@cap17:lib/datas.ts|rotulo=lib/datas.ts}}
+
+  <div class="dd">
+    <div class="no"><span class="lb">cap17-antes</span><p><code>× HTML e tela com o mesmo texto</code><br><code>× o dia do cadastro</code><br><code>× console sem erro</code></p></div>
+    <div class="yes"><span class="lb">cap17</span><p><code>✓</code> os três</p></div>
+  </div>
+
+  <p>Vale para tudo o que depende de onde o código roda: <code>Date.now()</code>, <code>Math.random()</code>, idioma, fuso, <code>window</code>. Ou o valor é calculado num lugar só e passado como prop, ou aparece depois de hidratar, num efeito. <code>suppressHydrationWarning</code> silencia; não corrige.</p>
+
+  <h2><span class="sn">17.6</span>Segredos ficam do lado de lá</h2>
+  <p><code>lib/api.ts</code> sabe onde a API mora e como repassar o cookie; não tem o que fazer no navegador. A primeira linha dele é <code>import "server-only"</code>. Um agente "reaproveitou" <code>obterPaciente</code> no botão:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap17.py fronteira · Medido</span></div>
+<pre>{{SAIDA:c17-fronteira.txt|linhas=2}}
+{{SAIDA:c17-fronteira.txt|linhas=12|destaque=cannot be imported from a Client Component}}
+{{SAIDA:c17-fronteira.txt|linhas=6-8}}</pre>
+  </div>
+
+  <p>O build parou, com a trilha de quem importou quem. Sem aquela linha, passaria. Segundo a documentação do Next, variável sem o prefixo <code>NEXT_PUBLIC_</code> vira texto vazio no cliente, mas o código vai inteiro, e com ele qualquer segredo escrito no código.</p>
+
+  <h2><span class="sn">17.7</span>A fronteira é uma porta</h2>
+  <p>Server Functions transformam um pedido HTTP numa chamada de função no servidor. A fronteira é uma porta HTTP, e foi por ela que veio a falha mais grave do ecossistema em 2025.</p>
+
+  <div class="box data">
+    <span class="bt">Dado · as falhas de dezembro de 2025</span>
+    <p>Em 3 de dezembro, o React publicou a CVE-2025-55182 (CVSS 10,0): um pedido forjado, sem autenticação, executava código no servidor por uma falha na decodificação dos dados enviados a Server Functions. Afetava <code>react-server-dom-*</code> 19.0 a 19.2.0, mesmo em apps sem Server Functions próprias; corrigida em 19.0.1, 19.1.2 e 19.2.1. Em 11 de dezembro vieram negação de serviço (CVSS 7,5) e exposição do código-fonte de Server Functions (CVSS 5,3), com correção definitiva em 19.0.4, 19.1.5 e 19.2.4. Apps React sem servidor não foram afetados.</p>
+  </div>
+
+  <p>Três lições. Server Function valida entrada e permissão como qualquer rota, porque é uma. Segredo não fica escrito no código, nem no servidor. E o framework entra na rotina de atualização com a urgência da API.</p>
+
+  <div class="box rule">
+    <span class="bt">Regras do laboratório Next</span>
+    <p>Componente é do servidor até precisar de estado ou evento; <code>"use client"</code> só na ilha. Render igual nos dois lados. Módulo com dados ou configuração do servidor começa com <code>import "server-only"</code>. Server Function valida como rota.</p>
+  </div>
+
+  <h2><span class="sn">17.8</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>Diante de "useState só funciona em componente cliente", o agente põe <code>"use client"</code> no topo da página, e ela vai inteira para o navegador. Diante do erro de hidratação, <code>suppressHydrationWarning</code>. E busca dados com <code>useEffect</code>, como numa SPA. O build não pega nenhum dos três; o console e o JavaScript da rota pegam.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 17</span><button class="copy" type="button" data-copy="p17-agente">Copiar</button></div>
+<pre id="p17-agente"><span class="k">Goal</span>
+Ficha de João com a idade, no laboratório
+Next.
+
+<span class="k">Context</span>
+@app/pacientes/[id]/ @lib/
+
+<span class="k">Constraints</span>
+- a idade é calculada no servidor
+- "use client" só no que tem evento
+- nada de suppressHydrationWarning
+- lib/ com dados: import "server-only"
+
+<span class="k">Done when</span>
+- next build sem erro
+- cap17.py hidratacao: console sem erro
+- mesma quantidade de JS na rota</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Abra o código-fonte da página (Ctrl+U) da ficha na SPA e no Next. Onde está o CNS em cada um?</span></li>
+    <li><b>Intermediário</b><span>Mostre "Última consulta há N dias" na ficha sem erro de hidratação. Onde o "hoje" é calculado?</span></li>
+    <li><b>Desafio</b><span>Ponha <code>"use client"</code> no topo da <code>Ficha</code> e explique cada erro do build.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 32. <b>Tags:</b> <code>cap17-antes</code>, <code>cap17</code> (repositório <code>estado-e-tela-next</code>); tela <code>cap16</code>; API <code>cap15</code>. <b>Instrumentos:</b> <code>cap17.py</code>.</p>
+    <p><b>Fontes.</b> react.dev: <em>Server Components</em>, <em>'use client'</em>, erro 418; blog, 3 e 11 dez. 2025. Next.js 16.4: <em>Server and Client Components</em>, <em>Environment Variables</em>. Saídas em <code>saidas/c17-*.txt</code>.</p>
+  </div>
+</section>

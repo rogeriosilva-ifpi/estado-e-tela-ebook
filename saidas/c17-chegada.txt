@@ -1,0 +1,11 @@
+Chromium 141 · 4G lenta emulada: 150 ms, 1,6 Mbps
+SPA · web cap16 · vite preview
+  CNS no HTML recebido: não
+  JavaScript: 1 arquivo(s), 377 kB; 119 kB pela rede
+  pedidos do navegador à API: auth/me, patients/p1
+  CNS na tela em 1486 ms (mediana de 3)
+Next · next cap17 · next start
+  CNS no HTML recebido: sim
+  JavaScript: 7 arquivo(s), 467 kB; 141 kB pela rede
+  pedidos do navegador à API: nenhum
+  CNS na tela em 375 ms (mediana de 3)

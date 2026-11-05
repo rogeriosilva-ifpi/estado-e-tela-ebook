@@ -1,0 +1,15 @@
+diff --git a/app/pacientes/[id]/CopiarCns.tsx b/app/pacientes/[id]/CopiarCns.tsx
+index 3f00d7e..3524d36 100644
+--- a/app/pacientes/[id]/CopiarCns.tsx
++++ b/app/pacientes/[id]/CopiarCns.tsx
+@@ -1,6 +1,10 @@
+ "use client";
+ 
+ import { useState } from "react";
++import { obterPaciente } from "@/lib/api";
++
++// reaproveita a busca da ficha
++export const recarregar = obterPaciente;
+ 
+ // A única parte da ficha que precisa de
+ // JavaScript no navegador.

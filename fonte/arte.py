@@ -5,8 +5,8 @@ Mesmo mundo e mesmo traço do Crachá & Porta (arte_base.py): um hospital
 rosto, nenhuma letra. A metáfora-mestra é o monitor de beira-leito.
 """
 from arte_base import (RED, AMB, BG, BLUE, DGREY, DOOR, FLOOR, GR, GR2, GREY,
-                       LINE, OR, OR2, PAPER, SKIN, WALL, cadeado, cracha, cruz,
-                       luz, painel, pessoa, porta, svg)
+                       LINE, OR, OR2, PAPER, SKIN, WALL, balcao, cadeado,
+                       cracha, cruz, luz, painel, pessoa, porta, svg)
 
 
 def monitor(x, y, w=142, h=94, acesa=1, haste=True):
@@ -535,3 +535,59 @@ def abertura_16():
     c.append(f'<circle cx="246" cy="70" r="22" fill="{WALL}" stroke="{OR2}" stroke-width="3"/>')
     c.append(f'<path d="M246 70 L246 54 M246 70 L256 76" stroke="{OR2}" stroke-width="3" stroke-linecap="round"/>')
     return svg("".join(c), rotulo="Sala de simulação com manequim no leito, monitor ligado, lista de verificação com marcas verdes e um cronômetro")
+
+
+
+def abertura_17():
+    """Cozinha central montando bandejas, que sobem pelo monta-carga; na copa
+    do andar, a copeira completa a bandeja que chegou pronta."""
+    c = [painel(glow_x=200, glow_y=60)]
+    c.append(cruz(24, 16, 12))
+    # cozinha central, à esquerda, um andar abaixo
+    c.append(f'<rect x="0" y="108" width="150" height="52" fill="{DOOR}" opacity=".55"/>')
+    c.append(pessoa(70, FLOOR, GR2, s=0.8, jaleco=True))
+    c.append(balcao(16, 118, h=26))
+    for k, cor in enumerate((OR2, GR2, AMB)):
+        c.append(bandeja(20 + k * 38, FLOOR - 40, 34, 12, cor, itens=2))
+    # monta-carga entre os andares
+    c.append(f'<rect x="168" y="22" width="44" height="138" rx="3" fill="{DGREY}"/>')
+    c.append(f'<rect x="174" y="28" width="32" height="126" rx="2" fill="{BG}"/>')
+    c.append(bandeja(176, 58, 28, 10, OR2, itens=1))
+    c.append(f'<path d="M190 112 L190 80 M184 88 L190 80 L196 88" stroke="{OR}" stroke-width="2.5" fill="none" stroke-linecap="round"/>')
+    # copa do andar, à direita, em cima
+    c.append(f'<rect x="228" y="88" width="172" height="5" fill="{GREY}"/>')
+    c.append(bandeja(248, 72, 60, 14, OR2, itens=2))
+    c.append(f'<rect x="318" y="64" width="12" height="22" rx="2" fill="{PAPER}"/>')
+    c.append(f'<rect x="320" y="68" width="8" height="5" rx="1" fill="{GR}"/>')
+    c.append(pessoa(352, 90, BLUE, s=0.7))
+    c.append(f'<path d="M340 66 L330 70" stroke="{SKIN}" stroke-width="4" stroke-linecap="round"/>')
+    return svg("".join(c), rotulo="Cozinha central montando bandejas que sobem por um monta-carga; na copa do andar, uma copeira completa a bandeja que chegou")
+
+
+def abertura_18():
+    """Passarela coberta do prédio atual para um prédio novo, maior, ao fundo,
+    com janelas acesas; uma pessoa atravessa."""
+    c = [painel(glow_x=310, glow_y=50)]
+    c.append(cruz(24, 16, 12))
+    # prédio atual, à esquerda
+    c.append(f'<rect x="10" y="70" width="96" height="90" fill="{DGREY}"/>')
+    for i in range(3):
+        for j in range(2):
+            c.append(f'<rect x="{24 + i*26}" y="{84 + j*30}" width="16" height="14" rx="2" fill="{DOOR}"/>')
+    # prédio novo, maior, ao fundo
+    c.append(f'<rect x="250" y="18" width="140" height="142" fill="{DGREY}"/>')
+    for i in range(4):
+        for j in range(4):
+            acesa = (i + j) % 3 == 0
+            cor = AMB if acesa else DOOR
+            op = ' opacity=".85"' if acesa else ""
+            c.append(f'<rect x="{264 + i*31}" y="{30 + j*30}" width="18" height="16" rx="2" fill="{cor}"{op}/>')
+    c.append(cruz(300, 4, 10))
+    # passarela coberta
+    c.append(f'<path d="M106 92 L250 76 L250 96 L106 112 Z" fill="{WALL}"/>')
+    c.append(f'<path d="M106 92 L250 76" stroke="{OR2}" stroke-width="3"/>')
+    for x in (130, 160, 190, 220):
+        y = 112 - (x - 106) * 16 / 144
+        c.append(f'<line x1="{x}" y1="{y}" x2="{x}" y2="{y - 20}" stroke="{LINE}" stroke-width="1.5"/>')
+    c.append(pessoa(176, 104, BLUE, s=0.5))
+    return svg("".join(c), rotulo="Passarela coberta ligando o prédio atual a um prédio novo e maior, ao fundo; uma pessoa atravessa")

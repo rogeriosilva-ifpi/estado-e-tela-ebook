@@ -1,0 +1,109 @@
+<!-- ==================== CAP 18 ==================== -->
+<section class="chapter" id="cap18">
+  <div class="opener">{{ARTE:abertura_18}}</div>
+  <div class="chapter-open">
+    <div class="part-tag">Parte V · Renderização moderna</div>
+    <div class="num">18</div>
+    <h1>Next.js: visão geral e próximo livro</h1>
+    <div class="deck">Um mapa, não um curso. O suficiente para decidir quando usar, e para saber o que vem depois.</div>
+  </div>
+
+  <p class="lead">O React desenha a tela. O Next.js decide onde e quando ela é desenhada, cuida de rotas, dados e cache, e põe um servidor ao lado do seu código. Aqui vai o mapa, no laboratório do capítulo 17, e uma tabela de decisão.</p>
+
+  <h2><span class="sn">18.1</span>O que o Next acrescenta ao React</h2>
+  <div class="tbl-wrap"><table>
+    <tr><th>Peça</th><th>O que é no Next 16</th></tr>
+    <tr><td><b>Rotas</b></td><td>Pastas em <code>app/</code>: <code>page</code>, <code>layout</code>, <code>loading</code>, <code>error</code>, <code>not-found</code>. Layout aninhado não renderiza de novo ao trocar de página</td></tr>
+    <tr><td><b>Renderização</b></td><td>Server Components por padrão, streaming com <code>&lt;Suspense&gt;</code>, casca estática com partes dinâmicas</td></tr>
+    <tr><td><b>Dados e cache</b></td><td><code>fetch</code> e banco no servidor; <code>"use cache"</code> com prazo (<code>cacheLife</code>) e invalidação por etiqueta</td></tr>
+    <tr><td><b>Servidor</b></td><td>Route Handlers (endpoints HTTP), Server Functions (<code>"use server"</code>), <code>proxy.ts</code> antes de cada pedido</td></tr>
+  </table></div>
+
+  <h2><span class="sn">18.2</span>O mapa no laboratório</h2>
+  <p>A tag <code>cap18</code> do laboratório acrescenta quatro peças: um <code>proxy.ts</code>, um layout em <code>/pacientes</code>, um Route Handler em <code>/saude</code> e uma página <code>/sobre</code> em cache. O próprio build diz como cada rota será servida:</p>
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap18.py · Medido</span></div>
+<pre>{{SAIDA:c18-mapa.txt|linhas=1-9|destaque=◐ /pacientes/[id];ƒ /saude;○ /sobre}}
+{{SAIDA:c18-mapa.txt|linhas=12-16}}</pre>
+  </div>
+
+  <p><code>○</code> é HTML pronto no build; <code>/sobre</code> também, com prazo de um dia, porque usa <code>"use cache"</code>. <code>◐</code> é a ficha: casca pronta, e a parte que lê o cookie chega em streaming. <code>ƒ</code> roda a cada pedido. É a figura 17.1, impressa pelo framework para cada rota.</p>
+
+  {{BLOCO:next@cap18:proxy.ts|linhas=4-18|rotulo=proxy.ts}}
+
+  <div class="term">
+    <div class="term-bar"><span>medicoes/cap18.py · Medido</span></div>
+<pre>{{SAIDA:c18-mapa.txt|linhas=18-20|destaque=307;200}}</pre>
+  </div>
+
+  <p>Sem cookie, o proxy responde 307 antes de renderizar, como o middleware do capítulo 15. Com um cookie inventado, deixa passar: só confere se o cookie existe. Quem recusa é a API, dentro da ficha, e como a resposta já tinha começado com 200 e a casca, o redirecionamento chega dentro do HTML. A documentação do Next chama o proxy de checagem <em>otimista</em>, que não deve ser a autorização. Quem decide é quem guarda os dados.</p>
+
+  <h2><span class="sn">18.3</span>Dados, cache, autenticação e implantação</h2>
+  <p><strong>Dados e cache.</strong> Com Cache Components, ligado nos projetos novos do Next 16, nada vai para o cache sem pedido. Dado que depende do pedido (cookie, parâmetro) fica num <code>&lt;Suspense&gt;</code> e chega em streaming; o que pode ser reaproveitado leva <code>"use cache"</code> e um prazo (em <code>/sobre</code>: <code>cacheLife("days")</code>), e uma mutação invalida a etiqueta. É o raciocínio do capítulo 14, no servidor.</p>
+
+  <p><strong>Autenticação.</strong> As regras do capítulo 15 continuam: cookie HttpOnly, checagem no servidor, perto dos dados, numa camada de acesso a dados que toda leitura atravessa; o proxy é atalho. <strong>Implantação.</strong> Servidor Node (<code>next start</code>) ou contêiner suportam tudo; a exportação estática perde streaming, Server Functions e proxy. A SPA do Vite é só arquivos; um Next completo precisa de um processo rodando.</p>
+
+  <h2><span class="sn">18.4</span>Vite SPA ou Next.js</h2>
+
+  <p>A escolha não é de moda. Três perguntas resolvem quase todos os casos. A primeira visita precisa mostrar dados rápido, ou ser indexada? Já existe uma API separada, com dono? Quem opera um servidor Node em produção? Com "não", "sim" e "ninguém", a SPA basta. O resto do livro vale nos dois. Cinco cenários:</p>
+
+  <div class="tbl-wrap"><table>
+    <tr><th>Cenário</th><th>Escolha e motivo</th></tr>
+    <tr><td><b>Sistema interno com login</b> (o Mini-Prontuário)</td><td><b>SPA.</b> Ninguém indexa; a API já existe; menos peças para operar</td></tr>
+    <tr><td><b>Site público</b> do hospital, com notícias e serviços</td><td><b>Next.</b> HTML pronto para buscadores e para a primeira visita; SSG com prazo</td></tr>
+    <tr><td><b>Portal do paciente</b> no celular, com rede ruim</td><td><b>Next.</b> O dado vem no HTML; medido no capítulo 17: CNS em 375 ms contra 1486 ms</td></tr>
+    <tr><td><b>Painel de leitos</b> em tempo real</td><td><b>SPA.</b> Quase tudo é interação e atualização no cliente</td></tr>
+    <tr><td><b>Produto novo</b>, time pequeno, sem backend separado</td><td><b>Next.</b> Tela e servidor num projeto. Cada Server Function é uma rota a validar (17.8)</td></tr>
+  </table></div>
+
+
+  <h2><span class="sn">18.5</span>O próximo livro</h2>
+  <p>O Next.js ganha um livro próprio na série, no mesmo formato: um projeto que cresce, medições e agentes sob portões. Ele começa onde este termina e pressupõe:</p>
+
+  <ul class="checklist">
+    <li>onde cada estado mora; efeito só para sincronizar (caps. 6 a 14)</li>
+    <li>rotas aninhadas, loader e redirecionamento interno (cap. 13)</li>
+    <li>sessão em cookie, 401 diferente de 403, esconder não é proibir (cap. 15)</li>
+    <li>teste pela tela, rede simulada na fronteira, uma jornada E2E (cap. 16)</li>
+    <li>fronteira servidor/cliente, hidratação e <code>server-only</code> (cap. 17)</li>
+  </ul>
+
+  <h2><span class="sn">18.6</span>Com agentes de IA</h2>
+  <div class="box data">
+    <span class="bt">Armadilha de IA</span>
+    <p>O agente ainda escreve <code>middleware.ts</code> (virou <code>proxy.ts</code> no Next 16), <code>getServerSideProps</code> (do Pages Router) e conta com cache implícito em <code>fetch</code>. O Next 16 traz a documentação no pacote, em <code>node_modules/next/dist/docs</code>: mande o agente ler ali antes.</p>
+  </div>
+
+  <div class="term">
+    <div class="term-bar"><span>PROMPT · AGENTE · CAP 18</span><button class="copy" type="button" data-copy="p18-agente">Copiar</button></div>
+<pre id="p18-agente"><span class="k">Goal</span>
+Página /pacientes com a lista, no
+laboratório Next.
+
+<span class="k">Context</span>
+@node_modules/next/dist/docs/01-app
+@app/pacientes/ @lib/api.ts
+
+<span class="k">Constraints</span>
+- Server Component; busca no servidor
+- a busca na URL (?q=), sem useState
+- proxy.ts não autoriza; a API sim
+
+<span class="k">Done when</span>
+- next build: /pacientes como ◐ ou ƒ
+- sem cookie: 307 para /entrar</pre>
+  </div>
+
+  <h2>Exercícios</h2>
+  <ol class="niveis">
+    <li><b>Essencial</b><span>Rode <code>next build</code> na tag <code>cap18</code> e explique o símbolo de cada rota.</span></li>
+    <li><b>Intermediário</b><span>Faça <code>/sobre</code> mostrar o total de pacientes, em cache por uma hora. O que muda no build?</span></li>
+    <li><b>Desafio</b><span>Responda as três perguntas de 18.4 para um projeto seu.</span></li>
+  </ol>
+
+  <div class="fecho-fontes">
+    <p><b>Régua:</b> 33. <b>Tags:</b> <code>cap18</code> (repositório <code>estado-e-tela-next</code>); API <code>cap15</code>. <b>Instrumentos:</b> <code>cap18.py</code>.</p>
+    <p><b>Fontes.</b> Next.js 16.4 (docs no pacote): <em>Caching</em>, <em>Proxy</em>, <em>Route Handlers</em>, <em>Authentication</em>, <em>Deploying</em>. Saídas: <code>saidas/c18-*.txt</code>.</p>
+  </div>
+</section>

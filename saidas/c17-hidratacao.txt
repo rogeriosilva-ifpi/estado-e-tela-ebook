@@ -1,0 +1,12 @@
+servidor: TZ=UTC, LANG=en_US.UTF-8 · navegador: pt-BR, America/Fortaleza
+cadastro de Maria: nascimento 1958-03-14
+
+next cap17-antes
+  no HTML do servidor: 3/14/1958
+  na tela, depois de hidratar: 13/03/1958
+  erro: Minified React error #418
+
+next cap17
+  no HTML do servidor: 14/03/1958
+  na tela, depois de hidratar: 14/03/1958
+  erros: nenhum

@@ -27,6 +27,7 @@ RAIZ = AQUI.parent
 SAIDAS = RAIZ / "saidas"
 WEB = Path(os.environ.get("ESTADO_WEB", RAIZ.parent / "web"))
 API = Path(os.environ.get("ESTADO_API", RAIZ.parent / "api"))
+NEXT = Path(os.environ.get("ESTADO_NEXT", RAIZ.parent / "next"))
 LARGURA = 46
 
 PALAVRAS = (r"\b(import|from|export|default|function|const|let|return|if|"
@@ -75,8 +76,10 @@ def git_show(repo, tag, caminho):
 
 def bloco(arg):
     alvo, op = arg.split("|")[0], opcoes(arg)
-    repo = API if alvo.startswith("api@") else WEB
-    tag, caminho = alvo.removeprefix("api@").split(":", 1)
+    repo = API if alvo.startswith("api@") else \
+        NEXT if alvo.startswith("next@") else WEB
+    tag, caminho = alvo.removeprefix("api@").removeprefix("next@") \
+        .split(":", 1)
     linhas = recorte(git_show(repo, tag, caminho).rstrip("\n").split("\n"),
                      op.get("linhas"))
     for n, l in enumerate(linhas, 1):

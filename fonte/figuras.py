@@ -542,6 +542,44 @@ def fig_piramide():
     return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pirâmide de testes: unidade, componente, aplicação com MSW e E2E; o mock do hook corta no lugar errado">{"".join(s)}</svg>'
 
 
+def fig_renderizacao():
+    # cada linha: modo, onde, segmentos (rótulo, largura, classe), vê, usa
+    linhas = [
+        ("CSR", "a SPA do livro", [("HTML vazio", 52, "f-alt"), ("JS", 70, "f-infos"),
+          ("API", 70, "f-warns"), ("render", 44, "f-goods")], 236, 236),
+        ("SSR", "a cada pedido", [("servidor + API", 92, "f-accs"),
+          ("HTML com dados", 76, "f-goods"), ("JS", 70, "f-infos"), ("hidrata", 48, "f-infos")], 168, 286),
+        ("SSG", "feito no build", [("HTML pronto", 64, "f-goods"), ("JS", 70, "f-infos"),
+          ("hidrata", 48, "f-infos")], 64, 182),
+        ("Streaming", "o lab. Next", [("casca", 40, "f-goods"), ("ficha (API)", 84, "f-accs"),
+          ("JS", 70, "f-infos"), ("hidrata", 48, "f-infos")], 124, 242),
+    ]
+    s = [t(0, 14, "DO PEDIDO À INTERAÇÃO (ESQUEMA, SEM ESCALA)", 9.5, "f-mut", 800)]
+    x0 = 92
+    for k, (modo, onde, segs, ve, usa) in enumerate(linhas):
+        y = 28 + k * 52
+        s.append(t(0, y + 13, modo, 11, "f-ink", 800, mono=True))
+        s.append(t(0, y + 27, onde, 8.5, "f-mut"))
+        x = x0
+        for rot, w, cls in segs:
+            s.append(r(x, y, w - 2, 22, cls, 4))
+            s.append(t(x + (w - 2) / 2, y + 15, rot, 8.5, "f-soft", anc="middle"))
+            x += w
+        marcas = ((ve, "vê e usa", "s-good"),) if ve == usa else \
+            ((ve, "vê", "s-acc"), (usa, "usa", "s-good"))
+        for pos, rot, cls in marcas:
+            xx = x0 + pos
+            s.append(f'<line x1="{xx}" y1="{y - 3}" x2="{xx}" y2="{y + 30}" stroke-width="2" class="{cls}"/>')
+            s.append(t(xx + 3, y + 40, rot, 8.5,
+                       "f-acc" if rot == "vê" else "f-good", 700))
+    y = 28 + 4 * 52 + 2
+    s.append(r(0, y, 400, 40, "f-accs s-accl", 6, ' stroke-width="1"'))
+    s.append(t(10, y + 16, "Só o que é interativo precisa de JS e de hidratação.", 10, "f-ink", 700))
+    s.append(t(10, y + 31, "O resto pode chegar como HTML, montado no servidor.", 10, "f-soft"))
+    h = y + 42
+    return f'<svg viewBox="0 0 400 {h}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Linhas do tempo de CSR, SSR, SSG e streaming: quando a pessoa vê o conteúdo e quando pode usar">{"".join(s)}</svg>'
+
+
 if __name__ == "__main__":
     for nome, f in (("proxy", fig_proxy), ("chaves", fig_chaves),
                     ("arvore", fig_arvore), ("fluxo", fig_fluxo),
@@ -551,6 +589,7 @@ if __name__ == "__main__":
                     ("catalogo", fig_catalogo), ("contextos", fig_contextos),
                     ("fases", fig_fases), ("rotas", fig_rotas),
                     ("remoto", fig_remoto), ("sessao", fig_sessao),
-                    ("piramide", fig_piramide)):
+                    ("piramide", fig_piramide),
+                    ("renderizacao", fig_renderizacao)):
         (AQUI / f"fig_{nome}.svg").write_text(f() + "\n", encoding="utf-8")
         print("fig_" + nome)

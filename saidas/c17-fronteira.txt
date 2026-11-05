@@ -1,0 +1,12 @@
+next cap17 + CopiarCns importando lib/api.ts
+$ next build   (código de saída 1)
+Error: Turbopack build failed with 2 errors:
+Error: You're importing a module that depends on "server-only". This API is only available in Server Components in the App Router, but you are using it in the Pages Router.
+> 1 | import "server-only";
+  Client Component Browser:
+    ./lib/api.ts [Client Component Browser]
+    ./app/pacientes/[id]/CopiarCns.tsx [Client Component Browser]
+  Client Component SSR:
+    ./lib/api.ts [Client Component SSR]
+    ./app/pacientes/[id]/CopiarCns.tsx [Client Component SSR]
+Error: 'server-only' cannot be imported from a Client Component module
